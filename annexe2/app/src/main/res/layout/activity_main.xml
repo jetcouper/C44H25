@@ -80,7 +80,7 @@
         app:layout_constraintVertical_bias="0.428" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtSolde"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -105,7 +105,7 @@
         app:layout_constraintVertical_bias="0.592" />
 
     <EditText
-        android:id="@+id/TxtA"
+        android:id="@+id/txtA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -131,7 +131,7 @@
         app:layout_constraintVertical_bias="0.755" />
 
     <EditText
-        android:id="@+id/TxtTransfere"
+        android:id="@+id/txtTransfere"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
