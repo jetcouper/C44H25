@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 public class voyageActivity extends AppCompatActivity {
@@ -50,7 +51,7 @@ public class voyageActivity extends AppCompatActivity {
         boutonTotal = findViewById(R.id.btnTotal);
 
         //1ere étape
-        voyageActivity.Ecouteur ec = new MainActivity.Ecouteur();
+        Ecouteur ec = new Ecouteur();
 
         //2e étape
         boutonTotal.setOnClickListener(ec);
@@ -65,17 +66,22 @@ public class voyageActivity extends AppCompatActivity {
         @Override
         public void onClick(View source) {
 
+            DecimalFormat df = new DecimalFormat("0.00");
+
             if (source == boutonAvion){
-
-
-                //commande.ajouterProduit();
-
+                commande.ajouterProduit(new BilletAvion());
+                iQuantiteAvion++;
+                chamTotalAvion.setText(Integer.toString(iQuantiteAvion));
             }
-
+            if (source == boutonHotel){
+                commande.ajouterProduit(new HebergementHotel());
+                iQuantiteHotel++;
+                chamTotalHotel.setText(Integer.toString(iQuantiteHotel));
+                }
 
 
             if (source == boutonTotal){
-
+                chamTotal.setText(df.format(commande.grandTotal()));
             }
 
 
