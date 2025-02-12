@@ -25,11 +25,9 @@ public class voyageActivity extends AppCompatActivity {
     ImageView boutonAvion;
     ImageView boutonHotel;
     Button boutonTotal;
-
+    Button boutonReset;
     int iQuantiteAvion;
     int iQuantiteHotel;
-    double prixTotal;
-    Vector<String> produit;
 
     Commande commande;
     @Override
@@ -49,6 +47,11 @@ public class voyageActivity extends AppCompatActivity {
         boutonAvion = findViewById(R.id.imgAvion);
         boutonHotel = findViewById(R.id.imgHotel);
         boutonTotal = findViewById(R.id.btnTotal);
+        chamTotalAvion.setText("0");
+        chamTotalHotel.setText("0");
+        boutonReset = findViewById(R.id.btnReset);
+
+
 
         //1ere étape
         Ecouteur ec = new Ecouteur();
@@ -57,6 +60,7 @@ public class voyageActivity extends AppCompatActivity {
         boutonTotal.setOnClickListener(ec);
         boutonHotel.setOnClickListener(ec);
         boutonAvion.setOnClickListener(ec);
+        boutonReset.setOnClickListener(ec);
 
 
 
@@ -66,7 +70,7 @@ public class voyageActivity extends AppCompatActivity {
         @Override
         public void onClick(View source) {
 
-            DecimalFormat df = new DecimalFormat("0.00");
+            DecimalFormat df = new DecimalFormat("0.00$"); //DecimalFormat pour l'argent, deux chiffres après la virgule.
 
             if (source == boutonAvion){
                 commande.ajouterProduit(new BilletAvion());
@@ -78,13 +82,20 @@ public class voyageActivity extends AppCompatActivity {
                 iQuantiteHotel++;
                 chamTotalHotel.setText(Integer.toString(iQuantiteHotel));
                 }
+            if(source == boutonReset){
+                commande = new Commande();
+                iQuantiteAvion = 0;
+                iQuantiteHotel = 0;
+                chamTotalHotel.setText(Integer.toString(iQuantiteHotel));
+                chamTotalAvion.setText(Integer.toString(iQuantiteAvion));
+                chamTotal.setText(df.format(commande.grandTotal()));
+
+            }
 
 
             if (source == boutonTotal){
                 chamTotal.setText(df.format(commande.grandTotal()));
             }
-
-
 
         }
     }
