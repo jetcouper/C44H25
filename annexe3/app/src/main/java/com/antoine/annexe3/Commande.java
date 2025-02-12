@@ -18,10 +18,10 @@ public class Commande {
 
     public double total ()
     {
-	double total =0;
+	    double total =0;
         // compléter : total de la commande
-        for (Produit i : listeCommande){
-            total += i.getPrix();
+        for (Produit p : listeCommande){
+            total += p.getPrix();
         }
 
 	return total;
@@ -33,20 +33,11 @@ public class Commande {
         double total = 0;
         total = total();
 
-
-        taxes += total * 0.05;
-        taxes += total * 0.0975;
-
-
         // tps sur le montant avant taxes ( 5% )
-
-        
+        taxes += total * 0.05;
         //tvq sur le montant avant taxes ( 9.975% )
-        
+        taxes += total * 0.09975;
         // taxes total = tps + tvq
-
-
-
         return taxes;
     }
 

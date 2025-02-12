@@ -49,6 +49,8 @@ public class voyageActivity extends AppCompatActivity {
         boutonTotal = findViewById(R.id.btnTotal);
         chamTotalAvion.setText("0");
         chamTotalHotel.setText("0");
+
+
         boutonReset = findViewById(R.id.btnReset);
 
 
@@ -60,6 +62,8 @@ public class voyageActivity extends AppCompatActivity {
         boutonTotal.setOnClickListener(ec);
         boutonHotel.setOnClickListener(ec);
         boutonAvion.setOnClickListener(ec);
+
+
         boutonReset.setOnClickListener(ec);
 
 
@@ -77,12 +81,12 @@ public class voyageActivity extends AppCompatActivity {
                 iQuantiteAvion++;
                 chamTotalAvion.setText(Integer.toString(iQuantiteAvion));
             }
-            if (source == boutonHotel){
+            else if (source == boutonHotel){
                 commande.ajouterProduit(new HebergementHotel());
                 iQuantiteHotel++;
                 chamTotalHotel.setText(Integer.toString(iQuantiteHotel));
                 }
-            if(source == boutonReset){
+            else if(source == boutonReset){
                 commande = new Commande();
                 iQuantiteAvion = 0;
                 iQuantiteHotel = 0;
@@ -91,9 +95,7 @@ public class voyageActivity extends AppCompatActivity {
                 chamTotal.setText(df.format(commande.grandTotal()));
 
             }
-
-
-            if (source == boutonTotal){
+            else if (source == boutonTotal){
                 chamTotal.setText(df.format(commande.grandTotal()));
             }
 
