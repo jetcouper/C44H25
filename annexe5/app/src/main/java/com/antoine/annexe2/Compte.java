@@ -3,8 +3,6 @@ package com.antoine.annexe2;
 import java.util.Hashtable;
 
 public class Compte {
-
-
     private String nom;
 
     private double solde;

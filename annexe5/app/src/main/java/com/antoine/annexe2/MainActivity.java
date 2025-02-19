@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         Compte compte1 = new Compte("Chèque",1500);
         Compte compte2 = new Compte("Épargne",2000);
         Compte compte3 = new Compte("ÉpargnePlus",4000);
+
+
         ht.put(compte1.getName(), compte1);
         ht.put(compte2.getName(), compte2);
         ht.put(compte3.getName(), compte3);
@@ -106,23 +108,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
+            //String temp2 = (String)chamNomCompte.getItemAtPosition(position);
+
+//            if(temp2.equals(ht.get("Épargne"))){
+//                solde = ht.get(temp2).getSolde();
+//                champSolde.setText(df.format(solde));
+//            }
+//            else if(temp2.equals(ht.get("Chèque"))){
+//                solde = ht.get(temp).getSolde();
+//                champSolde.setText(df.format(solde));
+//            }
+//            else if(temp2.equals(ht.get("ÉpargnePlus"))){
+//                solde = ht.get(temp).getSolde();
+//                champSolde.setText(df.format(solde));
+//            }
             String temp = chamNomCompte.getSelectedItem().toString();
 
             if(temp.equals("Épargne")){
-
                 solde = ht.get(temp).getSolde();
-                //solde = choix.getItemId(position);
                 champSolde.setText(df.format(solde));
+                //solde = choix.getItemId(position);
             }
             else if(temp.equals("Chèque")){
                 solde = ht.get(temp).getSolde();
-                //solde = choix.getItem(position).getSolde();
                 champSolde.setText(df.format(solde));
+                //solde = choix.getItem(position).getSolde();
             }
-            if(temp.equals("ÉpargnePlus")){
+            else if(temp.equals("ÉpargnePlus")){
                 solde = ht.get(temp).getSolde();
-                //solde = choix.getItem(position).getSolde();
                 champSolde.setText(df.format(solde));
+                //solde = choix.getItem(position).getSolde();
             }
         }
 
