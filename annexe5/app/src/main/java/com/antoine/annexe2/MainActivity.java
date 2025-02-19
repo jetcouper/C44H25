@@ -17,6 +17,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
@@ -106,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
             String temp = chamNomCompte.getSelectedItem().toString();
 
-
             if(temp.equals("Épargne")){
 
                 solde = ht.get(temp).getSolde();
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.setMessage("Vous devez remplir le champ d'envoie!").setTitle("Erreur");
                     dialog = builder.create();
                     dialog.show();
+                    //Snackbar.make(MainActivity.this.getCurrentFocus(), "Vous devez remplir le champ d'envoie!", Snackbar.LENGTH_SHORT).show();
                     //Toast.makeText(MainActivity.this, "Vous devez remplir le champ d'envoie!", Toast.LENGTH_LONG).show();
                 }
                 else if (!isValid(nomCourriel)){
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     double soldeDouble = Double.parseDouble(String.valueOf(champTransfère.getText()));
 
-                    if(solde <= 0 || solde < soldeDouble){
+                    if(solde < 0 || solde < soldeDouble){
 
                         builder.setMessage("La somme demander dépasse le solde du compte!").setTitle("Erreur");
                         dialog = builder.create();
