@@ -40,12 +40,11 @@ public class MainActivity extends AppCompatActivity {
         //2e etape
         main = findViewById(R.id.main);
         chamPass = findViewById(R.id.txtPassword);
-        for(int i = 0; i < main.getChildCount(); i++){
-            LinearLayout ly = (LinearLayout) main.getChildAt(i);
-            for(int j = 0; j < ly.getChildCount(); j++){
-
+        for(int i = 0; i < main.getChildCount(); i++){ //Parcourir chaque LinearLayout
+            LinearLayout ly = (LinearLayout)main.getChildAt(i);
+            for(int j = 0; j < ly.getChildCount(); j++){//Pour chaque LinearLayout, parcourir pour trouver toutes les composantes(Bouton)
                 View petit =  ly.getChildAt(j);
-                if(petit instanceof Button){
+                if(petit instanceof Button){//Si c'est un bouton
                     ly.getChildAt(j).setOnClickListener(ec);
                 }
             }
@@ -61,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
             Button bouton = (Button)source; //On le transtype car on est certains que nos sources sont uniquement des Boutons
             input += bouton.getText().toString();//On le transtype en Button car on veut avoir accès au Texte
 
-            if(chamPass.getText().length() != 4){
+            if(input.length() < 4){
                 chamPass.setText(input);
                 main.setBackgroundColor(Color.WHITE);
 
             }
-            else if(chamPass.getText().length() == 4){
+            else if(input.length() == 4){
 
-                if(chamPass.getText().toString().equals(test)){
+                if(input.equals(test)){
                     main.setBackgroundColor(Color.GREEN);
                     Toast.makeText(MainActivity.this, "Vous avez trouver le code!!!", Toast.LENGTH_LONG).show();
                     chamPass.setText("");

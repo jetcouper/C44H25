@@ -95,22 +95,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View source) { //Paramètre: Source de l'événement, boutons
 
 
-//            if (source == boutonValider){
-//                //Équivalant
-//                //String nomCompte = chamNomCompte.getText().toString();
-//                String nomCompte = String.valueOf(spinnerNomCompte.getText());
-//                nomCompte = nomCompte.toUpperCase(); //Place en majuscule pour faire moins de comparaisons
-//                nomCompte.trim();//Pour enlever les espace inutiles au début ou à la fin du champ texte
-//
-//                if (choix.contains(nomCompte)){
-//                    champSolde.setText(df.format( solde ));
-//
-//                }
-//                else{
-//                    //context: sysnonyme de l'activité
-//                    Toast.makeText(MainActivity.this, "Pas un bon nom de compte!", Toast.LENGTH_LONG).show();
-//                }
-//            }
             if (source == boutonEnvoyer){
                 //bouton envoyer
                 String nomCourriel = String.valueOf(champCourriel.getText());
