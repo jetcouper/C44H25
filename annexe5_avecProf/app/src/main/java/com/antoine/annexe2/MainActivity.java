@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -33,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     Vector<String> choix;
     double solde;
-    DecimalFormat df = new DecimalFormat("0.00$");///AJOUT PERSONNEL (Aucun lien avec le cours)
+    DecimalFormat df = new DecimalFormat("0.00$");
+    Compte compteChoisi;
+    Hashtable<String,Compte> ht = new Hashtable<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +57,15 @@ public class MainActivity extends AppCompatActivity {
         champTransfère = findViewById(R.id.txtTransfere);
         boutonEnvoyer = findViewById(R.id.btnEnvoyer);
 
-        solde = 1400;
-        choix = new Vector<>();
-        choix.add("Chèque");
-        choix.add("Épargne");
-        choix.add("Épargne Plus");
+        //solde = 1400;
+        choix = new Vector<String>();
+        ht.put("Chèque", new Compte("Chèque",1500));
+        ht.put("Épargne", new Compte("Épargne",60));
+        ht.put("ÉpargnePlus", new Compte("ÉpargnePlus",2500));
+
+        //On prend les clés et on les ajoute au vecteur donc au spinner
+        choix.addAll(ht.keySet());
+
 
         //Adaptateur pour remplir le spinner //This = context(Activité) de adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,choix);
@@ -90,39 +99,36 @@ public class MainActivity extends AppCompatActivity {
     //3e étape : Classe interne
     private class Ecouteur implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-
         @Override
         public void onClick(View source) { //Paramètre: Source de l'événement, boutons
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            String courriel = String.valueOf(champCourriel.getText());
+            courriel = courriel.trim();
+            //Log.i("test")
 
-            if (source == boutonEnvoyer){
-                //bouton envoyer
-                String nomCourriel = String.valueOf(champCourriel.getText());
-                nomCourriel = nomCourriel.trim();
-
-
-
-                if (nomCourriel.isEmpty()){
-                    Toast.makeText(MainActivity.this, "Vous devez remplir le champ d'envoie!", Toast.LENGTH_LONG).show();
-                }
-                else if (!isValid(nomCourriel)){
-                    Toast.makeText(MainActivity.this, "Ceci n'est pas un adresse Email valide!", Toast.LENGTH_LONG).show();
-
+            if(courriel.matches("[\\w]+[.\\w]+@[\\w]+[.\\w]+")){
+                String montant = String.valueOf(champTransfère.getText());
+                double transfere = Double.parseDouble(montant);
+                if(compteChoisi.tranfert(transfere)){
+                    champSolde.setText(df.format(compteChoisi.getSolde()));
+                    Toast.makeText(MainActivity.this, "Le transfert a eu lieu", Toast.LENGTH_SHORT).show();
+                    champCourriel.setText("");
+                    champTransfère.setText("");
                 }
                 else{
-                    double soldeDouble = Double.parseDouble(String.valueOf(champTransfère.getText()));
 
-                    if(solde == 0 || solde < soldeDouble){
-                        Toast.makeText(MainActivity.this, "La somme demander dépasse le solde du compte!", Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        solde = solde - soldeDouble;
-                        champSolde.setText(df.format( solde ));
-                        Toast.makeText(MainActivity.this, "Transfère réussi!", Toast.LENGTH_LONG).show();
-                    }
-
-
+                    builder.setMessage("Manque de fonds").setTitle("Erreur");
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    champTransfère.setText("");
                 }
+            }
+            else {
+                builder.setMessage("Ceci n'est pas un courriel valide").setTitle("Erreur");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                champCourriel.setText("");
             }
 
 
@@ -138,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
             //TextView choisi = (TextView)itemSelectionner;
             //Toast.makeText(MainActivity.this, choisi.getText().toString(), Toast.LENGTH_LONG).show();
             //Solution 3
-            String temp = (String)spinnerNomCompte.getItemAtPosition(position);
-            Toast.makeText(MainActivity.this, temp, Toast.LENGTH_SHORT).show();
+            String cle = (String)spinnerNomCompte.getItemAtPosition(position);
+            compteChoisi = ht.get(cle);
+            champSolde.setText(df.format(compteChoisi.getSolde()));
+            //Toast.makeText(MainActivity.this, temp, Toast.LENGTH_SHORT).show();
 
         }
 

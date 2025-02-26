@@ -108,36 +108,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-            //String temp2 = (String)chamNomCompte.getItemAtPosition(position);
 
-//            if(temp2.equals(ht.get("Épargne"))){
-//                solde = ht.get(temp2).getSolde();
-//                champSolde.setText(df.format(solde));
-//            }
-//            else if(temp2.equals(ht.get("Chèque"))){
-//                solde = ht.get(temp).getSolde();
-//                champSolde.setText(df.format(solde));
-//            }
-//            else if(temp2.equals(ht.get("ÉpargnePlus"))){
-//                solde = ht.get(temp).getSolde();
-//                champSolde.setText(df.format(solde));
-//            }
             String temp = chamNomCompte.getSelectedItem().toString();
 
             if(temp.equals("Épargne")){
                 solde = ht.get(temp).getSolde();
                 champSolde.setText(df.format(solde));
-                //solde = choix.getItemId(position);
             }
             else if(temp.equals("Chèque")){
                 solde = ht.get(temp).getSolde();
                 champSolde.setText(df.format(solde));
-                //solde = choix.getItem(position).getSolde();
             }
             else if(temp.equals("ÉpargnePlus")){
                 solde = ht.get(temp).getSolde();
                 champSolde.setText(df.format(solde));
-                //solde = choix.getItem(position).getSolde();
             }
         }
 
@@ -182,8 +166,11 @@ public class MainActivity extends AppCompatActivity {
                         dialog = builder.create();
                         dialog.show();
                         //Toast.makeText(MainActivity.this, "La somme demander dépasse le solde du compte!", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else if (champTransfère.getText().toString().equals("0")) {
+                        builder.setMessage("Entrer un montant plus gros que 0!").setTitle("Erreur");
+                        dialog = builder.create();
+                        dialog.show();
+                    } else{
                         ht.get(temp).mofifierSolde(soldeDouble);
                         champSolde.setText(df.format(ht.get(temp).getSolde()));
                         builder.setMessage("Transfère réussi!").setTitle("Réussi");
