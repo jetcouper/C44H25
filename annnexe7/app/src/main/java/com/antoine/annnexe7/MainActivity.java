@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -23,15 +24,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout main;
     SurfaceDessin surf;
 
     private Paint carre;
-
+    List<Point> points = new ArrayList<Point>();
     Point depart;
-
+    Point ligne;
+    Point fin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,32 +73,45 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onDraw(@NonNull Canvas canvas){
             super.onDraw(canvas);
+
+//            for (Point point : points){ //Pour dessiner un nombre infinit de point
+//                canvas.drawRect(point.x-20,point.y-20,point.x+20,point.y+20,carre);
+//            }
+
             if(depart != null){
                 canvas.drawRect(depart.x-20,depart.y-20,depart.x+20,depart.y+20,carre);
+                if (fin != null){
+                    canvas.drawRect(fin.x-20,fin.y-20,fin.x+20,fin.y+20,carre);
+                    canvas.drawLine(depart.x,depart.y,fin.x,fin.y,carre);
+
+                }
             }
+
         }
     }
     private class Ecouteur implements View.OnTouchListener {
         @Override
         public boolean onTouch(View source, MotionEvent event) {
-            depart = new Point((int)event.getX(),(int)event.getY());
-            //surf.invalidate();
-            //coordX = event.getX();
-            //coordY = event.getY();
 
             int action = event.getAction();//PAS FINI
-
                 if(action == ACTION_DOWN){
+                    depart = new Point();
+
                     depart.x = (int)event.getX();
                     depart.y = (int)event.getY();
+                    //points.add(depart); //Pour avoir une infini de point
                     surf.invalidate();
+
                 }
                 if(action == ACTION_MOVE){
+
+                    fin = new Point();
+                    fin.x = (int)event.getX();
+                    fin.y = (int)event.getY();
                     surf.invalidate();
                 }
                 if(action == ACTION_UP){
-                    depart.x = (int)event.getX();
-                    depart.y = (int)event.getY();
+                    //points.add(fin); //Pour avoir une infini de point
                     surf.invalidate();
                 }
             return true;
