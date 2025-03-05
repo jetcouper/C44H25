@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     SurfaceDessin surf;
 
     private Paint carre;
-    List<Point> points = new ArrayList<Point>();
+    //List<Point> points = new ArrayList<Point>();
     Point depart;
-    Point ligne;
+    //Point ligne;
     Point fin;
 
     @Override
@@ -77,14 +77,12 @@ public class MainActivity extends AppCompatActivity {
 //            for (Point point : points){ //Pour dessiner un nombre infinit de point
 //                canvas.drawRect(point.x-20,point.y-20,point.x+20,point.y+20,carre);
 //            }
-
             if(depart != null){
                 canvas.drawRect(depart.x-20,depart.y-20,depart.x+20,depart.y+20,carre);
-                if (fin != null){
-                    canvas.drawRect(fin.x-20,fin.y-20,fin.x+20,fin.y+20,carre);
-                    canvas.drawLine(depart.x,depart.y,fin.x,fin.y,carre);
-
-                }
+            }
+            if (fin != null){
+                canvas.drawRect(fin.x-20,fin.y-20,fin.x+20,fin.y+20,carre);
+                canvas.drawLine(depart.x,depart.y,fin.x,fin.y,carre);
             }
 
         }
@@ -94,16 +92,15 @@ public class MainActivity extends AppCompatActivity {
         public boolean onTouch(View source, MotionEvent event) {
 
             int action = event.getAction();//PAS FINI
+
                 if(action == ACTION_DOWN){
                     depart = new Point();
-
                     depart.x = (int)event.getX();
                     depart.y = (int)event.getY();
                     //points.add(depart); //Pour avoir une infini de point
                     surf.invalidate();
-
                 }
-                if(action == ACTION_MOVE){
+                else if(action == ACTION_MOVE){
 
                     fin = new Point();
                     fin.x = (int)event.getX();
@@ -111,9 +108,12 @@ public class MainActivity extends AppCompatActivity {
                     surf.invalidate();
                 }
                 if(action == ACTION_UP){
+                    depart = null;
+                    fin = null;
                     //points.add(fin); //Pour avoir une infini de point
-                    surf.invalidate();
                 }
+
+
             return true;
         }
     }
