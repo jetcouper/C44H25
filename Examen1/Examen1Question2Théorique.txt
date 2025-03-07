@@ -1,0 +1,6 @@
+for(int 1 = 0; i < parent.getChildById.Count();i++)
+	{
+		if(parent.getChildAt(i) instanceof TextView)
+			Text t = (TextView) parent.getChildAt(i)
+			t.setAllCaps(True);
+	}
