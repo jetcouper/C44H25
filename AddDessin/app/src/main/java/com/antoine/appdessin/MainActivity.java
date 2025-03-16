@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView image;
     int lageurTrait;
-    SeekBar seek;
+    //SeekBar seek;
 
 
     @Override

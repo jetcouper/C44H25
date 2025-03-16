@@ -24,7 +24,8 @@ public class Commande {
             total += p.getPrix();
         }
 
-	return total;
+
+        return total;
     }
 
     public double taxes()

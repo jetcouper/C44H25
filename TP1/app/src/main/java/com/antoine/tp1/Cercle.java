@@ -1,4 +1,15 @@
 package com.antoine.tp1;
 
-public class Cercle {
+import android.graphics.Paint;
+
+public class Cercle extends Dessin {
+
+
+    public Cercle(String couleur,int largeurTrait) {
+        super(couleur,largeurTrait);
+    }
+
+
+
+
 }

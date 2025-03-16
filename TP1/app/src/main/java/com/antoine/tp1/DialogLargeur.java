@@ -1,4 +1,4 @@
-package com.antoine.appdessin;
+package com.antoine.tp1;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,9 +26,9 @@ public class DialogLargeur extends Dialog {
     public DialogLargeur(@NonNull Context context) {
         super(context);
         fenetrePrincipale = (MainActivity)context;
-
-
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +38,28 @@ public class DialogLargeur extends Dialog {
         txtNombre = findViewById(R.id.txtLargeurNombre);
         btnok = findViewById(R.id.btnOK);
         Ecouteur ec = new Ecouteur();
-        if(!(txtNombre.getText().toString().equals("0"))){
-            txtNombre.setText(String.valueOf(fenetrePrincipale.getLageurTrait()));
-            seek.setProgress(fenetrePrincipale.getLageurTrait());
-        }
+//        if(!(txtNombre.getText().toString().equals("0"))){
+//            txtNombre.setText(String.valueOf(fenetrePrincipale.getLageurTrait()));
+//            seek.setProgress(fenetrePrincipale.getLageurTrait());
+//        }
         seek.setOnSeekBarChangeListener(ec);
         btnok.setOnClickListener(ec);
+
+
+//        EdgeToEdge.enable(this);
+//        setContentView(R.layout.activity_dialog_largeur);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
     }
 
     private class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
         @Override
-        public void onClick(View source) {
-            //txtNombre.setText(seek.getProgress());
-            fenetrePrincipale.setLageurTrait(Integer.parseInt(txtNombre.getText().toString()));
+        public void onClick(View v) {
             dismiss();
-
         }
 
         @Override

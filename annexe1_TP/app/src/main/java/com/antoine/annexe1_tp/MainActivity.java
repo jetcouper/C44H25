@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     Path p;
     Paint c;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +55,6 @@ public class MainActivity extends AppCompatActivity {
         Ecouteur ec = new Ecouteur();
         bouton.setOnClickListener(ec);
         p = new Path();
-
-
-
-
-
-
-
     }
     private class Ecouteur implements View.OnClickListener {
         @Override
@@ -77,28 +72,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
     private class Surface  extends View {
-
-
         public Surface(Context context) {
             super(context);
             c = new Paint(Paint.ANTI_ALIAS_FLAG);
             c.setStyle(Paint.Style.STROKE);
             c.setStrokeWidth(18);
-
-
-
         }
 
         @Override
         protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
             canvas.drawPath(p,c);
-
-
-
         }
     }
 
