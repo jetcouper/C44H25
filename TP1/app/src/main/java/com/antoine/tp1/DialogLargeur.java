@@ -65,6 +65,7 @@ public class DialogLargeur extends Dialog {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             txtNombre.setText(String.valueOf(progress));
+
         }
 
         @Override

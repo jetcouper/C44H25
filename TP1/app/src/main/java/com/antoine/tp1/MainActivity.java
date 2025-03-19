@@ -5,6 +5,7 @@ import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -43,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     Path pathDessin;
     float CoordX, CoordY, dernierX, dernierY;
     private Bitmap bitmapImage;
+    Dessin dessin;
+    int epaisseurCrayon = 20;
+    int nomCouleur = 0;
+    Trait trait;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +62,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        nomCouleur = getResources().getColor(R.color.noir,null);
+
+
+        trait = new Trait(nomCouleur,epaisseurCrayon);
         LiDessin = findViewById(R.id.linearDessin);
+        LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
 
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         LiDessin.addView(surf);
         Ecouteur ec = new Ecouteur();
-
         LiCouleur = findViewById(R.id.linearCouleur);
+
+
         for(int i = 0; i < LiCouleur.getChildCount(); i++){
             View petit = LiCouleur.getChildAt(i);
             if(petit instanceof Button){
@@ -77,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         }
         surf.setOnTouchListener(ec);
 
+
+
     }
 
 //    public Bitmap getBitmapImage() {
@@ -87,24 +103,11 @@ public class MainActivity extends AppCompatActivity {
 //
 //        return bitmapImage;
 //    }
-
-
-
-
-
     private class SurfaceDessin extends View{
 
 
         public SurfaceDessin(Context context) {
             super(context);
-            ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
-            ligneDessin.setColor(Color.BLACK);
-            ligneDessin.setStrokeWidth(20);
-            ligneDessin.setAntiAlias(true);
-            ligneDessin.setStyle(Paint.Style.STROKE);
-            ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-            ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-            ligneDessin.setDither(true);
             points = new ArrayList<Point>();
             pathDessin = new Path();
         }
@@ -114,35 +117,39 @@ public class MainActivity extends AppCompatActivity {
             super.onDraw(canvas);
 
 
-            if(points.size() > 1){ //Pour que ca ne plante pas au démmarage
-                pathDessin.reset();
-                pathDessin.moveTo(points.get(0).x,points.get(0).y);
-                for (Point point : points) {
-                    pathDessin.lineTo(point.x,point.y);
-                }
-                canvas.drawPath(pathDessin, ligneDessin);
+            if (dessin != null)
+                dessin.dessiner(canvas);
+
+
+//            if(points.size() > 1){ //Pour que ca ne plante pas au démmarage
+//                pathDessin.reset();
+//                pathDessin.moveTo(points.get(0).x,points.get(0).y);
 //                for (Point point : points) {
-//                    canvas.drawCircle(point.x, point.y, 10, ligneDessin);
+//                    pathDessin.lineTo(point.x,point.y);
 //                }
-            }
-            //canvas.drawPath(pathDessin,ligneDessin);
+////                canvas.drawPath(pathDessin, ligneDessin);
+////                for (Point point : points) {
+////                    canvas.drawCircle(point.x, point.y, 10, ligneDessin);
+////                }
+//            }
+//            canvas.drawPath(pathDessin,ligneDessin);
 
 
 
         }
     }
 
-    private void interpolatePoints(Point p1, Point p2) { //A EFFACER SI CE N'EST PAS NÉSSÈSSAIRE
-        int dx = Math.abs(p2.x - p1.x);
-        int dy = Math.abs(p2.y - p1.y);
-        int steps = Math.max(dx, dy); // Determine number of points to add
-
-        for (int i = 1; i < steps; i++) {
-            int interpolatedX = p1.x + i * (p2.x - p1.x) / steps;
-            int interpolatedY = p1.y + i * (p2.y - p1.y) / steps;
-            points.add(new Point(interpolatedX, interpolatedY));
-        }
-    }
+//    private void interpolatePoints(Point p1, Point p2) { //A EFFACER SI CE N'EST PAS NÉSSÈSSAIRE
+//        int dx = Math.abs(p2.x - p1.x);
+//        int dy = Math.abs(p2.y - p1.y);
+//        int steps = Math.max(dx, dy); // Determine number of points to add
+//
+//        for (int i = 1; i < steps; i++) {
+//            int interpolatedX = p1.x + i * (p2.x - p1.x) / steps;
+//            int interpolatedY = p1.y + i * (p2.y - p1.y) / steps;
+//            points.add(new Point(interpolatedX, interpolatedY));
+//        }
+//    }
 
 
 
@@ -154,39 +161,36 @@ public class MainActivity extends AppCompatActivity {
             CoordX = event.getX();
             CoordY = event.getY();
 
-
-//            if (action == ACTION_DOWN) {
-//                pathDessin.moveTo(CoordX, CoordY);
-//                dernierX = CoordX;
-//                dernierY = CoordY;
-//            }
-//            if (action == ACTION_MOVE) {
-//                float millieuX = (dernierX + CoordX)/2;
-//                float millieuy = (dernierY + CoordY)/2;
-//                pathDessin.quadTo(dernierX, dernierY, millieuX, millieuy);
-//                dernierX = CoordX;
-//                dernierY = CoordY;
-//            }
-//            if (action == ACTION_UP) {
-//                pathDessin.lineTo(CoordX, CoordY);
-//            }
-//            surf.invalidate();
-//            return true;
-
-
-
-            if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
-                points.add(new Point((int)CoordX, (int)CoordY));
-
-
-                if (points.size() > 1) {
-                    Point lastPoint = points.get(points.size() - 2);
-                    interpolatePoints(lastPoint, new Point((int)CoordX, (int)CoordY));
+            if (action == MotionEvent.ACTION_DOWN ) {
+                if (pathDessin.isEmpty()){
+                    dessin = new Dessin(trait.getCouleur(),trait.getLargeurTrait());
                 }
+
+                //points.add(new Point((int)CoordX, (int)CoordY));
+
+                //dessin.getPathDessin().lineTo(CoordX,CoordY);
+                dessin.getPathDessin().moveTo(CoordX, CoordY);
 
                 surf.invalidate();
                 return true;
             }
+            if(action == MotionEvent.ACTION_MOVE){
+                if (pathDessin.isEmpty()) {
+                    //dessin.getPathDessin().moveTo(CoordX, CoordY);
+                    dessin.getPathDessin().lineTo(CoordX, CoordY);
+                    //pathDessin.moveTo(CoordX,CoordY);
+                }
+
+
+                else if (!pathDessin.isEmpty()) {
+
+                    dessin.getPathDessin().lineTo(CoordX, CoordY);
+                    //dessin.getPathDessin().moveTo(CoordX, CoordY);
+                }
+                surf.invalidate();
+                return true;
+            }
+
             return false;
 
 
@@ -197,7 +201,12 @@ public class MainActivity extends AppCompatActivity {
             int idVue = source.getId();
             String nomVue = source.getResources().getResourceEntryName(idVue);
 
-            if(source.toString().equals("imgCrayon")){
+            String couleurString = (String)source.getTag();
+            nomCouleur = Color.parseColor(couleurString);
+            //if(source.toString().equals() != null)
+            //getResources().getColor(R.color.noir,null);
+
+            if(nomVue.equals("imgCrayon")){
 
             }
             else if(source.toString().equals("imgEffacer")){

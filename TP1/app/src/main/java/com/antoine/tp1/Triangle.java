@@ -1,9 +1,13 @@
 package com.antoine.tp1;
 
+import android.graphics.Point;
+
+import java.util.List;
+
 public class Triangle extends Dessin{
 
 
-    public Triangle(String couleur, int largeurTrait) {
+    public Triangle(int couleur, int largeurTrait) {
         super(couleur, largeurTrait);
     }
 
