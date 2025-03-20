@@ -40,17 +40,22 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout LiOptions;
     LinearLayout LiDessin;
     SurfaceDessin surf;
-    private Paint ligneDessin;
-    List<Point> points = new ArrayList<Point>();
+    List<Dessin> list_dessin;
     Point point;
     Path pathDessin;
     float CoordX, CoordY, dernierX, dernierY;
     private Bitmap bitmapImage;
     Dessin dessin;
-    int epaisseurCrayon = 20;
+    String vueSelectionner;
+
+
+    private int epaisseurCrayon;
     int nomCouleur = 0;
     Trait trait;
-
+    DialogLargeur dialog;
+    Cercle cercle;
+    Rectangle rectangle;
+    Triangle triangle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +67,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         nomCouleur = getResources().getColor(R.color.noir,null);
-
-
+        dialog = new DialogLargeur(MainActivity.this);
+        list_dessin = new ArrayList<Dessin>();
+        epaisseurCrayon = 10;
+        //epaisseurCrayon = Integer.parseInt(dialog.txtNombre.getText().toString());
         trait = new Trait(nomCouleur,epaisseurCrayon);
+
         LiDessin = findViewById(R.id.linearDessin);
         LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
 
@@ -90,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         surf.setOnTouchListener(ec);
-
-
-
     }
 
 //    public Bitmap getBitmapImage() {
@@ -106,9 +112,10 @@ public class MainActivity extends AppCompatActivity {
     private class SurfaceDessin extends View{
 
 
+
         public SurfaceDessin(Context context) {
             super(context);
-            points = new ArrayList<Point>();
+
             pathDessin = new Path();
         }
 
@@ -116,40 +123,15 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
 
+            for(Dessin d : list_dessin){
+                d.dessiner(canvas);
+            }
 
             if (dessin != null)
                 dessin.dessiner(canvas);
 
-
-//            if(points.size() > 1){ //Pour que ca ne plante pas au démmarage
-//                pathDessin.reset();
-//                pathDessin.moveTo(points.get(0).x,points.get(0).y);
-//                for (Point point : points) {
-//                    pathDessin.lineTo(point.x,point.y);
-//                }
-////                canvas.drawPath(pathDessin, ligneDessin);
-////                for (Point point : points) {
-////                    canvas.drawCircle(point.x, point.y, 10, ligneDessin);
-////                }
-//            }
-//            canvas.drawPath(pathDessin,ligneDessin);
-
-
-
         }
     }
-
-//    private void interpolatePoints(Point p1, Point p2) { //A EFFACER SI CE N'EST PAS NÉSSÈSSAIRE
-//        int dx = Math.abs(p2.x - p1.x);
-//        int dy = Math.abs(p2.y - p1.y);
-//        int steps = Math.max(dx, dy); // Determine number of points to add
-//
-//        for (int i = 1; i < steps; i++) {
-//            int interpolatedX = p1.x + i * (p2.x - p1.x) / steps;
-//            int interpolatedY = p1.y + i * (p2.y - p1.y) / steps;
-//            points.add(new Point(interpolatedX, interpolatedY));
-//        }
-//    }
 
 
 
@@ -157,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View source, MotionEvent event) {
 
-            int action = event.getAction();//PAS FINI
+            int action = event.getAction();
             CoordX = event.getX();
             CoordY = event.getY();
 
@@ -165,33 +147,23 @@ public class MainActivity extends AppCompatActivity {
                 if (pathDessin.isEmpty()){
                     dessin = new Dessin(trait.getCouleur(),trait.getLargeurTrait());
                 }
-
-                //points.add(new Point((int)CoordX, (int)CoordY));
-
-                //dessin.getPathDessin().lineTo(CoordX,CoordY);
                 dessin.getPathDessin().moveTo(CoordX, CoordY);
-
-                surf.invalidate();
-                return true;
             }
             if(action == MotionEvent.ACTION_MOVE){
                 if (pathDessin.isEmpty()) {
-                    //dessin.getPathDessin().moveTo(CoordX, CoordY);
                     dessin.getPathDessin().lineTo(CoordX, CoordY);
-                    //pathDessin.moveTo(CoordX,CoordY);
                 }
-
-
                 else if (!pathDessin.isEmpty()) {
-
                     dessin.getPathDessin().lineTo(CoordX, CoordY);
-                    //dessin.getPathDessin().moveTo(CoordX, CoordY);
                 }
-                surf.invalidate();
-                return true;
-            }
 
-            return false;
+            }
+            if(action == ACTION_UP){
+                list_dessin.add(dessin);
+                dessin = new Dessin(trait.getCouleur(), trait.getLargeurTrait());
+            }
+            surf.invalidate();
+            return true;
 
 
         }
@@ -201,45 +173,56 @@ public class MainActivity extends AppCompatActivity {
             int idVue = source.getId();
             String nomVue = source.getResources().getResourceEntryName(idVue);
 
-            String couleurString = (String)source.getTag();
-            nomCouleur = Color.parseColor(couleurString);
-            //if(source.toString().equals() != null)
-            //getResources().getColor(R.color.noir,null);
 
-            if(nomVue.equals("imgCrayon")){
+            if(source instanceof Button)
+            {
+                String couleurString = (String)source.getTag();
+                nomCouleur = Color.parseColor(couleurString);
+                trait.setCouleur(nomCouleur);
+            }
+            else{
+                if(vueSelectionner == null){
+                    vueSelectionner = nomVue;
+                }
 
-            }
-            else if(source.toString().equals("imgEffacer")){
 
-            }
-            else if(source.toString().equals("imgCercle")){
+                if(nomVue.equals("imgCrayon") && vueSelectionner.equals(nomVue)){
+                    source.setBackgroundColor(nomCouleur);//Teste
+                    vueSelectionner = nomVue;
+                }
+                else if(nomVue.equals("imgEffacer")&& vueSelectionner.equals(nomVue)){
+                    trait.setCouleur(getResources().getColor(R.color.blanc,null));
+                    vueSelectionner = nomVue;
+                }
+                else if(nomVue.equals("imgCercle")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgTriangle")){
+                }
+                else if(nomVue.equals("imgTriangle")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(nomVue.equals("imgLargeurTrait")){
-                DialogLargeur dialog = new DialogLargeur(MainActivity.this);
-                dialog.show();
-            }
-            else if(source.toString().equals("imgRectangle")){
+                }
+                else if(nomVue.equals("imgLargeurTrait")&& vueSelectionner.equals(nomVue)){
+                    dialog.show();
+                }
+                else if(nomVue.equals("imgRectangle")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgPipette")){
+                }
+                else if(nomVue.equals("imgPipette")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgRemplir")){
+                }
+                else if(nomVue.equals("imgRemplir")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgRedo")){
+                }
+                else if(nomVue.equals("imgRedo")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgUndo")){
+                }
+                else if(nomVue.equals("imgUndo")&& vueSelectionner.equals(nomVue)){
 
-            }
-            else if(source.toString().equals("imgEnregistrer")){
+                }
+                else if(nomVue.equals("imgEnregistrer")&& vueSelectionner.equals(nomVue)){
 
+                }
             }
+
 
 
         }

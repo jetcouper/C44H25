@@ -23,7 +23,6 @@ public class Dessin extends Trait{
 
     private Path pathDessin;
     private Paint ligneDessin;
-    //private List<Point> points;
 
 
 
