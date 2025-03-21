@@ -1,30 +1,35 @@
 package com.antoine.tp1;
 
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_MOVE;
 import static android.view.MotionEvent.ACTION_UP;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Sampler;
-import android.util.Log;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import android.Manifest;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -36,22 +41,20 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-    LinearLayout LiCouleur;
-    LinearLayout LiOptions;
-    LinearLayout LiDessin;
+    LinearLayout LiCouleur,LiOptions,LiDessin;
     SurfaceDessin surf;
     List<Dessin> list_dessin;
+    Dessin dessin;
     Point point;
     Path pathDessin;
+    Effacer effacer;
     float CoordX, CoordY, dernierX, dernierY;
     private Bitmap bitmapImage;
-    Dessin dessin;
     String vueSelectionner;
-
-
-    private int epaisseurCrayon;
+    Enregistrer enregistrer;
+    private int epaisseurCrayon,couleurBackground;
     int nomCouleur = 0;
-    Trait trait;
+    Crayon crayon;
     DialogLargeur dialog;
     Cercle cercle;
     Rectangle rectangle;
@@ -68,16 +71,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //couleurBackground = Color.valueOf(R.color.blanc);
         nomCouleur = getResources().getColor(R.color.noir,null);
         dialog = new DialogLargeur(MainActivity.this);
         list_dessin = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
         //epaisseurCrayon = Integer.parseInt(dialog.txtNombre.getText().toString());
-        trait = new Trait(nomCouleur,epaisseurCrayon);
+        crayon = new Crayon(nomCouleur,epaisseurCrayon);
 
         LiDessin = findViewById(R.id.linearDessin);
         LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
-
+        couleurBackground = getResources().getColor(R.color.blanc);
+        effacer = new Effacer(couleurBackground,epaisseurCrayon);
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         LiDessin.addView(surf);
@@ -101,14 +106,7 @@ public class MainActivity extends AppCompatActivity {
         surf.setOnTouchListener(ec);
     }
 
-//    public Bitmap getBitmapImage() {
-//
-//        this.buildDrawingCache();
-//        bitmapImage = Bitmap.createBitmap(this.getDrawingCache());
-//        this.destroyDrawingCache();
-//
-//        return bitmapImage;
-//    }
+
     private class SurfaceDessin extends View{
 
 
@@ -145,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (action == MotionEvent.ACTION_DOWN ) {
                 if (pathDessin.isEmpty()){
-                    dessin = new Dessin(trait.getCouleur(),trait.getLargeurTrait());
+                    dessin = new Dessin(crayon.getCouleur(), crayon.getLargeurTrait());
                 }
                 dessin.getPathDessin().moveTo(CoordX, CoordY);
             }
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if(action == ACTION_UP){
                 list_dessin.add(dessin);
-                dessin = new Dessin(trait.getCouleur(), trait.getLargeurTrait());
+                dessin = new Dessin(crayon.getCouleur(), crayon.getLargeurTrait());
             }
             surf.invalidate();
             return true;
@@ -178,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 String couleurString = (String)source.getTag();
                 nomCouleur = Color.parseColor(couleurString);
-                trait.setCouleur(nomCouleur);
+                crayon.setCouleur(nomCouleur);
             }
             else{
                 if(vueSelectionner == null){
@@ -186,40 +184,41 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-                if(nomVue.equals("imgCrayon") && vueSelectionner.equals(nomVue)){
-                    source.setBackgroundColor(nomCouleur);//Teste
+                if(idVue == R.id.imgCrayon){
+                    crayon = new Crayon(nomCouleur,epaisseurCrayon);
                     vueSelectionner = nomVue;
                 }
-                else if(nomVue.equals("imgEffacer")&& vueSelectionner.equals(nomVue)){
-                    trait.setCouleur(getResources().getColor(R.color.blanc,null));
+                else if(idVue == R.id.imgEffacer){
+                    crayon.setCouleur(couleurBackground);
                     vueSelectionner = nomVue;
                 }
-                else if(nomVue.equals("imgCercle")&& vueSelectionner.equals(nomVue)){
-
+                else if(idVue == R.id.imgCercle){
+                    cercle = new Cercle(nomCouleur,epaisseurCrayon);
                 }
-                else if(nomVue.equals("imgTriangle")&& vueSelectionner.equals(nomVue)){
-
+                else if(idVue == R.id.imgTriangle){
+                    triangle = new Triangle(nomCouleur,epaisseurCrayon);
                 }
-                else if(nomVue.equals("imgLargeurTrait")&& vueSelectionner.equals(nomVue)){
+                else if(idVue == R.id.imgLargeurTrait){
                     dialog.show();
                 }
-                else if(nomVue.equals("imgRectangle")&& vueSelectionner.equals(nomVue)){
+                else if(idVue == R.id.imgRectangle){
+                    rectangle = new Rectangle(nomCouleur,epaisseurCrayon);
+                }
+                else if(idVue == R.id.imgPipette){
 
                 }
-                else if(nomVue.equals("imgPipette")&& vueSelectionner.equals(nomVue)){
+                else if(idVue == R.id.imgRemplir){
 
                 }
-                else if(nomVue.equals("imgRemplir")&& vueSelectionner.equals(nomVue)){
+                else if(idVue == R.id.imgRedo){
 
                 }
-                else if(nomVue.equals("imgRedo")&& vueSelectionner.equals(nomVue)){
+                else if(idVue == R.id.imgUndo){
 
                 }
-                else if(nomVue.equals("imgUndo")&& vueSelectionner.equals(nomVue)){
-
-                }
-                else if(nomVue.equals("imgEnregistrer")&& vueSelectionner.equals(nomVue)){
-
+                else if(idVue == R.id.imgEnregistrer){
+                    enregistrer = new Enregistrer();
+                    enregistrer.enregistrerImage(MainActivity.this,LiDessin);
                 }
             }
 

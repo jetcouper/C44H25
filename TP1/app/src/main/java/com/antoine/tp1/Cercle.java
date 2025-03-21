@@ -8,7 +8,7 @@ import java.util.List;
 public class Cercle extends Dessin {
 
 
-    public Cercle(int couleur,int largeurTrait, List<Point> points) {
+    public Cercle(int couleur,int largeurTrait) {
         super(couleur,largeurTrait);
     }
 

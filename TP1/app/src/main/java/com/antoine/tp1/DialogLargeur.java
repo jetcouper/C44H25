@@ -8,12 +8,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class DialogLargeur extends Dialog {
 
@@ -62,7 +57,7 @@ public class DialogLargeur extends Dialog {
         @Override
         public void onClick(View v) {
 
-            fenetrePrincipale.trait.setLargeurTrait(Integer.parseInt(txtNombre.getText().toString()));
+            fenetrePrincipale.crayon.setLargeurTrait(Integer.parseInt(txtNombre.getText().toString()));
             //fenetrePrincipale.setEpaisseurCrayon(Integer.parseInt(txtNombre.getText().toString()));
             dismiss();
         }

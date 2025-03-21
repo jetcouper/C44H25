@@ -1,7 +1,7 @@
 package com.antoine.tp1;
 
-public class Trait {
-    public Trait(int couleur, int largeurTrait) {
+public class Crayon {
+    public Crayon(int couleur, int largeurTrait) {
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
 

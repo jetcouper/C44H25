@@ -1,16 +1,10 @@
 package com.antoine.tp1;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Dessin extends Trait{
+public class Dessin extends Crayon {
 
 
     public void setPathDessin(Path pathDessin) {
@@ -53,16 +47,6 @@ public class Dessin extends Trait{
 
 
     public void dessiner(Canvas canvas){
-
-
-
-        //pathDessin.reset();
-//        if (pathDessin.isEmpty())
-//            pathDessin.moveTo(points.get(0).x,points.get(0).y);
-//        for (Point point : points) {
-//            if (!pathDessin.isEmpty())
-//                pathDessin.lineTo(point.x,point.y);
-//        }
 
         canvas.drawPath(pathDessin,ligneDessin);
     }
