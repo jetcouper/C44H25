@@ -34,22 +34,10 @@ public class DialogLargeur extends Dialog {
         txtNombre = findViewById(R.id.txtLargeurNombre);
         btnok = findViewById(R.id.btnOK);
         Ecouteur ec = new Ecouteur();
-
-//        if(!(txtNombre.getText().toString().equals("0"))){
-//            txtNombre.setText(String.valueOf(fenetrePrincipale.getLageurTrait()));
-//            seek.setProgress(fenetrePrincipale.getLageurTrait());
-//        }
         seek.setOnSeekBarChangeListener(ec);
         btnok.setOnClickListener(ec);
         seek.setProgress(traitdefaut);
         txtNombre.setText(String.valueOf(traitdefaut));
-//        EdgeToEdge.enable(this);
-//        setContentView(R.layout.activity_dialog_largeur);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
 
     }
 
@@ -57,7 +45,7 @@ public class DialogLargeur extends Dialog {
         @Override
         public void onClick(View v) {
 
-            fenetrePrincipale.crayon.setLargeurTrait(Integer.parseInt(txtNombre.getText().toString()));
+            fenetrePrincipale.dessin.setLargeurTrait(Integer.parseInt(txtNombre.getText().toString()));
             //fenetrePrincipale.setEpaisseurCrayon(Integer.parseInt(txtNombre.getText().toString()));
             dismiss();
         }

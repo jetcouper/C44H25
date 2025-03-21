@@ -49,7 +49,8 @@ public class Enregistrer {
         try{
             FileOutputStream sortie = new FileOutputStream(imageFichier);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, sortie);
-            sortie.flush();
+            sortie.flush();//Ça ou l'autre
+            //sortie.close();
             Toast.makeText(context, "Image sauvegarder dans " + imageFichier.getAbsolutePath(), Toast.LENGTH_LONG).show();
 
         } catch (IOException e) {

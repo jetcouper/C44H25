@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Build;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Dessin dessin;
     Point point;
     Path pathDessin;
+    Paint ligneDessin;
     Effacer effacer;
     float CoordX, CoordY, dernierX, dernierY;
     private Bitmap bitmapImage;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     Cercle cercle;
     Rectangle rectangle;
     Triangle triangle;
+    boolean estTriangle, estRectangle, estCercle,estCrayon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
         list_dessin = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
         //epaisseurCrayon = Integer.parseInt(dialog.txtNombre.getText().toString());
-        crayon = new Crayon(nomCouleur,epaisseurCrayon);
+        //crayon = new Crayon(nomCouleur,epaisseurCrayon);
 
         LiDessin = findViewById(R.id.linearDessin);
         LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
         couleurBackground = getResources().getColor(R.color.blanc);
-        effacer = new Effacer(couleurBackground,epaisseurCrayon);
+        effacer = new Effacer(couleurBackground,epaisseurCrayon,pathDessin,ligneDessin);
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         LiDessin.addView(surf);
@@ -121,12 +124,15 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
 
+
+
+
             for(Dessin d : list_dessin){
                 d.dessiner(canvas);
             }
 
-            if (dessin != null)
-                dessin.dessiner(canvas);
+//            if (dessin != null)
+//                dessin.dessiner(canvas);
 
         }
     }
@@ -141,29 +147,48 @@ public class MainActivity extends AppCompatActivity {
             CoordX = event.getX();
             CoordY = event.getY();
 
-            if (action == MotionEvent.ACTION_DOWN ) {
-                if (pathDessin.isEmpty()){
-                    dessin = new Dessin(crayon.getCouleur(), crayon.getLargeurTrait());
+            if (estCercle){
+                if (action == MotionEvent.ACTION_DOWN){
+                    cercle = new Cercle(dessin.getCouleur(),dessin.getLargeurTrait(),ligneDessin);
+                    //cercle.getPathDessin().moveTo(CoordX, CoordY);
+                    cercle.setCx(CoordX);
+                    cercle.setCy(CoordY);
                 }
-                dessin.getPathDessin().moveTo(CoordX, CoordY);
-            }
-            if(action == MotionEvent.ACTION_MOVE){
-                if (pathDessin.isEmpty()) {
-                    dessin.getPathDessin().lineTo(CoordX, CoordY);
+                if (action == MotionEvent.ACTION_MOVE){
+                    cercle.setCx(CoordX);
+                    cercle.setCy(CoordY);
                 }
-                else if (!pathDessin.isEmpty()) {
-                    dessin.getPathDessin().lineTo(CoordX, CoordY);
+                if (action == ACTION_UP){
+                    cercle.setCx(CoordX);
+                    cercle.setCy(CoordY);
+                    list_dessin.add(cercle);
                 }
 
             }
-            if(action == ACTION_UP){
-                list_dessin.add(dessin);
-                dessin = new Dessin(crayon.getCouleur(), crayon.getLargeurTrait());
+            else if(estCrayon){
+                if (action == MotionEvent.ACTION_DOWN ) {
+
+                    crayon = new Crayon(nomCouleur, epaisseurCrayon, pathDessin);
+                    crayon.getPathDessin().moveTo(CoordX, CoordY);
+//                    if(list_dessin.isEmpty()){
+//                        list_dessin.add(crayon);
+//                    }
+
+                }
+                else if(action == MotionEvent.ACTION_MOVE){
+                    crayon.getPathDessin().lineTo(CoordX, CoordY);
+                    surf.invalidate();
+                }
+                else if(action == ACTION_UP){
+                    list_dessin.add(crayon);
+
+                }
+
             }
-            surf.invalidate();
+
+            //surf.invalidate();
+
             return true;
-
-
         }
 
         @Override
@@ -176,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 String couleurString = (String)source.getTag();
                 nomCouleur = Color.parseColor(couleurString);
-                crayon.setCouleur(nomCouleur);
+
             }
             else{
                 if(vueSelectionner == null){
@@ -185,24 +210,37 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if(idVue == R.id.imgCrayon){
-                    crayon = new Crayon(nomCouleur,epaisseurCrayon);
+                    estCrayon = true;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = false;
                     vueSelectionner = nomVue;
+
                 }
                 else if(idVue == R.id.imgEffacer){
                     crayon.setCouleur(couleurBackground);
                     vueSelectionner = nomVue;
                 }
                 else if(idVue == R.id.imgCercle){
-                    cercle = new Cercle(nomCouleur,epaisseurCrayon);
+                    estCrayon = false;
+                    estCercle = true;
+                    estTriangle = false;
+                    estRectangle = false;
                 }
                 else if(idVue == R.id.imgTriangle){
-                    triangle = new Triangle(nomCouleur,epaisseurCrayon);
+                    estCrayon = false;
+                    estCercle = false;
+                    estTriangle = true;
+                    estRectangle = false;
                 }
                 else if(idVue == R.id.imgLargeurTrait){
                     dialog.show();
                 }
                 else if(idVue == R.id.imgRectangle){
-                    rectangle = new Rectangle(nomCouleur,epaisseurCrayon);
+                    estCrayon = false;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = true;
                 }
                 else if(idVue == R.id.imgPipette){
 
