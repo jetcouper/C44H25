@@ -9,11 +9,11 @@ public class Crayon extends Dessin{
     private Path pathDessin;
     private Paint ligneDessin;
 
-    public Crayon(int couleur, int largeurTrait, Path pathDessin) {
+    public Crayon(int couleur, int largeurTrait) {
         super(couleur,largeurTrait);
-        this.couleur = couleur;
-        this.largeurTrait = largeurTrait;
-        this.pathDessin = pathDessin;
+//        this.couleur = couleur;
+//        this.largeurTrait = largeurTrait;
+//        this.pathDessin = pathDessin;
 
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(couleur);

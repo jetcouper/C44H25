@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmapImage;
     String vueSelectionner;
     Enregistrer enregistrer;
-    private int epaisseurCrayon,couleurBackground;
+    int epaisseurCrayon,couleurBackground;
     int nomCouleur = 0;
     Crayon crayon;
     DialogLargeur dialog;
     Cercle cercle;
     Rectangle rectangle;
     Triangle triangle;
-    boolean estTriangle, estRectangle, estCercle,estCrayon;
+    boolean estTriangle, estRectangle, estCercle,estCrayon, estEfface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //couleurBackground = Color.valueOf(R.color.blanc);
-        nomCouleur = getResources().getColor(R.color.noir,null);
+        //dessin.setCouleur(nomCouleur);
+        //dessin.setLargeurTrait(epaisseurCrayon);
+
+        //nomCouleur = getResources().getColor(R.color.noir,null);
         dialog = new DialogLargeur(MainActivity.this);
         list_dessin = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         LiDessin = findViewById(R.id.linearDessin);
         LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
         couleurBackground = getResources().getColor(R.color.blanc);
-        effacer = new Effacer(couleurBackground,epaisseurCrayon,pathDessin,ligneDessin);
+        //effacer = new Effacer(couleurBackground,epaisseurCrayon,pathDessin,ligneDessin);
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         LiDessin.addView(surf);
@@ -131,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 d.dessiner(canvas);
             }
 
-//            if (dessin != null)
-//                dessin.dessiner(canvas);
+            if (dessin != null)
+                dessin.dessiner(canvas);
 
         }
     }
@@ -168,25 +171,33 @@ public class MainActivity extends AppCompatActivity {
             else if(estCrayon){
                 if (action == MotionEvent.ACTION_DOWN ) {
 
-                    crayon = new Crayon(nomCouleur, epaisseurCrayon, pathDessin);
+                    crayon = new Crayon(nomCouleur, epaisseurCrayon);
+//                    crayon.setCouleur(nomCouleur);
+//                    crayon.setLargeurTrait(epaisseurCrayon);
+                    crayon.setPathDessin(pathDessin);
                     crayon.getPathDessin().moveTo(CoordX, CoordY);
-//                    if(list_dessin.isEmpty()){
-//                        list_dessin.add(crayon);
-//                    }
 
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     crayon.getPathDessin().lineTo(CoordX, CoordY);
-                    surf.invalidate();
-                }
-                else if(action == ACTION_UP){
                     list_dessin.add(crayon);
-
+                    surf.invalidate();
                 }
 
             }
+            else if(estEfface)
+                if (action == MotionEvent.ACTION_DOWN ) {
 
-            //surf.invalidate();
+                    effacer = new Effacer(nomCouleur, epaisseurCrayon);
+                    effacer.setPathDessin(pathDessin);
+                    effacer.getPathDessin().moveTo(CoordX, CoordY);
+
+                }
+                else if(action == MotionEvent.ACTION_MOVE){
+                    effacer.getPathDessin().lineTo(CoordX, CoordY);
+                    list_dessin.add(effacer);
+                    surf.invalidate();
+                }
 
             return true;
         }
@@ -218,7 +229,13 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else if(idVue == R.id.imgEffacer){
-                    crayon.setCouleur(couleurBackground);
+                    estCrayon = true;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = false;
+
+
+                    effacer.setCouleur(couleurBackground);
                     vueSelectionner = nomVue;
                 }
                 else if(idVue == R.id.imgCercle){

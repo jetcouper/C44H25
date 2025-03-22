@@ -45,7 +45,7 @@ public class DialogLargeur extends Dialog {
         @Override
         public void onClick(View v) {
 
-            fenetrePrincipale.dessin.setLargeurTrait(Integer.parseInt(txtNombre.getText().toString()));
+            fenetrePrincipale.epaisseurCrayon = (Integer.parseInt(txtNombre.getText().toString()));
             //fenetrePrincipale.setEpaisseurCrayon(Integer.parseInt(txtNombre.getText().toString()));
             dismiss();
         }

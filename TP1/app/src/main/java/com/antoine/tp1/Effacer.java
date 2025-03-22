@@ -7,13 +7,27 @@ import android.graphics.Path;
 
 public class Effacer extends Dessin{
 
+    public Path getPathDessin() {
+        return pathDessin;
+    }
+
+    public void setPathDessin(Path pathDessin) {
+        this.pathDessin = pathDessin;
+    }
+
+    public Paint getLigneDessin() {
+        return ligneDessin;
+    }
+
+    public void setLigneDessin(Paint ligneDessin) {
+        this.ligneDessin = ligneDessin;
+    }
+
     private Path pathDessin;
     private Paint ligneDessin;
 
-    public Effacer(int couleur, int largeurTrait, Path pathDessin, Paint ligneDessin) {
+    public Effacer(int couleur, int largeurTrait) {
         super(couleur,largeurTrait);
-        this.pathDessin = pathDessin;
-        this.ligneDessin = ligneDessin;
 
 
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
