@@ -7,6 +7,34 @@ import android.graphics.Path;
 
 public class Effacer extends Dessin{
 
+
+
+    private Path pathDessin;
+    private Paint ligneDessin;
+    private int couleur;
+    private int largeurTrait;
+
+    @Override
+    public int getCouleur() {
+        return couleur;
+    }
+
+    @Override
+    public void setCouleur(int couleur) {
+        this.couleur = couleur;
+    }
+
+    @Override
+    public int getLargeurTrait() {
+        return largeurTrait;
+    }
+
+    @Override
+    public void setLargeurTrait(int largeurTrait) {
+        this.largeurTrait = largeurTrait;
+    }
+
+
     public Path getPathDessin() {
         return pathDessin;
     }
@@ -23,13 +51,11 @@ public class Effacer extends Dessin{
         this.ligneDessin = ligneDessin;
     }
 
-    private Path pathDessin;
-    private Paint ligneDessin;
-
-    public Effacer(int couleur, int largeurTrait) {
+    public Effacer(int couleur, int largeurTrait, Path pathDessin) {
         super(couleur,largeurTrait);
 
 
+        this.pathDessin = new Path(pathDessin);
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(couleur);
         ligneDessin.setStrokeWidth(largeurTrait);
@@ -41,6 +67,7 @@ public class Effacer extends Dessin{
 
     }
 
+    @Override
     public void dessiner(Canvas canvas){
         canvas.drawPath(pathDessin,ligneDessin);
     }

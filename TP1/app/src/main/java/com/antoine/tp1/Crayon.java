@@ -6,25 +6,13 @@ import android.graphics.Path;
 
 public class Crayon extends Dessin{
 
+    private int couleur;
+    private int largeurTrait;
+
     private Path pathDessin;
     private Paint ligneDessin;
 
-    public Crayon(int couleur, int largeurTrait) {
-        super(couleur,largeurTrait);
-//        this.couleur = couleur;
-//        this.largeurTrait = largeurTrait;
-//        this.pathDessin = pathDessin;
 
-        ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ligneDessin.setColor(couleur);
-        ligneDessin.setStrokeWidth(largeurTrait);
-        ligneDessin.setAntiAlias(true);
-        ligneDessin.setStyle(Paint.Style.STROKE);
-        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-        ligneDessin.setDither(true);
-
-    }
     public void setPathDessin(Path pathDessin) {
         this.pathDessin = pathDessin;
     }
@@ -40,20 +28,9 @@ public class Crayon extends Dessin{
     public Paint getLigneDessin() {
         return ligneDessin;
     }
-
-
-
-    public void dessiner(Canvas canvas){
-        canvas.drawPath(pathDessin,ligneDessin);
-    }
-
-
-    private int couleur;
-    private int largeurTrait;
     public int getCouleur() {
         return couleur;
     }
-
     public void setCouleur(int couleur) {
         this.couleur = couleur;
     }
@@ -65,6 +42,30 @@ public class Crayon extends Dessin{
     public void setLargeurTrait(int largeurTrait) {
         this.largeurTrait = largeurTrait;
     }
+
+    public Crayon(int couleur, int largeurTrait, Path pathDessin) {
+        super(couleur,largeurTrait);
+
+        this.pathDessin = new Path(pathDessin);
+        ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
+        ligneDessin.setColor(couleur);
+        ligneDessin.setStrokeWidth(largeurTrait);
+        ligneDessin.setAntiAlias(true);
+        ligneDessin.setStyle(Paint.Style.STROKE);
+        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
+        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
+        ligneDessin.setDither(true);
+
+    }
+
+
+    @Override
+    public void dessiner(Canvas canvas){
+        canvas.drawPath(this.pathDessin,this.ligneDessin);
+    }
+
+
+
 
 
 

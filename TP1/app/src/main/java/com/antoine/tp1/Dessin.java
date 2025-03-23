@@ -13,7 +13,8 @@ public abstract class Dessin{
         this.largeurTrait = largeurTrait;
     }
 
-    public abstract void dessiner(Canvas canvas);
+    public void dessiner(Canvas canvas){
+    };
 
 
     public int getCouleur() {

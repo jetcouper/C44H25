@@ -2,56 +2,101 @@ package com.antoine.tp1;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.RectF;
 
 import java.util.List;
 
 public class Cercle extends Dessin {
 
 
-    public float getCx() {
-        return cx;
+    private int couleur;
+    private int largeurTrait;
+
+    private Path pathDessin;
+    private Paint ligneDessin;
+    @Override
+    public int getCouleur() {
+        return couleur;
     }
 
-    public void setCx(float cx) {
-        this.cx = cx;
+    @Override
+    public void setCouleur(int couleur) {
+        this.couleur = couleur;
     }
 
-    public float getCy() {
-        return cy;
+    @Override
+    public int getLargeurTrait() {
+        return largeurTrait;
     }
 
-    public void setCy(float cy) {
-        this.cy = cy;
+    @Override
+    public void setLargeurTrait(int largeurTrait) {
+        this.largeurTrait = largeurTrait;
     }
 
-    private float cx;
-    private float cy;
-    private Paint paint;
+    public Path getPathDessin() {
+        return pathDessin;
+    }
 
-    public Cercle(int couleur,int largeurTrait, Paint paint) {
+    public void setPathDessin(Path pathDessin) {
+        this.pathDessin = pathDessin;
+    }
+
+    public Paint getLigneDessin() {
+        return ligneDessin;
+    }
+
+    public void setLigneDessin(Paint ligneDessin) {
+        this.ligneDessin = ligneDessin;
+    }
+    public float getCxDepart() {
+        return cxDepart;
+    }
+
+    public float getCyDepart() {
+        return cyDepart;
+    }
+
+    private float cxDepart,cyDepart;
+    private float cxFin,cyFin;
+
+    public Cercle(int couleur,int largeurTrait) {
         super(couleur,largeurTrait);
-        this.paint = paint;
 
-        paint.setColor(couleur);
-        paint.setStrokeWidth(largeurTrait);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setDither(true);
+
+        this.pathDessin = new Path(pathDessin);
+        ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
+        ligneDessin.setColor(couleur);
+        ligneDessin.setStrokeWidth(largeurTrait);
+        ligneDessin.setAntiAlias(true);
+        ligneDessin.setStyle(Paint.Style.STROKE);
+        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
+        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
+        ligneDessin.setDither(true);
 
 
 
 
     }
 
-    public void dessiner(Canvas canvas){
-        float height = getCy();
-        float width = getCx();
-        float rayon = ((width*width) / (8 * height) + height / 2);
+    public void placerCoordonees(float cxDepart,float cyDepart,float cxFin,float cyFin){
+        this.cxDepart = cxDepart;
+        this.cyDepart = cyDepart;
+        this.cxFin = cxFin;
+        this.cyFin = cyFin;
+    }
 
-        canvas.drawCircle(getCx(),getCy(),rayon,paint);
+    @Override
+    public void dessiner(Canvas canvas){
+
+        float gauche = Math.min(cxDepart, cxFin);
+        float haut = Math.min(cyDepart, cyFin);
+        float droite = Math.max(cxDepart, cxFin);
+        float bas = Math.max(cyDepart, cyFin);
+
+        canvas.drawOval(new RectF(gauche, haut, droite, bas), ligneDessin);
     }
 
 
