@@ -31,11 +31,12 @@ public class Rectangle extends Dessin{
 
     public Rectangle(int couleur, int largeurTrait) {
         super(couleur,largeurTrait);
-
+        this.couleur = couleur;
+        this.largeurTrait = largeurTrait;
 
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ligneDessin.setColor(couleur);
-        ligneDessin.setStrokeWidth(largeurTrait);
+        ligneDessin.setColor(this.couleur);
+        ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.STROKE);
         ligneDessin.setStrokeJoin(Paint.Join.ROUND);

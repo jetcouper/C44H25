@@ -15,7 +15,6 @@ public class DialogLargeur extends Dialog {
     MainActivity fenetrePrincipale;
     SeekBar seek;
     TextView txtNombre;
-    //float valeur;
     Button btnok;
     int traitdefaut = 10;
 
@@ -30,6 +29,10 @@ public class DialogLargeur extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_largeur);
+
+
+
+
         seek = findViewById(R.id.seekBar);
         txtNombre = findViewById(R.id.txtLargeurNombre);
         btnok = findViewById(R.id.btnOK);

@@ -53,12 +53,13 @@ public class Effacer extends Dessin{
 
     public Effacer(int couleur, int largeurTrait, Path pathDessin) {
         super(couleur,largeurTrait);
-
+        this.couleur = couleur;
+        this.largeurTrait = largeurTrait;
 
         this.pathDessin = new Path(pathDessin);
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ligneDessin.setColor(couleur);
-        ligneDessin.setStrokeWidth(largeurTrait);
+        ligneDessin.setColor(this.couleur);
+        ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.STROKE);
         ligneDessin.setStrokeJoin(Paint.Join.ROUND);

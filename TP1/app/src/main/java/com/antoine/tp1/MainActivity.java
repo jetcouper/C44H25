@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         dialog = new DialogLargeur(MainActivity.this);
         list_dessin = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
-        LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc));
-        couleurBackground = getResources().getColor(R.color.blanc);
-
+        LiDessin.setBackgroundColor(getResources().getColor(R.color.blanc,null));
+        couleurBackground = getResources().getColor(R.color.blanc,null);
+        estCrayon = true;//Initialiser le crayon au démarrage
 
 
 
@@ -120,20 +120,21 @@ public class MainActivity extends AppCompatActivity {
             int action = event.getAction();
             CoordX = event.getX();
             CoordY = event.getY();
-
-
-
             if(estPotPeinture){
+
                 if (action == MotionEvent.ACTION_DOWN){
-                    potPeinture = new PotPeinture(nomCouleur,epaisseurCrayon);
+                    //potPeinture = new PotPeinture(nomCouleur,epaisseurCrayon);
+                    LiDessin.setBackgroundColor(nomCouleur);
+                    couleurBackground = nomCouleur;
                 }
-                if (action == ACTION_UP){
-                    list_dessin.add(potPeinture);
+                for (Dessin d : list_dessin) {
+                    if (d instanceof Effacer){
+                        Paint ligne = ((Effacer) d).getLigneDessin();
+                        ligne.setColor(couleurBackground);
+                        ((Effacer) d).setLigneDessin(ligne);
+                    }
                 }
-
             }
-
-
             if(estPipette){
                 Bitmap bitmap;
                 if (action == MotionEvent.ACTION_DOWN){
@@ -217,10 +218,10 @@ public class MainActivity extends AppCompatActivity {
                 if (action == MotionEvent.ACTION_DOWN ) {
                     effacer = new Effacer(couleurBackground, epaisseurCrayon, pathDessin);
                     effacer.getPathDessin().moveTo(CoordX, CoordY);
-
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     effacer.getPathDessin().lineTo(CoordX, CoordY);
+
                     list_dessin.add(effacer);
 
                 }

@@ -8,11 +8,13 @@ public class PotPeinture extends Dessin{
     private int couleur;
     private int largeurTrait;
 
-    public PotPeinture(int couleur, int largeurTrait) {
+    public PotPeinture(int couleur, int largeurTrait) { //Changer la couleur du background
         super(couleur, largeurTrait);
 
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
+
+
 
     }
 
