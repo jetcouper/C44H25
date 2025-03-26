@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     Path pathDessin;
     Effacer effacer;
     float CoordX, CoordY;
-    private Bitmap bitmapImage;
     Enregistrer enregistrer;
     int epaisseurCrayon,couleurBackground,nomCouleur = 0;
     Crayon crayon;
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     Rectangle rectangle;
     Triangle triangle;
     Pipette pipette;
-    PotPeinture potPeinture;
     boolean estTriangle, estRectangle, estCercle,estCrayon, estEfface,estPipette,estPotPeinture;
 
     @Override
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         LiDessin.addView(surf);
         Ecouteur ec = new Ecouteur();
 
+        //Initialisation des boutons et des ImageViews
         for(int i = 0; i < LiCouleur.getChildCount(); i++){
             View petit = LiCouleur.getChildAt(i);
             if(petit instanceof Button){
@@ -93,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class SurfaceDessin extends View{
-
-
-
         public SurfaceDessin(Context context) {
             super(context);
             pathDessin = new Path();
@@ -110,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 dessin.dessiner(canvas);
         }
     }
-
-
-
     private class Ecouteur implements View.OnTouchListener, View.OnClickListener {
         @Override
         public boolean onTouch(View source, MotionEvent event) {
@@ -123,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             if(estPotPeinture){
 
                 if (action == MotionEvent.ACTION_DOWN){
-                    //potPeinture = new PotPeinture(nomCouleur,epaisseurCrayon);
                     LiDessin.setBackgroundColor(nomCouleur);
                     couleurBackground = nomCouleur;
                 }
@@ -143,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                     nomCouleur = bitmap.getPixel((int)CoordX,(int)CoordY);
                 }
                 if (action == ACTION_UP){
-
                     estCrayon = true;
                     estCercle = false;
                     estTriangle = false;
@@ -167,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                     list_dessin.add(triangle);
                     dessin = null;
                 }
-                surf.invalidate();
             }
 
             if(estRectangle){
@@ -184,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
                     list_dessin.add(rectangle);
                     dessin = null;
                 }
-                surf.invalidate();
             }
             if (estCercle){
                 if (action == MotionEvent.ACTION_DOWN){
@@ -200,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                     list_dessin.add(cercle);
                     dessin = null;
                 }
-                surf.invalidate();
             }
             else if(estCrayon){
                 if (action == MotionEvent.ACTION_DOWN ) {
@@ -210,9 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 else if(action == MotionEvent.ACTION_MOVE){
                     crayon.getPathDessin().lineTo(CoordX, CoordY);
                     list_dessin.add(crayon);
-
                 }
-                surf.invalidate();
             }
             else if(estEfface)
                 if (action == MotionEvent.ACTION_DOWN ) {
@@ -221,9 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     effacer.getPathDessin().lineTo(CoordX, CoordY);
-
                     list_dessin.add(effacer);
-
                 }
             surf.invalidate();
 
@@ -233,14 +217,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View source) {
             int idVue = source.getId();
-            String nomVue = source.getResources().getResourceEntryName(idVue);
 
 
             if(source instanceof Button)
             {
                 String couleurString = (String)source.getTag();
                 nomCouleur = Color.parseColor(couleurString);
-
             }
             else{
                 if(idVue == R.id.imgCrayon){
@@ -302,6 +284,12 @@ public class MainActivity extends AppCompatActivity {
                     estPotPeinture = false;
                 }
                 else if(idVue == R.id.imgRemplir){
+                    estCrayon = false;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = false;
+                    estEfface = false;
+                    estPipette = false;
                     estPotPeinture = true;
 
                 }
