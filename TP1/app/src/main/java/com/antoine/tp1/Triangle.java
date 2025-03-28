@@ -11,14 +11,48 @@ public class Triangle extends Dessin{
 
     private int couleur;
     private int largeurTrait;
+    private int etape;
+    private float cx1;
+    private float cy1;
 
+    private float cx2;
+    private float cy2;
+    private float cx3;
+    private float cy3;
     private boolean estDebut;
     private boolean estEnCour;
     private boolean estFini;
-
     private Path pathDessin;
     private Paint ligneDessin;
+    public Triangle(int couleur, int largeurTrait) {
+        super(couleur, largeurTrait);
+        this.couleur = couleur;
+        this.largeurTrait = largeurTrait;
 
+        this.estDebut=false;
+        this.estEnCour=false;
+        this.estFini=false;
+
+        pathDessin = new Path();
+        ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
+        ligneDessin.setColor(this.couleur);
+        ligneDessin.setStrokeWidth(this.largeurTrait);
+        ligneDessin.setAntiAlias(true);
+        ligneDessin.setStyle(Paint.Style.STROKE);
+        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
+        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
+        ligneDessin.setDither(true);
+
+
+    }
+
+    public boolean isEstDebut() {
+        return estDebut;
+    }
+
+    public boolean isEstEnCour() {
+        return estEnCour;
+    }
     @Override
     public int getCouleur() {
         return couleur;
@@ -69,9 +103,6 @@ public class Triangle extends Dessin{
         this.cy3 = cy3;
     }
 
-    private float cx1;
-    private float cy1;
-
     public void setCx1(float cx1) {
         this.cx1 = cx1;
     }
@@ -88,7 +119,6 @@ public class Triangle extends Dessin{
         this.cy2 = cy2;
     }
 
-
     public void setEstDebut(boolean estDebut) {
         this.estDebut = estDebut;
     }
@@ -96,77 +126,44 @@ public class Triangle extends Dessin{
     public void setEstEnCour(boolean estEnCour) {
         this.estEnCour = estEnCour;
     }
-
-    private float cx2;
-    private float cy2;
-    private float cx3;
-
-
-
-    private float cy3;
-
     public boolean isEstFini() {
         return estFini;
     }
-
     public void setEstFini(boolean estFini) {
         this.estFini = estFini;
     }
-
-
-
-    public Triangle(int couleur, int largeurTrait) {
-        super(couleur, largeurTrait);
-        this.couleur = couleur;
-        this.largeurTrait = largeurTrait;
-
-        pathDessin = new Path();
-        ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
-        ligneDessin.setColor(this.couleur);
-        ligneDessin.setStrokeWidth(this.largeurTrait);
-        ligneDessin.setAntiAlias(true);
-        ligneDessin.setStyle(Paint.Style.STROKE);
-        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-        ligneDessin.setDither(true);
-
-
+    public int getEtape() {
+        return etape;
     }
-    public void placerCoordonees(float cxDepart,float cyDepart,float cxFin,float cyFin){
+
+    public void setEtape(int etape) {
+        this.etape = etape;
+    }
+
+    public void placerCoordoneesDepart(float cxDepart,float cyDepart){
         this.cx1 = cxDepart;
         this.cy1 = cyDepart;
+    }
+    public void placerCoordoneesEnCour(float cxFin,float cyFin){
+
         this.cx2 = cxFin;
         this.cy2 = cyFin;
     }
-
     @Override
     public void dessiner(Canvas canvas) {
-        pathDessin.reset();
-        if(estDebut){
+
+        if(etape ==1){
             pathDessin.moveTo(cx1,cy1);
         }
-
-        if(estEnCour){
+        else if(etape ==2){
             pathDessin.lineTo(cx2,cy2);
 
         }
-        if (estFini){
+        else if (etape ==4){
             pathDessin.lineTo(cx3,cy3);
             pathDessin.close();
         }
         canvas.drawPath(pathDessin, ligneDessin);
-
-        //canvas.drawPath(pathDessin, ligneDessin);
-
-
-
-//        float cx3 = (cx1 + cx2) / 2;
-//        float cy3 = cy1 - (cy2 - cy1);
-//
-//        path.moveTo(cx3,cy3);
-//        path.lineTo(cx1,cy2);
-//        path.lineTo(cx2,cy2);
-//        path.close();
 
 
     }

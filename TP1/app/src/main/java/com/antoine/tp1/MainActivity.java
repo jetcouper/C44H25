@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
             int action = event.getAction();
             CoordX = event.getX();
             CoordY = event.getY();
+
+
             if(estPotPeinture){
 
                 if (action == MotionEvent.ACTION_DOWN){
@@ -146,29 +148,37 @@ public class MainActivity extends AppCompatActivity {
 
             if(estTriangle){
                 if (action == MotionEvent.ACTION_DOWN){
-                    if(triangle == null || !triangle.isEstFini()){
+                    if(triangle == null){
                         triangle = new Triangle(nomCouleur,epaisseurCrayon);
-                        triangle.setEstDebut(true);
-                        triangle.placerCoordonees(CoordX,CoordY,CoordX,CoordY);
+                        //Va placer les premières coordonées x,y
+                        triangle.placerCoordoneesDepart(CoordX,CoordY);
+                        //Les étapes sont utilisées pour le draw(1,2,4) et également pour éffectuer la dernière action(3)
+                        triangle.setEtape(1);
                         dessin = triangle;
                     }
-                    if(triangle.isEstFini()){
-                            triangle.setCx3(CoordX);
-                            triangle.setCy3(CoordY);
-                            list_dessin.add(triangle);
-                            dessin = null;
+                    //Début de l'étape 3 pour aller vers l'étape 4 dans le draw
+                    if(triangle.getEtape()==3){
+                        triangle.setEtape(4);
+                        triangle.setCx3(CoordX);
+                        triangle.setCy3(CoordY);
+                        list_dessin.add(triangle);
+                        dessin = null;
+                        triangle = null;
                     }
                 }
-                if (action == MotionEvent.ACTION_MOVE){
-                    triangle.setEstDebut(false);
-                    triangle.setEstEnCour(true);
-                    triangle.placerCoordonees(triangle.getCx1(),triangle.getCy1(),CoordX,CoordY);
+                else if (action == MotionEvent.ACTION_MOVE && triangle != null){
+                    //Va placer les deuxièmes coordonées x,y en continue
+                    triangle.placerCoordoneesEnCour(CoordX,CoordY);
+                    //Étape 2 dans le draw
+                    triangle.setEtape(2);
                     dessin = triangle;
                 }
-                if (action == ACTION_UP && !triangle.isEstFini()){
-                    triangle.placerCoordonees(triangle.getCx1(),triangle.getCy1(),CoordX,CoordY);
+                else if (action == ACTION_UP && triangle != null){
+                    triangle.placerCoordoneesEnCour(CoordX,CoordY);
                     dessin = triangle;
-                    triangle.setEstFini(true);
+                    //Initialise l'étape 3 pour le deuxième if de ACTION_DOWN
+                    triangle.setEtape(3);
+
                 }
 
             }
