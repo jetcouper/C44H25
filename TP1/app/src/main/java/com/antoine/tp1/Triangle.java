@@ -12,6 +12,10 @@ public class Triangle extends Dessin{
     private int couleur;
     private int largeurTrait;
 
+    private boolean estDebut;
+    private boolean estEnCour;
+    private boolean estFini;
+
     private Path pathDessin;
     private Paint ligneDessin;
 
@@ -57,14 +61,66 @@ public class Triangle extends Dessin{
     public float getCy1() {
         return cy1;
     }
+    public void setCx3(float cx3) {
+        this.cx3 = cx3;
+    }
 
-    private float cx1,cy1,cx2,cy2;
+    public void setCy3(float cy3) {
+        this.cy3 = cy3;
+    }
+
+    private float cx1;
+    private float cy1;
+
+    public void setCx1(float cx1) {
+        this.cx1 = cx1;
+    }
+
+    public void setCy1(float cy1) {
+        this.cy1 = cy1;
+    }
+
+    public void setCx2(float cx2) {
+        this.cx2 = cx2;
+    }
+
+    public void setCy2(float cy2) {
+        this.cy2 = cy2;
+    }
+
+
+    public void setEstDebut(boolean estDebut) {
+        this.estDebut = estDebut;
+    }
+
+    public void setEstEnCour(boolean estEnCour) {
+        this.estEnCour = estEnCour;
+    }
+
+    private float cx2;
+    private float cy2;
+    private float cx3;
+
+
+
+    private float cy3;
+
+    public boolean isEstFini() {
+        return estFini;
+    }
+
+    public void setEstFini(boolean estFini) {
+        this.estFini = estFini;
+    }
+
+
 
     public Triangle(int couleur, int largeurTrait) {
         super(couleur, largeurTrait);
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
 
+        pathDessin = new Path();
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(this.couleur);
         ligneDessin.setStrokeWidth(this.largeurTrait);
@@ -83,22 +139,36 @@ public class Triangle extends Dessin{
         this.cy2 = cyFin;
     }
 
-
-
-
     @Override
     public void dessiner(Canvas canvas) {
-        //Valeur du haut
-        Path path = new Path();
-        float cx3 = (cx1 + cx2) / 2;
-        float cy3 = cy1 - (cy2 - cy1);
+        pathDessin.reset();
+        if(estDebut){
+            pathDessin.moveTo(cx1,cy1);
+        }
 
-        path.moveTo(cx3,cy3);
-        path.lineTo(cx1,cy2);
-        path.lineTo(cx2,cy2);
-        path.close();
+        if(estEnCour){
+            pathDessin.lineTo(cx2,cy2);
 
-        canvas.drawPath(path, ligneDessin);
+        }
+        if (estFini){
+            pathDessin.lineTo(cx3,cy3);
+            pathDessin.close();
+        }
+        canvas.drawPath(pathDessin, ligneDessin);
+
+        //canvas.drawPath(pathDessin, ligneDessin);
+
+
+
+//        float cx3 = (cx1 + cx2) / 2;
+//        float cy3 = cy1 - (cy2 - cy1);
+//
+//        path.moveTo(cx3,cy3);
+//        path.lineTo(cx1,cy2);
+//        path.lineTo(cx2,cy2);
+//        path.close();
+
+
     }
 
 

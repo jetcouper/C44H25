@@ -146,18 +146,31 @@ public class MainActivity extends AppCompatActivity {
 
             if(estTriangle){
                 if (action == MotionEvent.ACTION_DOWN){
-                    triangle = new Triangle(nomCouleur,epaisseurCrayon);
-                    triangle.placerCoordonees(CoordX,CoordY,CoordX,CoordY);
+                    if(triangle == null || !triangle.isEstFini()){
+                        triangle = new Triangle(nomCouleur,epaisseurCrayon);
+                        triangle.setEstDebut(true);
+                        triangle.placerCoordonees(CoordX,CoordY,CoordX,CoordY);
+                        dessin = triangle;
+                    }
+                    if(triangle.isEstFini()){
+                            triangle.setCx3(CoordX);
+                            triangle.setCy3(CoordY);
+                            list_dessin.add(triangle);
+                            dessin = null;
+                    }
                 }
                 if (action == MotionEvent.ACTION_MOVE){
+                    triangle.setEstDebut(false);
+                    triangle.setEstEnCour(true);
                     triangle.placerCoordonees(triangle.getCx1(),triangle.getCy1(),CoordX,CoordY);
                     dessin = triangle;
                 }
-                if (action == ACTION_UP){
-                    triangle.placerCoordonees(triangle.getCx1(), triangle.getCy1(),CoordX,CoordY);
-                    list_dessin.add(triangle);
-                    dessin = null;
+                if (action == ACTION_UP && !triangle.isEstFini()){
+                    triangle.placerCoordonees(triangle.getCx1(),triangle.getCy1(),CoordX,CoordY);
+                    dessin = triangle;
+                    triangle.setEstFini(true);
                 }
+
             }
 
             if(estRectangle){
