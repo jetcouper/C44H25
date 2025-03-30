@@ -9,95 +9,103 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <LinearLayout
+    <com.google.android.material.chip.ChipGroup
         android:id="@+id/linearCouleur"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/material_dynamic_tertiary40"
-        android:gravity="center"
-        android:orientation="horizontal">
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnBrun"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/brun"
+            android:checkable="true"
             android:tag="@color/brun"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnJaune"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/jaune"
+            android:checkable="true"
             android:tag="@color/jaune"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnBlanc"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/blanc"
+            android:checkable="true"
             android:tag="@color/blanc"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnNoir"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/noir"
+            android:checkable="true"
             android:tag="@color/noir"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnPink"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/rose"
+            android:checkable="true"
             android:tag="@color/rose"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnRouge"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/rouge"
+            android:checkable="true"
             android:tag="@color/rouge"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnBleu"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/bleu"
+            android:checkable="true"
             android:tag="@color/bleu"
-            app:strokeWidth="2dp" />
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
 
-        <Button
+        <com.google.android.material.chip.Chip
             android:id="@+id/btnVert"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="110px"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="1dp"
-            android:layout_weight="1"
             android:backgroundTint="@color/vert"
+            android:checkable="true"
             android:tag="@color/vert"
-            app:strokeWidth="2dp" />
-    </LinearLayout>
+            app:chipStrokeColor="@color/chips"
+            app:chipStrokeWidth="3dp" />
+    </com.google.android.material.chip.ChipGroup>
 
     <LinearLayout
         android:id="@+id/linearDessin"

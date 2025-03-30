@@ -2,10 +2,11 @@
 <resources>
     <color name="noir">#FF000000</color>
     <color name="blanc">#FFFFFFFF</color>
-    <color name="brun">#d2691e</color>
-    <color name="jaune">#ffff00</color>
-    <color name="rose">#ff00f7</color>
-    <color name="rouge">#ff0000</color>
-    <color name="bleu">#03dac5</color>
-    <color name="vert">#00ff00</color>
+    <color name="brun">#FF964B00</color>
+    <color name="jaune">#FFFFFF00</color>
+    <color name="rose">#FFE75480</color>
+    <color name="rouge">#FFFF0000</color>
+    <color name="bleu">#FF0000FF</color>
+    <color name="vert">#FF00FF00</color>
+    <color name="teal_200">#FF81CCCA</color>
 </resources>

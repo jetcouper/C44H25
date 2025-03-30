@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.activity.EdgeToEdge;
@@ -19,10 +20,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 public class MainActivity extends AppCompatActivity {
-    LinearLayout liCouleur, liOptions, liDessin;
+    LinearLayout liOptions, liDessin;
+    ChipGroup liCouleur;
     SurfaceDessin surf;
     List<Dessin> list_dessin;
     Dessin dessin;
@@ -63,11 +69,12 @@ public class MainActivity extends AppCompatActivity {
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         liDessin.addView(surf);
         Ecouteur ec = new Ecouteur();
-        //Initialisation des boutons et des ImageViews
+
+        //Initialisation des Chips et des ImageViews
         for(int i = 0; i < liCouleur.getChildCount(); i++){
             View petit = liCouleur.getChildAt(i);
-            if(petit instanceof Button){
-                liCouleur.getChildAt(i).setOnClickListener(ec);
+            if(petit instanceof Chip){
+                ((Chip)liCouleur.getChildAt(i)).setOnCheckedChangeListener(ec);
             }
         }
         liOptions = findViewById(R.id.linearImages);
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 dessin.dessiner(canvas);
         }
     }
-    private class Ecouteur implements View.OnTouchListener, View.OnClickListener {
+    private class Ecouteur implements View.OnTouchListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         @Override
         public boolean onTouch(View source, MotionEvent event) {
             int action = event.getAction();
@@ -122,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
                     bitmap = pipette.getBitmapImage();
                     //Va chercher les couleurs selon X et Y
                     nomCouleur = bitmap.getPixel((int) coordX,(int) coordY);
+                    //Va prendre en compte le changement de couleur avec les boutons(Chips)
+                    changementChip(String.format("#%08X", (0xFFFFFFFF & nomCouleur)));
                 }
                 if (action == ACTION_UP){
                     estCrayon = true;
@@ -226,13 +235,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View source) {
             int idVue = source.getId();
 
-            //Va chercher la couleur des boutons sélectionnés
-            if(source instanceof Button)
-            {
-                String couleurString = (String)source.getTag();
-                nomCouleur = Color.parseColor(couleurString);
-            }
-            else{
                 if(idVue == R.id.imgCrayon){
                     //Va permettre selon la vue sélectionnée le type de dessin ou de fonction
                     estCrayon = true;
@@ -312,7 +314,40 @@ public class MainActivity extends AppCompatActivity {
                     enregistrer = new Enregistrer();
                     enregistrer.enregistrerImage(MainActivity.this, liDessin);
                 }
+
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked)
+            {
+                String couleurString = (String)buttonView.getTag();
+                nomCouleur = Color.parseColor(couleurString);
+
+                changementChip(couleurString);
             }
         }
+        //Va checker le bouton avec la couleur passer en paramètre.
+        private void changementChip(String couleur){
+
+            for(int i = 0; i < liCouleur.getChildCount(); i++){
+                View petit = liCouleur.getChildAt(i);
+                if(petit instanceof Chip){
+                    Chip chip = (Chip)petit;
+
+                    String couleurChip = (String)chip.getTag();
+
+                    if(couleurChip.equalsIgnoreCase(couleur.toUpperCase())){
+                        chip.setChecked(true);
+                    }
+                    else{
+                        chip.setChecked(false);
+                    }
+
+                }
+            }
+
+        }
+
     }
 }
