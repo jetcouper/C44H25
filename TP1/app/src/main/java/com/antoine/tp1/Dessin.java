@@ -1,13 +1,9 @@
 package com.antoine.tp1;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
-
 public abstract class Dessin{
 
-    private int couleur;
-    private int largeurTrait;
+    private int couleur,largeurTrait;
     public Dessin(int couleur, int largeurTrait) {
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
@@ -15,8 +11,6 @@ public abstract class Dessin{
 
     public void dessiner(Canvas canvas){
     };
-
-
     public int getCouleur() {
         return couleur;
     }

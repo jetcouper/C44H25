@@ -6,43 +6,9 @@ import android.graphics.Path;
 
 public class Crayon extends Dessin{
 
-    private int couleur;
-    private int largeurTrait;
-
+    private int couleur,largeurTrait;
     private Path pathDessin;
     private Paint ligneDessin;
-
-
-    public void setPathDessin(Path pathDessin) {
-        this.pathDessin = pathDessin;
-    }
-
-    public void setLigneDessin(Paint ligneDessin) {
-        this.ligneDessin = ligneDessin;
-    }
-
-    public Path getPathDessin() {
-        return pathDessin;
-    }
-
-    public Paint getLigneDessin() {
-        return ligneDessin;
-    }
-    public int getCouleur() {
-        return couleur;
-    }
-    public void setCouleur(int couleur) {
-        this.couleur = couleur;
-    }
-
-    public int getLargeurTrait() {
-        return largeurTrait;
-    }
-
-    public void setLargeurTrait(int largeurTrait) {
-        this.largeurTrait = largeurTrait;
-    }
-
     public Crayon(int couleur, int largeurTrait, Path pathDessin) {
         super(couleur,largeurTrait);
         this.couleur = couleur;
@@ -59,16 +25,27 @@ public class Crayon extends Dessin{
         ligneDessin.setDither(true);
 
     }
-
-
     @Override
     public void dessiner(Canvas canvas){
         canvas.drawPath(this.pathDessin,this.ligneDessin);
     }
+    public Path getPathDessin() {
+        return pathDessin;
+    }
 
+    public int getCouleur() {
+        return couleur;
+    }
+    public void setCouleur(int couleur) {
+        this.couleur = couleur;
+    }
 
+    public int getLargeurTrait() {
+        return largeurTrait;
+    }
 
-
-
+    public void setLargeurTrait(int largeurTrait) {
+        this.largeurTrait = largeurTrait;
+    }
 
 }

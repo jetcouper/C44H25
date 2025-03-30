@@ -1,6 +1,5 @@
 package com.antoine.tp1;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.widget.LinearLayout;
 
 public class Pipette {
@@ -12,6 +11,7 @@ public class Pipette {
         this.layout = layout;
     }
 
+    //Une fonction qui va me retourner mon LinearLayout en Bitmap
     public Bitmap getBitmapImage() {
 
         this.buildDrawingCache();
@@ -28,7 +28,6 @@ public class Pipette {
     private Bitmap getDrawingCache() {
 
         Bitmap bitmapImage1 = layout.getDrawingCache();
-
         return bitmapImage1;
     }
 

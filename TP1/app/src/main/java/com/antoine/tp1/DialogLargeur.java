@@ -22,17 +22,10 @@ public class DialogLargeur extends Dialog {
         super(context);
         fenetrePrincipale = (MainActivity)context;
     }
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_largeur);
-
-
-
-
         seek = findViewById(R.id.seekBar);
         txtNombre = findViewById(R.id.txtLargeurNombre);
         btnok = findViewById(R.id.btnOK);
@@ -49,26 +42,20 @@ public class DialogLargeur extends Dialog {
         public void onClick(View v) {
 
             fenetrePrincipale.epaisseurCrayon = (Integer.parseInt(txtNombre.getText().toString()));
-            //fenetrePrincipale.setEpaisseurCrayon(Integer.parseInt(txtNombre.getText().toString()));
             dismiss();
         }
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-
             txtNombre.setText(String.valueOf(progress));
-
         }
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
         }
     }
 }
