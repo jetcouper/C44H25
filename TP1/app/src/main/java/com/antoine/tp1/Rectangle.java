@@ -17,7 +17,7 @@ public class Rectangle extends Dessin{
         ligneDessin.setColor(this.couleur);
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
-        ligneDessin.setStyle(Paint.Style.STROKE);
+        ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
         ligneDessin.setStrokeJoin(Paint.Join.ROUND);
         ligneDessin.setStrokeCap(Paint.Cap.ROUND);
         ligneDessin.setDither(true);

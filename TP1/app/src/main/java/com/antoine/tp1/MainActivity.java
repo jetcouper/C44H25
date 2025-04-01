@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Effacer effacer;
     float coordX, coordY;
     Enregistrer enregistrer;
-    int epaisseurCrayon,couleurBackground,nomCouleur = 0;
+    int epaisseurCrayon, couleurBackground, nomCouleur = 0;
     Crayon crayon;
     DialogLargeur dialog;
     Cercle cercle;
