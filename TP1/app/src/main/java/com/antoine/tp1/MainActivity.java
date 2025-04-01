@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout liOptions, liDessin;
     ChipGroup liCouleur;
     SurfaceDessin surf;
-    List<Dessin> list_dessin;
+    List<Dessin> listDessins;
+    List<Dessin> listPrimaire;
+    List<Dessin> listSecondaire;
+
     Dessin dessin;
     Path pathDessin;
     Effacer effacer;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         liDessin = findViewById(R.id.linearDessin);
         liCouleur = findViewById(R.id.linearCouleur);
         dialog = new DialogLargeur(MainActivity.this);
-        list_dessin = new ArrayList<Dessin>();
+        listDessins = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
         liDessin.setBackgroundColor(getResources().getColor(R.color.blanc,null));
         couleurBackground = getResources().getColor(R.color.blanc,null);
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
             //Affiche en permanence la liste des dessins enregistré
-            for(Dessin d : list_dessin){
+            for(Dessin d : listDessins){
                 d.dessiner(canvas);
             }
             if (dessin != null)
@@ -108,13 +110,14 @@ public class MainActivity extends AppCompatActivity {
             int action = event.getAction();
             coordX = event.getX();
             coordY = event.getY();
+
             if(estPotPeinture){
                 //Va prendre toute les couleurs de chaque dessin(Effacer) et la changer au fur et a mesure que celle du Background change.
                 if (action == MotionEvent.ACTION_DOWN){
                     liDessin.setBackgroundColor(nomCouleur);
                     couleurBackground = nomCouleur;
                 }
-                for (Dessin d : list_dessin) {
+                for (Dessin d : listDessins) {
                     if (d instanceof Effacer){
                         Paint ligne = ((Effacer) d).getLigneDessin();
                         ligne.setColor(couleurBackground);
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         triangle.setEtape(4);
                         triangle.setCx3(coordX);
                         triangle.setCy3(coordY);
-                        list_dessin.add(triangle);
+                        listDessins.add(triangle);
                         dessin = null;
                         triangle = null;
                     }
@@ -188,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (action == ACTION_UP){
                     rectangle.placerCoordonees(rectangle.getCxDepart(),rectangle.getCyDepart(), coordX, coordY);
-                    list_dessin.add(rectangle);
+                    listDessins.add(rectangle);
                     dessin = null;
                 }
             }
@@ -205,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (action == ACTION_UP){
                     cercle.placerCoordonees(cercle.getCxDepart(),cercle.getCyDepart(), coordX, coordY);
-                    list_dessin.add(cercle);
+                    listDessins.add(cercle);
                     dessin = null;
                 }
             }
@@ -216,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     crayon.getPathDessin().lineTo(coordX, coordY);
-                    list_dessin.add(crayon);
+                    listDessins.add(crayon);
                 }
             }
             else if(estEfface)
@@ -226,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     effacer.getPathDessin().lineTo(coordX, coordY);
-                    list_dessin.add(effacer);
+                    listDessins.add(effacer);
                 }
             surf.invalidate();
             return true;
@@ -305,8 +308,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(idVue == R.id.imgRedo){
 
+
+
                 }
-                else if(idVue == R.id.imgUndo){
+                else if(idVue == R.id.imgUndo){//Pas fini
+
+                    if(listPrimaire == null){
+                        listPrimaire = listDessins;
+                    }
+                    if (listPrimaire.size() > 0) {
+                        listSecondaire.add(listPrimaire.remove(listPrimaire.size() - 1));
+                        
+                        surf.invalidate();
+                    }
 
                 }
                 else if(idVue == R.id.imgEnregistrer){
