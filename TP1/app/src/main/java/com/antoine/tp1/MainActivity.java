@@ -152,14 +152,14 @@ public class MainActivity extends AppCompatActivity {
                         //Va placer les premières coordonées x,y
                         triangle.placerCoordoneesDepart(coordX, coordY);
                         //Les étapes sont utilisées pour le draw(1,2,4) et également pour éffectuer la dernière action(3)
-                        triangle.setEtape(1);
+
                         dessin = triangle;
                     }
                     //Début de l'étape 3 pour aller vers l'étape 4 dans le draw
-                    if(triangle.getEtape()==3){
-                        triangle.setEtape(4);
+                    if(triangle.getEtapeFinal()){
                         triangle.setCx3(coordX);
                         triangle.setCy3(coordY);
+                        //Va faire les 2 autres lignes
                         triangle.setDessin2(true);
                         listDessins.add(triangle);
                         dessin = null;
@@ -169,9 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 else if (action == MotionEvent.ACTION_MOVE && triangle != null){
                     //Va placer les deuxièmes coordonées x,y en continue
                     triangle.placerCoordoneesEnCour(coordX, coordY);
-                    //Étape 2 dans le draw
+                    //Va faire la première ligne
                     triangle.setDessin1(true);
-                    triangle.setEtape(2);
                     dessin = triangle;
                 }
                 else if (action == ACTION_UP && triangle != null){
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     triangle.setDessin1(true);
                     dessin = triangle;
                     //Initialise l'étape 3 pour le deuxième if de ACTION_DOWN
-                    triangle.setEtape(3);
+                    triangle.setEtapeFinal(true);
                 }
             }
             if(estRectangle){

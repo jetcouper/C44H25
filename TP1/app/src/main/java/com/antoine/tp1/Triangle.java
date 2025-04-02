@@ -5,9 +5,9 @@ import android.graphics.Path;
 
 public class Triangle extends Dessin{
 
-    private int couleur,largeurTrait,etape;
+    private int couleur,largeurTrait;
 
-    private Boolean dessin1,dessin2;
+    private Boolean dessin1,dessin2, etapeFinal;
     private float cx1,cy1,cx2,cy2,cx3,cy3;
     private Path pathDessin;
     private Paint ligneDessin;
@@ -18,6 +18,7 @@ public class Triangle extends Dessin{
 
         dessin1 = false;
         dessin2 = false;
+        etapeFinal= false;
         pathDessin = new Path();
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(this.couleur);
@@ -29,9 +30,6 @@ public class Triangle extends Dessin{
         ligneDessin.setDither(true);
     }
 
-    public Path getPathDessin() {
-        return pathDessin;
-    }
 
     public void setDessin1(Boolean dessin1) {
         this.dessin1 = dessin1;
@@ -39,30 +37,6 @@ public class Triangle extends Dessin{
 
     public void setDessin2(Boolean dessin2) {
         this.dessin2 = dessin2;
-    }
-
-    public float getCx1() {
-        return cx1;
-    }
-
-    public float getCy1() {
-        return cy1;
-    }
-
-    public float getCx2() {
-        return cx2;
-    }
-
-    public float getCy2() {
-        return cy2;
-    }
-
-    public float getCx3() {
-        return cx3;
-    }
-
-    public float getCy3() {
-        return cy3;
     }
 
     @Override
@@ -91,15 +65,16 @@ public class Triangle extends Dessin{
     public void setCy3(float cy3) {
         this.cy3 = cy3;
     }
-    public int getEtape() {
-        return etape;
+
+    public Boolean getEtapeFinal() {
+        return etapeFinal;
     }
 
-    public void setEtape(int etape) {
-        this.etape = etape;
+    public void setEtapeFinal(Boolean etapeFinal) {
+        this.etapeFinal = etapeFinal;
     }
 
-    public void placerCoordoneesDepart(float cxDepart,float cyDepart){
+    public void placerCoordoneesDepart(float cxDepart, float cyDepart){
         this.cx1 = cxDepart;
         this.cy1 = cyDepart;
     }
@@ -110,23 +85,18 @@ public class Triangle extends Dessin{
     }
     @Override
     public void dessiner(Canvas canvas) {
-        //canvas.drawPath(this.pathDessin,this.ligneDessin);
-
-
-//        if(etape ==1){
-//           //pathDessin.moveTo(cx1,cy1);
-//        }
-        if(dessin1){
-            //pathDessin.lineTo(cx2,cy2);
+        if (dessin1){
             canvas.drawLine(cx1,cy1,cx2,cy2,ligneDessin);
         }
         if (dessin2){
-            //pathDessin.lineTo(cx3,cy3);
             ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
             canvas.drawLine(cx1,cy1,cx3,cy3,ligneDessin);
             canvas.drawLine(cx2,cy2,cx3,cy3,ligneDessin);
-            //pathDessin.close();
+            pathDessin.moveTo(cx1, cy1);
+            pathDessin.lineTo(cx2, cy2);
+            pathDessin.lineTo(cx3, cy3);
+            pathDessin.close();
+            canvas.drawPath(pathDessin, ligneDessin);
         }
-        //canvas.drawPath(pathDessin, ligneDessin);
     }
 }
