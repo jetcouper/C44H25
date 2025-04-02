@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         liCouleur = findViewById(R.id.linearCouleur);
         dialog = new DialogLargeur(MainActivity.this);
         listDessins = new ArrayList<Dessin>();
+        listSecondaire = new ArrayList<Dessin>();
         epaisseurCrayon = 10;
         liDessin.setBackgroundColor(getResources().getColor(R.color.blanc,null));
         couleurBackground = getResources().getColor(R.color.blanc,null);
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         triangle.setEtape(4);
                         triangle.setCx3(coordX);
                         triangle.setCy3(coordY);
+                        triangle.setDessin2(true);
                         listDessins.add(triangle);
                         dessin = null;
                         triangle = null;
@@ -168,11 +170,13 @@ public class MainActivity extends AppCompatActivity {
                     //Va placer les deuxièmes coordonées x,y en continue
                     triangle.placerCoordoneesEnCour(coordX, coordY);
                     //Étape 2 dans le draw
+                    triangle.setDessin1(true);
                     triangle.setEtape(2);
                     dessin = triangle;
                 }
                 else if (action == ACTION_UP && triangle != null){
                     triangle.placerCoordoneesEnCour(coordX, coordY);
+                    triangle.setDessin1(true);
                     dessin = triangle;
                     //Initialise l'étape 3 pour le deuxième if de ACTION_DOWN
                     triangle.setEtape(3);
@@ -308,17 +312,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(idVue == R.id.imgRedo){
 
-
+                    if(!listSecondaire.isEmpty()){
+                        listDessins.add(listSecondaire.remove(listSecondaire.size() - 1));
+                        surf.invalidate();
+                    }
 
                 }
                 else if(idVue == R.id.imgUndo){//Pas fini
 
-                    if(listPrimaire == null){
-                        listPrimaire = listDessins;
-                    }
-                    if (listPrimaire.size() > 0) {
-                        listSecondaire.add(listPrimaire.remove(listPrimaire.size() - 1));
-                        
+
+                    if (!listDessins.isEmpty()) {
+                        listSecondaire.add(listDessins.remove(listDessins.size() - 1));
                         surf.invalidate();
                     }
 

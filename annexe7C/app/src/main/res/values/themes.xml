@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Annexe7C" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/jaune</item>
+        <item name="colorSecondary">@color/rougevin</item>
+        <item name="colorOnPrimary">@color/rougevin</item>
+
+        <item name="strokeWidth">6dp</item>
+        <item name="strokeColor">@color/rougevin</item>
+        <item name="android:textViewStyle">@style/monStyle</item>
+    </style>
+    <style name="monStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/rougevin</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+
+    <style name="Theme.Annexe7C" parent="Base.Theme.Annexe7C" />
+</resources>

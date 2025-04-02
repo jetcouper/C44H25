@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="jaune">#FF97974C</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="teal_200">#FF81CCCA</color>
-    <color name="rouge">#FFFF0000</color>
-    <color name="jaune">#FFFFFF00</color>
+    <color name="rougevin">#FF770909</color>
 </resources>
