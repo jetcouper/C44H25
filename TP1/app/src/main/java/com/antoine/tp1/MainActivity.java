@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
         }
         surf.setOnTouchListener(ec);
     }
+
+
+
+
     private class SurfaceDessin extends View{
         public SurfaceDessin(Context context) {
             super(context);
@@ -105,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 dessin.dessiner(canvas);
         }
     }
+
+
+
+
     private class Ecouteur implements View.OnTouchListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         @Override
         public boolean onTouch(View source, MotionEvent event) {
@@ -237,6 +245,11 @@ public class MainActivity extends AppCompatActivity {
             surf.invalidate();
             return true;
         }
+
+
+
+
+
         @Override
         public void onClick(View source) {
             int idVue = source.getId();
@@ -362,6 +375,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+
+
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked)
@@ -372,6 +388,9 @@ public class MainActivity extends AppCompatActivity {
                 changementChip(couleurString);
             }
         }
+
+
+
         //Va checker le bouton avec la couleur passer en paramètre.
         private void changementChip(String couleur){
 
