@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     dessin = triangle;
                     //Initialise l'étape 3 pour le deuxième if de ACTION_DOWN
                     triangle.setEtapeFinal(true);
+                    Toast.makeText(MainActivity.this, "Veuillez cliqué sur l'écran pour mettre le troixième point.", Toast.LENGTH_SHORT).show();
                 }
             }
             if(estRectangle){
@@ -312,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = true;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Sélectionner une couleur sur le déssin.", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgRemplir){
                     estCrayon = false;

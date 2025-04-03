@@ -2,6 +2,7 @@ package com.example.examen2pratique;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         liOptions = findViewById(R.id.linearImage);
         liDessin = findViewById(R.id.liDessin);
         listDessins = new ArrayList<Dessin>();
+        dialog = new DialogLargeur(MainActivity.this);
+        epaisseurCrayon = 10;
         liDessin.setBackgroundColor(getResources().getColor(R.color.blanc,null));
         couleurBackground = getResources().getColor(R.color.blanc,null);
         surf = new SurfaceDessin(this);
@@ -135,7 +138,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             int idVue = v.getId();
-            if(idVue == R.id.imgCrayon){
+            String couleur = null;
+
+
+            if(v instanceof Button){
+                couleur = (String) v.getTag();
+                nomCouleur= Color.parseColor(couleur);
+            }
+
+
+            else if(idVue == R.id.imgCrayon){
                 //Va permettre selon la vue sélectionnée le type de dessin ou de fonction
                 estCrayon = true;
                 estEfface = false;
