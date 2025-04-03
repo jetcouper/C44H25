@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     ChipGroup liCouleur;
     SurfaceDessin surf;
     List<Dessin> listDessins;
-    List<Dessin> listPrimaire;
     List<Dessin> listSecondaire;
 
     Dessin dessin;
@@ -310,18 +310,46 @@ public class MainActivity extends AppCompatActivity {
                     estPotPeinture = true;
                 }
                 else if(idVue == R.id.imgRedo){
-
+                    estCrayon = false;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = false;
+                    estEfface = false;
+                    estPipette = false;
+                    estPotPeinture = false;
                     if(!listSecondaire.isEmpty()){
-                        listDessins.add(listSecondaire.remove(listSecondaire.size() - 1));
+                        Dessin dernierDraw = listSecondaire.get(listSecondaire.size() -1);
+                        List<Dessin> dessinsARemettre = new ArrayList<>();
+                        for(Dessin d : listSecondaire){
+                            if(d.toString().equals(dernierDraw.toString())){
+                                dessinsARemettre.add(d);
+                            }
+                        }
+                        listDessins.addAll(dessinsARemettre);
+                        listSecondaire.removeAll(dessinsARemettre);
                         surf.invalidate();
                     }
 
                 }
                 else if(idVue == R.id.imgUndo){//Pas fini
 
-
-                    if (!listDessins.isEmpty()) {
-                        listSecondaire.add(listDessins.remove(listDessins.size() - 1));
+                    estCrayon = false;
+                    estCercle = false;
+                    estTriangle = false;
+                    estRectangle = false;
+                    estEfface = false;
+                    estPipette = false;
+                    estPotPeinture = false;
+                    if(!listDessins.isEmpty()){
+                        Dessin dernierDraw = listDessins.get(listDessins.size() -1);
+                        List<Dessin> dessinsASupprime = new ArrayList<>();
+                        for(Dessin d : listDessins){
+                            if(d.toString().equals(dernierDraw.toString())){
+                                dessinsASupprime.add(d);
+                            }
+                        }
+                        listSecondaire.addAll(dessinsASupprime);
+                        listDessins.removeAll(dessinsASupprime);
                         surf.invalidate();
                     }
 
