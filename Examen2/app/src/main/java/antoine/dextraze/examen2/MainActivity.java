@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +25,14 @@ import com.google.android.material.chip.ChipGroup;
 public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout conteneur;
+    LinearLayout liCouleur;
     SurfaceDessin surf;
     ChipGroup chipTypes;
+    Button rouge;
+    Button vert;
+    String type;
+    int couleur;
+    int largeur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
                 ((Chip)chipTypes.getChildAt(i)).setOnCheckedChangeListener(ec);
             }
         }
+        for(int i = 0; i < liCouleur.getChildCount(); i++){
+            View petit = liCouleur.getChildAt(i);
+            if(petit instanceof Button){
+                liCouleur.getChildAt(i).setOnClickListener(ec);
+            }
+        }
+
+
+
 
         surf.setOnTouchListener(ec);
     }
@@ -62,15 +80,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener {
+    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener, View.OnClickListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                type = (String)buttonView.getText();
+                Toast.makeText(MainActivity.this, type, Toast.LENGTH_SHORT).show();
+            }
+
 
         }
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+
+
             return false;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int idVue = v.getId();
+                if(idVue == R.id.boutonRouge){
+                    
+                    
+                } else if (idVue == R.id.boutonVert) {
+                    
+                    
+                } else if (idVue == R.id.boutonApercu) {
+                    
+                }
+
+
         }
     }
 }
