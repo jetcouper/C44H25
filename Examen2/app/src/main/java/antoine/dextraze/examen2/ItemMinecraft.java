@@ -26,10 +26,30 @@ public class ItemMinecraft {
 
     public void dessiner(Canvas canvas){
 
-        if(type == "Bambou"){
-            canvas.drawLine(500,0,500,400,ligneDessin);
+        if(type.equals("Bambou")){
+            canvas.drawLine(500,100,500,700,ligneDessin);
 
         }
+        else if(type.equals("Echelle")){
+            canvas.drawLine(400,50,400,700,ligneDessin);
+
+            for(int i =0; i < 13; i++){
+                canvas.drawLine(400,70+(i*50),600,70+(i*50),ligneDessin);
+            }
+
+            canvas.drawLine(600,50,600,700,ligneDessin);
+
+        } else if (type.equals("Champignon")) {
+
+            ligneDessin.setStyle(Paint.Style.FILL);
+            canvas.drawArc(350,30,750,400,180,180,true,ligneDessin);
+            canvas.drawRect(350,200,750,400,ligneDessin);
+            canvas.drawRect(500,200,600,600,ligneDessin);
+            //canvas.drawArc(300,500,600,300,0,180,true,ligneDessin);
+            //canvas.drawArc(300,500,600,300,180,180,true,ligneDessin);
+
+        }
+
 
     }
 

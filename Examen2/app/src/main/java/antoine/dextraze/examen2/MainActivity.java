@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
         texteCouleur = findViewById(R.id.texteCouleur);
         texteLargeur = findViewById(R.id.texteLargeur);
 
-        //Peut ne pas marcher
-        //conteneur.setBackgroundColor(getColor((Integer)Color.GRAY));
-
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         conteneur.addView(surf);
@@ -71,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
         rouge = findViewById(R.id.boutonRouge);
         vert = findViewById(R.id.boutonVert);
         apercu = findViewById(R.id.boutonApercu);
-
+        largeur = seek.getProgress();
+        texteLargeur.setText("Largeur : " + largeur);
 
         apercu.setOnClickListener(ec);
         seek.setOnSeekBarChangeListener(ec);
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private class SurfaceDessin extends View {
         public SurfaceDessin(Context context) {
             super(context);
-
+            this.setBackgroundColor(Color.GRAY);
 
         }
 
@@ -109,14 +108,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        int valeur = 10;
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            if(dessin != null){
+//            if(dessin != null){
+//
+//                surf.invalidate();
+//                return true;
+//            }
 
-                surf.invalidate();
-                return true;
-            }
 
 
             return false;
@@ -134,8 +135,13 @@ public class MainActivity extends AppCompatActivity {
                     couleur = getColor(R.color.vert);
                     
                 } else if (idVue == R.id.boutonApercu) {
-                    dessin = new ItemMinecraft(couleur,largeur,type);
-                    surf.invalidate();
+                    if(couleur != 0 && type != null){
+                        dessin = new ItemMinecraft(couleur,largeur,type);
+                        surf.invalidate();
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "Veuillez choisir la couleur et le type SVP.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
 

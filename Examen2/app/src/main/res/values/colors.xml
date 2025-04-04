@@ -7,4 +7,5 @@
     <color name="vert">#00FF00</color>
     <color name="chip_background_checked">#FF5722</color>
     <color name="chip_background_unchecked">#FF9800</color>
+    <color name="gris">#757775</color>
 </resources>
