@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                         dessin = triangle;
                     }
-                    //Début de l'étape 3 pour aller vers l'étape 4 dans le draw
+                    //Va faire le dernier point du dessin.
                     if(triangle.getEtapeFinal()){
                         triangle.setCx3(coordX);
                         triangle.setCy3(coordY);
@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                     triangle.placerCoordoneesEnCour(coordX, coordY);
                     triangle.setDessin1(true);
                     dessin = triangle;
-                    //Initialise l'étape 3 pour le deuxième if de ACTION_DOWN
                     triangle.setEtapeFinal(true);
                     Toast.makeText(MainActivity.this, "Veuillez cliqué sur l'écran pour mettre le troixième point.", Toast.LENGTH_SHORT).show();
                 }
@@ -274,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Crayon", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgEffacer){
                     estCrayon = false;
@@ -283,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = true;
                     estPipette = false;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Efface", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgCercle){
                     estCrayon = false;
@@ -292,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Cercle", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgTriangle){
                     estCrayon = false;
@@ -301,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Triangle", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgLargeurTrait){
                     //Va ouvrir la fenêtre pour la sélection d'épaisseur de crayon
@@ -314,6 +317,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
+                    Toast.makeText(MainActivity.this, "Rectangle", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgPipette){
                     estCrayon = false;
@@ -333,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = true;
+                    Toast.makeText(MainActivity.this, "Changement couleur de fond.", Toast.LENGTH_SHORT).show();
                 }
                 else if(idVue == R.id.imgRedo){
                     estCrayon = false;
@@ -342,7 +347,6 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
-
                     if(!listSecondaire.isEmpty()){
                         listDessins.add(listSecondaire.get(listSecondaire.size() -1));
                         listSecondaire.remove(listDessins.get(listDessins.size()-1));
@@ -350,8 +354,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
-                else if(idVue == R.id.imgUndo){//Pas fini
-
+                else if(idVue == R.id.imgUndo){
                     estCrayon = false;
                     estCercle = false;
                     estTriangle = false;
@@ -372,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
                     enregistrer.enregistrerImage(MainActivity.this, liDessin);
                 }
                 else if(idVue == R.id.imgPlein){
+                    //Va effectuer le changement entre forma pleine et vide.
                     if(plein){
                         plein = false;
                         Toast.makeText(MainActivity.this, "La forme va être vide.", Toast.LENGTH_SHORT).show();

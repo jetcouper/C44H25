@@ -31,6 +31,32 @@ public class Triangle extends Dessin{
         ligneDessin.setStrokeJoin(Paint.Join.ROUND);
     }
 
+    @Override
+    public void dessiner(Canvas canvas) {
+        if(plein){
+            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+        } else if (!plein) {
+            ligneDessin.setStyle(Paint.Style.STROKE);
+        }
+
+
+        if (dessin1){
+            canvas.drawLine(cx1,cy1,cx2,cy2,ligneDessin);
+        }
+        if (dessin2){
+            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+            canvas.drawLine(cx1,cy1,cx3,cy3,ligneDessin);
+            canvas.drawLine(cx2,cy2,cx3,cy3,ligneDessin);
+            //Pour remplir le triangle
+            if(plein){
+                pathDessin.moveTo(cx1, cy1);
+                pathDessin.lineTo(cx2, cy2);
+                pathDessin.lineTo(cx3, cy3);
+                pathDessin.close();
+            }
+            canvas.drawPath(pathDessin, ligneDessin);
+        }
+    }
 
     public void setDessin1(Boolean dessin1) {
         this.dessin1 = dessin1;
@@ -84,28 +110,5 @@ public class Triangle extends Dessin{
         this.cx2 = cxFin;
         this.cy2 = cyFin;
     }
-    @Override
-    public void dessiner(Canvas canvas) {
-        if(plein){
-            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
-        } else if (!plein) {
-            ligneDessin.setStyle(Paint.Style.STROKE);
-        }
 
-
-        if (dessin1){
-            canvas.drawLine(cx1,cy1,cx2,cy2,ligneDessin);
-        }
-        if (dessin2){
-            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
-            canvas.drawLine(cx1,cy1,cx3,cy3,ligneDessin);
-            canvas.drawLine(cx2,cy2,cx3,cy3,ligneDessin);
-            //Pour remplir le triangle
-            pathDessin.moveTo(cx1, cy1);
-            pathDessin.lineTo(cx2, cy2);
-            pathDessin.lineTo(cx3, cy3);
-            pathDessin.close();
-            canvas.drawPath(pathDessin, ligneDessin);
-        }
-    }
 }
