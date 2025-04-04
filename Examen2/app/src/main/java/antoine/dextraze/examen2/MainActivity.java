@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         seek.setOnSeekBarChangeListener(ec);
         rouge.setOnClickListener(ec);
         vert.setOnClickListener(ec);
-        surf.setOnTouchListener(ec);
     }
 
     private class SurfaceDessin extends View {
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked){
@@ -106,21 +105,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        }
-
-        int valeur = 10;
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-//            if(dessin != null){
-//
-//                surf.invalidate();
-//                return true;
-//            }
-
-
-
-            return false;
         }
 
         @Override

@@ -15,8 +15,6 @@ public class ItemMinecraft {
         this.largeurTrait = largeurTrait;
         this.type = type;
 
-
-
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(this.couleur);
         ligneDessin.setStrokeWidth(this.largeurTrait);
@@ -44,9 +42,7 @@ public class ItemMinecraft {
             ligneDessin.setStyle(Paint.Style.FILL);
             canvas.drawArc(350,30,750,400,180,180,true,ligneDessin);
             canvas.drawRect(350,200,750,400,ligneDessin);
-            canvas.drawRect(500,200,600,600,ligneDessin);
-            //canvas.drawArc(300,500,600,300,0,180,true,ligneDessin);
-            //canvas.drawArc(300,500,600,300,180,180,true,ligneDessin);
+            canvas.drawRect(520,200,580,600,ligneDessin);
 
         }
 
