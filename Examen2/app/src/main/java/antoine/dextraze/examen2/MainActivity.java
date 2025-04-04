@@ -1,6 +1,7 @@
 package antoine.dextraze.examen2;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -9,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -25,14 +29,15 @@ import com.google.android.material.chip.ChipGroup;
 public class MainActivity extends AppCompatActivity {
 
     ConstraintLayout conteneur;
-    LinearLayout liCouleur;
     SurfaceDessin surf;
     ChipGroup chipTypes;
-    Button rouge;
-    Button vert;
+    SeekBar seek;
+    Button rouge,vert,apercu;
+    TextView texteCouleur,texteLargeur;
     String type;
-    int couleur;
-    int largeur;
+    int couleur,largeur;
+
+    ItemMinecraft dessin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
         });
         conteneur = findViewById(R.id.conteneur);
         chipTypes = findViewById(R.id.groupe);
+        texteCouleur = findViewById(R.id.texteCouleur);
+        texteLargeur = findViewById(R.id.texteLargeur);
+
         //Peut ne pas marcher
-        conteneur.setBackgroundColor(getColor((Integer)Color.GRAY));
+        //conteneur.setBackgroundColor(getColor((Integer)Color.GRAY));
 
         surf = new SurfaceDessin(this);
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
@@ -59,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
                 ((Chip)chipTypes.getChildAt(i)).setOnCheckedChangeListener(ec);
             }
         }
-        for(int i = 0; i < liCouleur.getChildCount(); i++){
-            View petit = liCouleur.getChildAt(i);
-            if(petit instanceof Button){
-                liCouleur.getChildAt(i).setOnClickListener(ec);
-            }
-        }
+        seek = findViewById(R.id.seekBar);
+        rouge = findViewById(R.id.boutonRouge);
+        vert = findViewById(R.id.boutonVert);
+        apercu = findViewById(R.id.boutonApercu);
 
 
-
-
+        apercu.setOnClickListener(ec);
+        seek.setOnSeekBarChangeListener(ec);
+        rouge.setOnClickListener(ec);
+        vert.setOnClickListener(ec);
         surf.setOnTouchListener(ec);
     }
 
@@ -78,9 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
+        @Override
+        protected void onDraw(@NonNull Canvas canvas) {
+            super.onDraw(canvas);
+
+            if(dessin != null){
+                dessin.dessiner(canvas);
+            }
+
+        }
     }
 
-    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener, View.OnClickListener {
+    private class Ecouteur implements CompoundButton.OnCheckedChangeListener, View.OnTouchListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked){
@@ -94,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
+            if(dessin != null){
+
+                surf.invalidate();
+                return true;
+            }
+
 
             return false;
         }
@@ -102,15 +126,34 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             int idVue = v.getId();
                 if(idVue == R.id.boutonRouge){
-                    
+                    texteCouleur.setText((String)"Couleur de l'item : Rouge");
+                    couleur = getColor(R.color.rouge);
                     
                 } else if (idVue == R.id.boutonVert) {
-                    
+                    texteCouleur.setText((String)"Couleur de l'item : Vert");
+                    couleur = getColor(R.color.vert);
                     
                 } else if (idVue == R.id.boutonApercu) {
-                    
+                    dessin = new ItemMinecraft(couleur,largeur,type);
+                    surf.invalidate();
                 }
 
+
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            largeur = progress;
+            texteLargeur.setText("Largeur : "+String.valueOf(progress));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
 
         }
     }
