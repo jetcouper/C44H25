@@ -9,17 +9,20 @@ public class Cercle extends Dessin {
     private int couleur,largeurTrait;
     private float cxDepart,cyDepart,cxFin,cyFin;
     private Paint ligneDessin;
-    public Cercle(int couleur,int largeurTrait) {
+    private Boolean plein;
+    public Cercle(int couleur,int largeurTrait, Boolean plein) {
         super(couleur,largeurTrait);
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
-
+        this.plein = plein;
 
         ligneDessin = new Paint(Paint.ANTI_ALIAS_FLAG);
         ligneDessin.setColor(this.couleur);
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
+        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
 
 
     }
@@ -33,6 +36,12 @@ public class Cercle extends Dessin {
 
     @Override
     public void dessiner(Canvas canvas){
+        if(plein){
+            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+        } else if (!plein) {
+            ligneDessin.setStyle(Paint.Style.STROKE);
+        }
+
 
         float gauche = Math.min(cxDepart, cxFin);
         float haut = Math.min(cyDepart, cyFin);

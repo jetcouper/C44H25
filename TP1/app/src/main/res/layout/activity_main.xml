@@ -220,6 +220,14 @@
                     android:layout_weight="1"
                     android:paddingLeft="20px"
                     app:srcCompat="@drawable/enregistrer" />
+
+                <ImageView
+                    android:id="@+id/imgPlein"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="20px"
+                    app:srcCompat="@drawable/imageplein" />
             </LinearLayout>
         </HorizontalScrollView>
 

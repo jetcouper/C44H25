@@ -11,10 +11,12 @@ public class Triangle extends Dessin{
     private float cx1,cy1,cx2,cy2,cx3,cy3;
     private Path pathDessin;
     private Paint ligneDessin;
-    public Triangle(int couleur, int largeurTrait) {
+    private Boolean plein;
+    public Triangle(int couleur, int largeurTrait, Boolean plein) {
         super(couleur, largeurTrait);
         this.couleur = couleur;
         this.largeurTrait = largeurTrait;
+        this.plein = plein;
 
         dessin1 = false;
         dessin2 = false;
@@ -25,6 +27,8 @@ public class Triangle extends Dessin{
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
+        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
     }
 
 
@@ -82,6 +86,13 @@ public class Triangle extends Dessin{
     }
     @Override
     public void dessiner(Canvas canvas) {
+        if(plein){
+            ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
+        } else if (!plein) {
+            ligneDessin.setStyle(Paint.Style.STROKE);
+        }
+
+
         if (dessin1){
             canvas.drawLine(cx1,cy1,cx2,cy2,ligneDessin);
         }

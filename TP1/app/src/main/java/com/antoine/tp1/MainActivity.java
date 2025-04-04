@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     Triangle triangle;
     Pipette pipette;
     //Va me permettre de définir quel type de dessin ou de fonction est choisie
-    boolean estTriangle, estRectangle, estCercle,estCrayon, estEfface,estPipette,estPotPeinture;
+    boolean estTriangle, estRectangle, estCercle,estCrayon, estEfface,estPipette,estPotPeinture, plein;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         surf.setLayoutParams(new ViewGroup.LayoutParams(-1,-1));
         liDessin.addView(surf);
         Ecouteur ec = new Ecouteur();
-
+        plein = false;
         //Initialisation des Chips et des ImageViews
         for(int i = 0; i < liCouleur.getChildCount(); i++){
             View petit = liCouleur.getChildAt(i);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             if(estTriangle){
                 if (action == MotionEvent.ACTION_DOWN){
                     if(triangle == null){
-                        triangle = new Triangle(nomCouleur,epaisseurCrayon);
+                        triangle = new Triangle(nomCouleur,epaisseurCrayon,plein);
                         //Va placer les premières coordonées x,y
                         triangle.placerCoordoneesDepart(coordX, coordY);
                         //Les étapes sont utilisées pour le draw(1,2,4) et également pour éffectuer la dernière action(3)
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if(estRectangle){
                 if (action == MotionEvent.ACTION_DOWN){
-                    rectangle = new Rectangle(nomCouleur,epaisseurCrayon);
+                    rectangle = new Rectangle(nomCouleur,epaisseurCrayon, plein);
                     //Va placer les coordonnées au fur et à mesure.
                     rectangle.placerCoordonees(coordX, coordY, coordX, coordY);
                 }
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (estCercle){
                 if (action == MotionEvent.ACTION_DOWN){
-                    cercle = new Cercle(nomCouleur,epaisseurCrayon);
+                    cercle = new Cercle(nomCouleur,epaisseurCrayon, plein);
                     //Va placer les coordonnées au fur et à mesure.
                     cercle.placerCoordonees(coordX, coordY, coordX, coordY);
                 }
@@ -370,6 +370,17 @@ public class MainActivity extends AppCompatActivity {
                     //Enregistrer l'image en cours sur le LinearLayout
                     enregistrer = new Enregistrer();
                     enregistrer.enregistrerImage(MainActivity.this, liDessin);
+                }
+                else if(idVue == R.id.imgPlein){
+                    if(plein){
+                        plein = false;
+                        Toast.makeText(MainActivity.this, "La forme va être vide.", Toast.LENGTH_SHORT).show();
+
+                    } else if (!plein) {
+                        plein = true;
+                        Toast.makeText(MainActivity.this, "La forme va être pleine.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
         }
