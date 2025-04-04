@@ -1,9 +1,15 @@
 package com.example.examen2pratique;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_MOVE;
+import static android.view.MotionEvent.ACTION_UP;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,17 +33,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout liOptions,liDessin,liCouleur;
-    boolean estCrayon, estEfface;
+    boolean estCrayon, estEfface,estEtoile, estTracer;
     int epaisseurCrayon,nomCouleur = 0,couleurBackground;
     SurfaceDessin surf;
     List<Dessin> listDessins;
-
     Dessin dessin;
     float coordX, coordY;
     Path pathDessin;
     Crayon crayon;
     Effacer effacer;
+    Etoile etoile;
+    Tracer tracer;
     DialogLargeur dialog;
+    Paint hazard;
 
 
     @Override
@@ -99,6 +107,27 @@ public class MainActivity extends AppCompatActivity {
             if (dessin != null)
                 dessin.dessiner(canvas);
 
+
+            hazard = new Paint(Paint.ANTI_ALIAS_FLAG);//Antialias: adoucir la courbure des courbe
+            hazard.setColor(Color.YELLOW);
+            canvas.drawCircle(300,300,150,hazard);
+            hazard.setStyle(Paint.Style.STROKE); // pcq par défault avec le style Fill
+            hazard.setStrokeWidth(8);
+            canvas.drawCircle(280,80,80,hazard);
+
+            hazard.setStyle(Paint.Style.FILL);
+
+            hazard.setColor(Color.BLUE);
+            canvas.drawArc(500,30,900,400,0,120,true,hazard);
+            hazard.setColor(Color.RED);
+            canvas.drawArc(500,30,900,400,120,120,true,hazard);
+            hazard.setColor(Color.GREEN);
+            //cercle.setColor(Color.argb(55,223,67,200)); //Autre façon de faire
+            canvas.drawArc(500,30,900,400,240,120,true,hazard);
+
+
+
+
         }
     }
 
@@ -118,18 +147,67 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     crayon.getPath().lineTo(coordX, coordY);
+                    dessin = crayon;
+                }
+                else if(action == MotionEvent.ACTION_UP){
                     listDessins.add(crayon);
                 }
             }
-            else if(estEfface)
-                if (action == MotionEvent.ACTION_DOWN ) {
+            else if(estEfface) {
+                if (action == MotionEvent.ACTION_DOWN) {
                     effacer = new Effacer(couleurBackground, epaisseurCrayon);
                     effacer.getPath().moveTo(coordX, coordY);
-                }
-                else if(action == MotionEvent.ACTION_MOVE){
+                } else if (action == MotionEvent.ACTION_MOVE) {
                     effacer.getPath().lineTo(coordX, coordY);
+                    dessin = effacer;
+                } else if (action == MotionEvent.ACTION_UP) {
                     listDessins.add(effacer);
                 }
+            }
+            else if(estEtoile) {
+                if (action == MotionEvent.ACTION_DOWN) {
+                    etoile = new Etoile(nomCouleur, epaisseurCrayon);
+                    //Va placer les coordonnées au fur et à mesure.
+                    etoile.placerCoordonees(coordX, coordY, coordX, coordY);
+                }
+                if (action == MotionEvent.ACTION_MOVE) {
+                    etoile.placerCoordonees(etoile.getCxDepart(), etoile.getCyDepart(), coordX, coordY);
+                    //Va permettre d'afficher la forme en même temps quelle soit ajouter plus tard dans la liste
+                    dessin = etoile;
+                }
+                if (action == ACTION_UP) {
+                    etoile.placerCoordonees(etoile.getCxDepart(), etoile.getCyDepart(), coordX, coordY);
+                    listDessins.add(etoile);
+                    dessin = null;
+                }
+            } else if (estTracer) {
+                if(action == ACTION_DOWN){
+                    tracer = new Tracer(nomCouleur, epaisseurCrayon);
+                    //depart = new Point();
+                    tracer.getDepart().x = (int)event.getX();
+                    tracer.getDepart().y = (int)event.getY();
+                    tracer.getFin().x = (int)event.getX();
+                    tracer.getFin().y = (int)event.getY();
+                    dessin = tracer;
+                    //points.add(depart); //Pour avoir une infini de point
+                    //surf.invalidate();
+                }
+                else if(action == ACTION_MOVE){
+
+                    //tracer.getDepart() = new Point();
+                    tracer.getFin().x = (int)event.getX();
+                    tracer.getFin().y = (int)event.getY();
+                    dessin = tracer;
+                    //surf.invalidate();
+                }
+                if(action == ACTION_UP){
+                    listDessins.add(tracer);
+                    dessin = null;
+                    //points.add(fin); //Pour avoir une infini de point
+                }
+
+
+            }
 
 
             surf.invalidate();
@@ -151,17 +229,31 @@ public class MainActivity extends AppCompatActivity {
                 //Va permettre selon la vue sélectionnée le type de dessin ou de fonction
                 estCrayon = true;
                 estEfface = false;
+                estEtoile = false;
+                estTracer = false;
             }
             else if(idVue == R.id.imgEfface){
                 estCrayon = false;
                 estEfface = true;
+                estEtoile= false;
+                estTracer = false;
             }
             else if(idVue == R.id.imgEpaisseur){
                 //Va ouvrir la fenêtre pour la sélection d'épaisseur de crayon
                 dialog.show();
             }
-
-
+            else if(idVue == R.id.imgEtoile){
+                estCrayon = false;
+                estEfface = false;
+                estEtoile= true;
+                estTracer = false;
+            }
+            else if(idVue == R.id.imgTracer){
+                estCrayon = false;
+                estEfface = false;
+                estEtoile= false;
+                estTracer = true;
+            }
         }
     }
 }

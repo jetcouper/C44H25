@@ -20,9 +20,6 @@ public class Crayon extends Dessin{
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.STROKE);
-        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-        ligneDessin.setDither(true);
 
     }
     @Override

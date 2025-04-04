@@ -24,10 +24,7 @@ public class Triangle extends Dessin{
         ligneDessin.setColor(this.couleur);
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
-        ligneDessin.setStyle(Paint.Style.STROKE);
-        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-        ligneDessin.setDither(true);
+        ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
 
@@ -92,6 +89,7 @@ public class Triangle extends Dessin{
             ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
             canvas.drawLine(cx1,cy1,cx3,cy3,ligneDessin);
             canvas.drawLine(cx2,cy2,cx3,cy3,ligneDessin);
+            //Pour remplir le triangle
             pathDessin.moveTo(cx1, cy1);
             pathDessin.lineTo(cx2, cy2);
             pathDessin.lineTo(cx3, cy3);

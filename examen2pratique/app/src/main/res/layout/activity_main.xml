@@ -118,30 +118,43 @@
 
                 <ImageView
                     android:id="@+id/imgCrayon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingLeft="20px"
                     app:srcCompat="@drawable/crayon" />
 
                 <ImageView
                     android:id="@+id/imgEfface"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingLeft="20px"
                     app:srcCompat="@drawable/efface" />
 
                 <ImageView
                     android:id="@+id/imgEpaisseur"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="20px"
+                    app:srcCompat="@drawable/largeur_trait" />
+
+                <ImageView
+                    android:id="@+id/imgEtoile"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/largeur_trait" />
+                    app:srcCompat="@drawable/etoile" />
+
+                <ImageView
+                    android:id="@+id/imgTracer"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/tracer" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>

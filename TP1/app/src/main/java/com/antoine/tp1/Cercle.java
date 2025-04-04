@@ -20,9 +20,8 @@ public class Cercle extends Dessin {
         ligneDessin.setStrokeWidth(this.largeurTrait);
         ligneDessin.setAntiAlias(true);
         ligneDessin.setStyle(Paint.Style.FILL_AND_STROKE);
-        ligneDessin.setStrokeJoin(Paint.Join.ROUND);
-        ligneDessin.setStrokeCap(Paint.Cap.ROUND);
-        ligneDessin.setDither(true);
+
+
     }
     //Va redéfinir les coordonnées(x,y) plus facilement
     public void placerCoordonees(float cxDepart,float cyDepart,float cxFin,float cyFin){

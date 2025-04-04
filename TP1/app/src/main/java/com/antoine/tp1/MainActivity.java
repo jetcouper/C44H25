@@ -233,7 +233,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     crayon.getPathDessin().lineTo(coordX, coordY);
+                    dessin = crayon;
+                }
+                else if(action == MotionEvent.ACTION_UP){
                     listDessins.add(crayon);
+                    dessin = null;
                 }
             }
             else if(estEfface)
@@ -243,7 +247,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(action == MotionEvent.ACTION_MOVE){
                     effacer.getPathDessin().lineTo(coordX, coordY);
+                    dessin = effacer;
+                }
+                else if(action == MotionEvent.ACTION_UP){
                     listDessins.add(effacer);
+                    dessin = null;
                 }
             surf.invalidate();
             return true;
@@ -334,16 +342,10 @@ public class MainActivity extends AppCompatActivity {
                     estEfface = false;
                     estPipette = false;
                     estPotPeinture = false;
+
                     if(!listSecondaire.isEmpty()){
-                        Dessin dernierDraw = listSecondaire.get(listSecondaire.size() -1);
-                        List<Dessin> dessinsARemettre = new ArrayList<>();
-                        for(Dessin d : listSecondaire){
-                            if(d.toString().equals(dernierDraw.toString())){
-                                dessinsARemettre.add(d);
-                            }
-                        }
-                        listDessins.addAll(dessinsARemettre);
-                        listSecondaire.removeAll(dessinsARemettre);
+                        listDessins.add(listSecondaire.get(listSecondaire.size() -1));
+                        listSecondaire.remove(listDessins.get(listDessins.size()-1));
                         surf.invalidate();
                     }
 
@@ -358,15 +360,8 @@ public class MainActivity extends AppCompatActivity {
                     estPipette = false;
                     estPotPeinture = false;
                     if(!listDessins.isEmpty()){
-                        Dessin dernierDraw = listDessins.get(listDessins.size() -1);
-                        List<Dessin> dessinsASupprime = new ArrayList<>();
-                        for(Dessin d : listDessins){
-                            if(d.toString().equals(dernierDraw.toString())){
-                                dessinsASupprime.add(d);
-                            }
-                        }
-                        listSecondaire.addAll(dessinsASupprime);
-                        listDessins.removeAll(dessinsASupprime);
+                        listSecondaire.add(listDessins.get(listDessins.size() -1));
+                        listDessins.remove(listSecondaire.get(listSecondaire.size()-1));
                         surf.invalidate();
                     }
 
