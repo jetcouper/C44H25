@@ -71,9 +71,16 @@ public class PlacementActivity extends AppCompatActivity {
                 labelReponse.setText(d.format(placement.calculerMontantFinal()));
             }
             catch (NumberFormatException nfe) {
-                creerAlertDialog("Recommencez en entrant un montant valide");
                 champMontant.setText("");
                 champMontant.requestFocus();
+                creerAlertDialog("Recommencez en entrant un montant valide");
+                champMontant.setHint("Entrez un nombre exemple 1000");
+                labelReponse.setText("");
+            }
+            catch (NegatifException nfe){
+                champMontant.setText("");
+                champMontant.requestFocus();
+                creerAlertDialog(nfe.getMessage());
                 champMontant.setHint("Entrez un nombre exemple 1000");
                 labelReponse.setText("");
             }
