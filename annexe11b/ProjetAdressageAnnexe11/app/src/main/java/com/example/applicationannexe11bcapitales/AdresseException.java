@@ -6,7 +6,7 @@ public class AdresseException extends Exception {
 
     public AdresseException(String capitale, String etat)
     {
-        super ("la capitale " + capitale + " n'est pas dans l'état " + etat);
+        super ("La capitale " + capitale + " n'est pas dans l'état " + etat);
         this.capitale = capitale;
         this.etat = etat;
     }
