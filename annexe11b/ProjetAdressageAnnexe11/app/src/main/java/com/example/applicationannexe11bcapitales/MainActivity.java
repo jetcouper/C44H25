@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
         // remplir les spinner à l'aide de la Hashtable
         capital = new Vector<>();
         etat = new Vector<>();
+
         List<String> tmp = Collections.list(hash.keys());
         Collections.sort(tmp);//Les trier dans le même ordre
+
         capital.addAll(hash.keySet());
         etat.addAll(hash.values());
         ArrayAdapter<String> adapterCapital = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,capital);
