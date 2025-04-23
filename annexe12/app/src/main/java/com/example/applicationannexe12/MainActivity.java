@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     ListView liste;
     DatabaseHelper instance;
+    TextView question;
+    TextView reponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         liste = findViewById(R.id.listInventaire);
+        question = findViewById(R.id.txtQuestion);
+        reponse = findViewById(R.id.txtReponse);
 
         instance = DatabaseHelper.getInstance(getApplicationContext()); // Pas this car le singleton est vivant pour toute l'application
 
@@ -51,8 +56,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            
 
+            boolean reussi;
+            String sNom = question.getText().toString().substring(13,26);
+
+            String sInvention = (String)parent.getItemAtPosition(position);
+            reussi = instance.aBonneReponse(sNom,sInvention);
+
+            if(reussi){
+                reponse.setText("Bonne réponse");
+            }
+            else
+                reponse.setText("Mauvaise réponse");
 
         }
     }
