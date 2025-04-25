@@ -88,22 +88,8 @@ public class DatabaseHelper extends SQLiteOpenHelper { //Singleton
 
         String[] tab = {nomInventeur,invention};
         Cursor c = database.rawQuery("SELECT * FROM inventeur AS i WHERE i.nom = ? AND i.invention = ?", tab);
-
-        if(c.moveToFirst()){
-            c.close();
-            return true;
-        }
-        else
-            c.close();
-            return false;
-
-//        c.close();
-//        return c.moveToFirst();
+        boolean reponse = c.moveToFirst();
+        c.close();
+        return reponse;
     }
-
-
-
-
-
-
 }

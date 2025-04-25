@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Annexe13" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Annexe13" parent="Base.Theme.Annexe13" />
+<!--    <style name="RatingBar" parent="Theme.AppCompat">-->
+<!--        <item name="colorControlNormal">@color/grey_text</item>-->
+<!--        <item name="colorControlActivated">@color/rating_yellow</item>-->
+<!--    </style>-->
+</resources>

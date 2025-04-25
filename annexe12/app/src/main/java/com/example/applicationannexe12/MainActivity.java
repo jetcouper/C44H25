@@ -1,5 +1,6 @@
 package com.example.applicationannexe12;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity {
+public class  MainActivity extends AppCompatActivity {
 
     ListView liste;
     DatabaseHelper instance;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            //String reponseDonne = ((TextView)view).getText().ToString();
+
+
             boolean reussi;
             String sNom = question.getText().toString().substring(13,26);
 
@@ -65,10 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
             if(reussi){
                 reponse.setText("Bonne réponse");
+                view.setBackgroundColor(Color.GREEN);
             }
-            else
+            else{
                 reponse.setText("Mauvaise réponse");
+                view.setBackgroundColor(Color.RED);
+                liste.getChildAt(2).setBackgroundColor(Color.GREEN); //Pour afficher la bonne réponse
+            }
 
+            liste.setOnItemClickListener(null);
         }
     }
 
