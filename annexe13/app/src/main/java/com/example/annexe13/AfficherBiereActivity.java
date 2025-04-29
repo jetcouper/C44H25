@@ -2,7 +2,9 @@ package com.example.annexe13;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,7 +20,7 @@ public class AfficherBiereActivity extends AppCompatActivity {
 
     ListView liste;
     DatabaseHelper instance;
-
+    Button quitter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class AfficherBiereActivity extends AppCompatActivity {
         });
 
         liste = findViewById(R.id.listBiere);
+        quitter = findViewById(R.id.btnQuitter);
 
         instance = DatabaseHelper.getInstance(getApplicationContext());
 
@@ -40,23 +43,23 @@ public class AfficherBiereActivity extends AppCompatActivity {
         Vector<String> v = null;
         try {
             v = instance.retourerEvaluation();
+            if (v == null || v.isEmpty()) {
+                Toast.makeText(this, "Il n'y a pas d'item.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
         } catch (Exception e) {
-
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             finish();
+            return;
         }
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,v);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, v);
+        liste.setAdapter(adapter);
 
-        if(adapter.isEmpty()){
-            Toast.makeText(this, "Il n'y a pas d'item.", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            liste.setAdapter(adapter);
-        }
+        Ecouteur ec = new Ecouteur();
 
-
-
+        quitter.setOnClickListener(ec);
     }
 
     @Override
@@ -64,5 +67,13 @@ public class AfficherBiereActivity extends AppCompatActivity {
         super.onStop();
         instance.fermerConnexion();
 
+    }
+
+    private class Ecouteur implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            finish();
+        }
     }
 }
