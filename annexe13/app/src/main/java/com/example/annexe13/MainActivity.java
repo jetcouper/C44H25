@@ -45,15 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
             if(v == ajouter){
                 Intent i = new Intent(MainActivity.this, EnregistrerBiereActivity.class);
+                //i.putExtra() = Transféré des informations d'une page à une autre
                 startActivity(i);
             }
             else if(v == voir){
                 Intent i = new Intent(MainActivity.this, AfficherBiereActivity.class);
                 startActivity(i);
             }
-
-
-
         }
     }
 }
