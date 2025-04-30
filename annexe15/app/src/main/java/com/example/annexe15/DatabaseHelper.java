@@ -66,10 +66,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public int trouverNombre(){
+    public int trouverNombre(String division){
         int count = 0;
+        String[] tab = {division};
 
-        Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM equipe",null);
+        Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM equipe WHERE division = ?",tab);
 
         if (cursor.moveToFirst()) {
             count = cursor.getInt(0); // Récupère la première colonne de la première ligne
@@ -91,8 +92,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public String trouverEquipe(String arena){
 
+        String rep = "";
+        String[] tab = {arena};
+        Cursor cursor = database.rawQuery("SELECT nom FROM equipe WHERE arena = ?", tab);
+        if (cursor.moveToFirst()) {
+            rep = cursor.getString(0); // Récupère la première colonne de la première ligne
+        }
 
-        return "";
+
+        return rep;
     }
 
 

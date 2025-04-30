@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner nomEquipe;
     TextView reponse;
     Button btnReponse;
-    String equipeSelectionner;
+    String arenaSelectionner;
 
 
     @Override
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         nomEquipe.setOnItemSelectedListener(ec);
         btnReponse.setOnClickListener(ec);
 
-        nbEquipe.setText((String.valueOf(instance.trouverNombre())));
+        nbEquipe.setText((String.valueOf(instance.trouverNombre("Ouest"))));
         moyenne.setText(instance.trouverMoyenne());
 
 
@@ -81,17 +81,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
+            reponse.setText(instance.trouverEquipe(arenaSelectionner));
         }
 
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            equipeSelectionner = parent.getItemAtPosition(position).toString();
+            arenaSelectionner = parent.getItemAtPosition(position).toString();
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        instance.fermerConnexion();
     }
 }
