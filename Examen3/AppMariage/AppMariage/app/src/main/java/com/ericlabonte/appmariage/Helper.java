@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Helper extends SQLiteOpenHelper {
 
@@ -100,5 +101,23 @@ public class Helper extends SQLiteOpenHelper {
         return noTable;
 
     }
+
+    public Vector<String> retournerToutLesNom(String noTable){
+
+        Vector<String> noms = new Vector<>();
+        String[] tab = {noTable};
+
+        Cursor c = database.rawQuery("SELECT nom FROM invite WHERE noTable = ?",tab);
+
+        while (c.moveToNext()){
+            String temp = c.getString(0);
+            noms.add(temp);
+        }
+        c.close();
+        return noms;
+
+    }
+
+
 
 }
