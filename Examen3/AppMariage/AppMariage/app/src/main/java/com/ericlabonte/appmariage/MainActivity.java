@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Button bouton;
     TextView champNumero;
     ListView liste;
-
+    Vector<String> vector = null;
     Helper instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         instance.ouvrirConnexion();
 
-        Vector<String> v = null;
-
 
         Ecouteur ec = new Ecouteur();
 
@@ -62,11 +60,34 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
 
-        
+            String nom = champNom.getText().toString();
+
+            if(nom.isEmpty()){
+                Toast.makeText(MainActivity.this, "Veuillez mettre un nom SVP!!!", Toast.LENGTH_SHORT).show();
+                liste.removeAllViewsInLayout();
+                champNumero.setText("");
+                return;
+            }
+
+            try {
+                champNumero.setText(instance.retourneNumero(nom));
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String noTable = champNumero.getText().toString();
 
 
 
+            vector = instance.retournerToutLesNom(noTable,nom);
 
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, vector);
+            liste.setAdapter(adapter);
         }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        instance.fermerConnexion();
     }
 }

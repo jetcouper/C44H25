@@ -89,12 +89,13 @@ public class Helper extends SQLiteOpenHelper {
         String noTable = "";
         Cursor c = database.rawQuery("SELECT noTable FROM invite WHERE nom = ?", tab);
 
-
-        noTable = c.getString(0);
-
-        if(noTable.equals("")){
-            throw new Exception("Il n'y a aucune réservé à ce nom");
+        if(c.moveToFirst()){
+            noTable = c.getString(0);
         }
+        else{
+            throw new Exception("Il n'y a aucune table réservé à ce nom");
+        }
+
 
         c.close();
 
@@ -102,12 +103,12 @@ public class Helper extends SQLiteOpenHelper {
 
     }
 
-    public Vector<String> retournerToutLesNom(String noTable){
+    public Vector<String> retournerToutLesNom(String noTable, String inviteInitial){
 
         Vector<String> noms = new Vector<>();
-        String[] tab = {noTable};
+        String[] tab = {noTable,inviteInitial};
 
-        Cursor c = database.rawQuery("SELECT nom FROM invite WHERE noTable = ?",tab);
+        Cursor c = database.rawQuery("SELECT nom FROM invite WHERE noTable = ? AND nom != ?",tab);
 
         while (c.moveToNext()){
             String temp = c.getString(0);
