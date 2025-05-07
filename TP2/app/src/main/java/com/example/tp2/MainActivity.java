@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Button demarrer;
 
     TextView meilleurScore;
+    DatabaseHelper instance;
 
 
 
@@ -35,12 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
         meilleurScore = findViewById(R.id.txtScore);
 
+        instance = DatabaseHelper.getInstance(getApplicationContext());
+        instance.ouvrirConnexion();
 
         Ecouteur ec = new Ecouteur();
 
         demarrer.setOnClickListener(ec);
+        int imeilleur = 0;
 
-
+        try {
+            imeilleur = instance.retournerMeilleurPointage();
+            if(imeilleur == 0){
+                meilleurScore.setText(imeilleur);
+                finish();
+                return;
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
 
     }
@@ -54,5 +70,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        instance.fermerConnexion();
     }
 }

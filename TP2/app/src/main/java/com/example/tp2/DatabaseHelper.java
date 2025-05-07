@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.Vector;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance;
@@ -31,13 +33,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS pointage(_id INTEGER PRIMARY KEY AUTOINCREMENT,point INTEGER)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS pointage(_id INTEGER PRIMARY KEY AUTOINCREMENT,point INTEGER, date TEXT)");
 
 
     }
     public void ajouterPointage(Pointage ev){
         ContentValues cv = new ContentValues();
         cv.put("point", ev.getPoint());
+        cv.put("date", ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear());
         database.insert("pointage",null,cv);
     }
 
@@ -60,10 +63,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int retournerMeilleurPointage(){
         int meilleur = 0;
 
-        Cursor c = database.rawQuery("SELECT MAX(point) FROM pointage",null);
+        Cursor c = database.rawQuery("SELECT MAX(point) FROM pointage LIMIT 1",null);
 
+        if(c.moveToFirst()){
+            meilleur = c.getInt(0);
+        }
+
+        c.close();
         return meilleur;
     }
+
+    public Vector<String> retourerPointages() throws Exception {
+        Vector<String> pointage = new Vector<>();
+
+        Cursor cursor = database.rawQuery("SELECT point FROM pointage ORDER BY point DESC", null);
+        //Remplir le vecteur avec les inventions
+
+        //Tant qu'il y a des résultats
+        while (cursor.moveToNext()) {
+            //Je vais chercher la valeur du champ invention
+            String temp = cursor.getString(0);
+            pointage.add(temp);
+        }
+        if(pointage.size() < 3){
+            throw new Exception("Moins de 1 enregistrement");
+        }
+
+        //Je ferme le curseur
+        cursor.close();
+        //Je retourne le Vector rempli
+        return pointage;
+
+    }
+
+
 
 
 
