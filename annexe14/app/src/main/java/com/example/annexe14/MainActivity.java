@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     source.setBackground(normal);
+                    break;
             }
 
             return true;
