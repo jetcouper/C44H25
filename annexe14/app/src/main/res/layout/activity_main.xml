@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/L1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -24,6 +25,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/L2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -39,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/L3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -54,6 +57,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/L4"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

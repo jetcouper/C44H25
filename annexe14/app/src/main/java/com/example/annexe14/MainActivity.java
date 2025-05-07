@@ -1,5 +1,6 @@
 package com.example.annexe14;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -36,58 +37,56 @@ public class MainActivity extends AppCompatActivity {
         Ecouteur ec = new Ecouteur();
 
         for(int i = 0; i < main.getChildCount(); i++){
-            View petit = main.getChildAt(i);
-            if(petit instanceof LinearLayout){
-                (main.getChildAt(i)).setOnDragListener(ec);
-            } else if (petit instanceof ImageView) {
-                (main.getChildAt(i)).setOnTouchListener(ec);
-            }
+            LinearLayout colonne = (LinearLayout) main.getChildAt(i);
+            colonne.setOnDragListener(ec);
+            colonne.getChildAt(0).setOnTouchListener(ec);
         }
     }
 
     private class Ecouteur implements View.OnDragListener, View.OnTouchListener {
+
+        Drawable normal = getResources().getDrawable(R.drawable.background_contenant, null);
+        Drawable select = getResources().getDrawable(R.drawable.background_contenant_selectionne, null);
+        View jeton = null;
         @Override
-        public boolean onDrag(View v, DragEvent event) {
-//            switch (event.getAction()) {
-//                case DragEvent.ACTION_DRAG_STARTED:
-//                    return true;
-//
-//                case DragEvent.ACTION_DRAG_ENTERED:
-//                    v.setBackgroundColor(Color.LTGRAY);
-//                    return true;
-//
-//                case DragEvent.ACTION_DRAG_EXITED:
-//                    v.setBackgroundColor(Color.DKGRAY);
-//                    return true;
-//
-//                case DragEvent.ACTION_DROP:
-//                    // Récupérer la vue déplacée (ici l'ImageView)
-//                    View draggedView = (View) event.getLocalState();
-//                    ViewGroup oldParent = (ViewGroup) draggedView.getParent();
-//                    oldParent.removeView(draggedView);
-//
-//                    ViewGroup newParent = (ViewGroup) v;
-//                    newParent.addView(draggedView);
-//                    draggedView.setVisibility(View.VISIBLE);
-//
-//                    return true;
-//
-//                case DragEvent.ACTION_DRAG_ENDED:
-//                    v.setBackgroundColor(Color.TRANSPARENT);
-//                    return true;
-//
-//                default:
-//                    break;
-//            }
-            return false;
+        public boolean onDrag(View source /*Colonne*/, DragEvent event) {
+
+            switch (event.getAction()){
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    source.setBackground(select);
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    source.setBackground(normal);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    //Récupérer le jeton resté sur la colonne de départ
+                    jeton = (View)event.getLocalState();
+                    //Aller chercher le conteneur d'origine du jeton
+                    LinearLayout parent =  (LinearLayout)jeton.getParent();
+                    //Retiner pour de bon le jeton invisible de sa colonne invisible
+                    parent.removeView(jeton);
+                    //La nouvelle colonne
+                    LinearLayout nouvelleColonne = (LinearLayout)source;
+                    //Ajouter le jeton à la nouvelle colonne
+                    nouvelleColonne.addView(jeton);
+                    //Remettre le jeton visible
+                    jeton.setVisibility(View.VISIBLE);
+            }
+
+            return true;
         }
 
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
+        public boolean onTouch(View source/*Jeton*/, MotionEvent event) {//Déplacer le jeton
+
+            View.DragShadowBuilder builder = new View.DragShadowBuilder(source); //Créer une ombre du jeton
+            source.startDragAndDrop(null/*Dans le tp on peut mettre le no. de la carte*/,builder,source, 0);
+            source.setVisibility(View.INVISIBLE); //Cacher le jeton car on est en train de le déplacer
 
 
 
-            return false;
+
+            return true;
         }
     }
 }
