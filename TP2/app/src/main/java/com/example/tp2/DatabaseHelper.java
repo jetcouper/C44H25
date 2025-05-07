@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Tant qu'il y a des résultats
         while (cursor.moveToNext()) {
-            //Je vais chercher la valeur du champ invention
+            //Je vais chercher la valeur du champ point
             String temp = cursor.getString(0);
             pointage.add(temp);
         }
