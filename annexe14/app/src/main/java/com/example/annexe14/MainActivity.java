@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                     nouvelleColonne.addView(jeton);
                     //Remettre le jeton visible
                     jeton.setVisibility(View.VISIBLE);
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    source.setBackground(normal);
             }
 
             return true;
