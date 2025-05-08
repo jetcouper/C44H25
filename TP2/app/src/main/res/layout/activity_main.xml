@@ -5,16 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#5A1D1D"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:backgroundTint="@color/white"
         android:gravity="center"
-        android:text="Jeu du 98"
+        android:text="Bienvenue au Jeu 97"
+        android:textColor="@color/white"
         android:textSize="40sp" />
 
     <LinearLayout
@@ -28,6 +31,7 @@
             android:id="@+id/btnDemarer"
             android:layout_width="700px"
             android:layout_height="300px"
+            android:background="@drawable/bg_card"
             android:gravity="center"
             android:text="Démarrer"
             android:textSize="40sp" />
@@ -38,16 +42,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:backgroundTint="@color/white"
         android:gravity="bottom|center"
         android:text="Meilleur Score"
+        android:textColor="@color/white"
         android:textSize="40sp" />
 
     <TextView
-        android:id="@+id/txtScore"
+        android:id="@+id/txtMeilleurScore"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:backgroundTint="@color/white"
         android:gravity="center|top"
         android:text="0"
+        android:textColor="@color/white"
         android:textSize="40sp" />
 </LinearLayout>

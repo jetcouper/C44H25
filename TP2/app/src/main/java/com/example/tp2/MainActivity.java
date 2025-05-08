@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         demarrer = findViewById(R.id.btnDemarer);
 
-        meilleurScore = findViewById(R.id.txtScore);
+        meilleurScore = findViewById(R.id.txtMeilleurScore);
 
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
