@@ -246,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="100"
+                        android:hint="98"
                         android:textSize="50px" />
                 </LinearLayout>
             </LinearLayout>
@@ -281,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="100"
+                        android:hint="98"
                         android:textSize="50px" />
                 </LinearLayout>
 
@@ -299,8 +299,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="90px"
-        android:layout_marginRight="90px"
+        android:layout_marginLeft="118px"
+        android:layout_marginRight="118px"
         android:layout_weight="1"
         android:background="#5A1D1D"
         android:orientation="horizontal">
@@ -308,9 +308,9 @@
         <LinearLayout
             android:id="@+id/la1"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -327,9 +327,9 @@
         <LinearLayout
             android:id="@+id/la2"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -346,9 +346,9 @@
         <LinearLayout
             android:id="@+id/la3"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -365,9 +365,9 @@
         <LinearLayout
             android:id="@+id/la4"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -385,8 +385,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="90px"
-        android:layout_marginRight="90px"
+        android:layout_marginLeft="118px"
+        android:layout_marginRight="118px"
+        android:layout_marginBottom="30px"
         android:layout_weight="1"
         android:background="#5A1D1D"
         android:orientation="horizontal">
@@ -394,9 +395,9 @@
         <LinearLayout
             android:id="@+id/la5"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -413,9 +414,9 @@
         <LinearLayout
             android:id="@+id/la6"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -432,9 +433,9 @@
         <LinearLayout
             android:id="@+id/la7"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -451,9 +452,9 @@
         <LinearLayout
             android:id="@+id/la8"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="280px"
             android:layout_margin="8dp"
-            android:layout_weight="0.7"
+            android:layout_weight="1.5"
             android:background="@drawable/bg_card"
             android:elevation="4dp"
             android:orientation="vertical"
