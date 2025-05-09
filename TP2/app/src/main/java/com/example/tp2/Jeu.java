@@ -30,6 +30,7 @@ public class Jeu extends AppCompatActivity {
     LinearLayout ligne1, ligne2;
 
     List<Integer> listNombre;
+    TextView nbCarte;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,8 @@ public class Jeu extends AppCompatActivity {
         main = findViewById(R.id.main);
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
-
+        nbCarte = findViewById(R.id.txtNbCarte);
+        nbCarte.setText(String.valueOf(listNombre.size()));
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
@@ -60,6 +62,52 @@ public class Jeu extends AppCompatActivity {
         insererNombreDansCarte();
 
 
+
+
+    }
+
+    private int appliquerPoint(){
+
+        return 0;
+    }
+
+
+    private void verifier2Carte(){
+
+        int count = 0;
+
+        for (int i = 0; i < ligne1.getChildCount(); i++) {
+            LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+            for (int j = 0; j < v.getChildCount(); j++) {
+                View view = v.getChildAt(j);
+                if(view instanceof TextView){
+
+
+//                    Integer premier = listNombre.remove(0);
+//                    String s = String.valueOf(premier);
+//                    ((TextView) view).setText(s);
+                }
+            }
+        }
+        for (int i = 0; i < ligne2.getChildCount(); i++) {
+            LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+            for (int j = 0; j < v.getChildCount(); j++) {
+                View view = v.getChildAt(j);
+                if(view instanceof TextView){
+
+
+//                    Integer premier = listNombre.remove(0);
+//                    String s = String.valueOf(premier);
+//                    ((TextView) view).setText(s);
+                }
+            }
+        }
+
+        if(count == 2){
+
+
+
+        }
 
 
     }
