@@ -165,10 +165,6 @@ public class Partie {
                     View view = v.getChildAt(j);
                     if(view instanceof TextView){
                         if(((TextView) view).getText().equals("")){
-                            String nn= "";
-                            int id = 0;
-                            id = view.getId();
-                            nn = view.getResources().getResourceEntryName(id);
                             ((TextView) view).setText(String.valueOf(listCarte.get(temp.remove(0) -1)));
                             count++;
                         }
@@ -182,10 +178,6 @@ public class Partie {
                     View view = v.getChildAt(j);
                     if(view instanceof TextView){
                         if(((TextView) view).getText().equals("")){
-                            String nn= "";
-                            int id = 0;
-                            id = view.getId();
-                            nn = view.getResources().getResourceEntryName(id);
                             ((TextView) view).setText(String.valueOf(listCarte.get(temp.remove(0) -1)));
                             count++;
                         }
