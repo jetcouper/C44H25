@@ -143,7 +143,7 @@ public class Partie {
                         String vnom = view.getResources().getResourceEntryName(view.getId());
                         String num = vnom.substring(3);
                         listPosition.add(Integer.parseInt(num));
-                        listCarteTemp.add(listCarte.remove(0));
+                        listCarteTemp.add(listNombre.remove(0));
                         count++;
                     }
                 }
@@ -151,20 +151,48 @@ public class Partie {
         }
 
         if(count == 2){
+            List<Integer> temp = new ArrayList<>();
+            temp.addAll(listPosition);
             for (int i = 0; i < listCarte.size(); i++) {
                 if(listCarte.get(i) == -1){
                     listCarte.set(listPosition.remove(0) -1 ,listCarteTemp.remove(0));
                 }
 
             }
-//            for (int i = 0; i < ligne1.getChildCount(); i++) {
-//                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
-//                v.setVisibility(View.VISIBLE);
-//            }
-//            for (int i = 0; i < ligne2.getChildCount(); i++) {
-//                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
-//                v.setVisibility(View.VISIBLE);
-//            }
+            for (int i = 0; i < ligne1.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    View view = v.getChildAt(j);
+                    if(view instanceof TextView){
+                        if(((TextView) view).getText().equals("")){
+                            String nn= "";
+                            int id = 0;
+                            id = view.getId();
+                            nn = view.getResources().getResourceEntryName(id);
+                            ((TextView) view).setText(String.valueOf(listCarte.get(temp.remove(0) -1)));
+                            count++;
+                        }
+                    }
+                }
+                v.setVisibility(View.VISIBLE);
+            }
+            for (int i = 0; i < ligne2.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    View view = v.getChildAt(j);
+                    if(view instanceof TextView){
+                        if(((TextView) view).getText().equals("")){
+                            String nn= "";
+                            int id = 0;
+                            id = view.getId();
+                            nn = view.getResources().getResourceEntryName(id);
+                            ((TextView) view).setText(String.valueOf(listCarte.get(temp.remove(0) -1)));
+                            count++;
+                        }
+                    }
+                }
+                v.setVisibility(View.VISIBLE);
+            }
 
 
         }
