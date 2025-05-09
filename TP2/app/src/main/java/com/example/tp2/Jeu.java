@@ -46,28 +46,6 @@ public class Jeu extends AppCompatActivity {
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
 
-//        lC1 = findViewById(R.id.la1);
-//        lC2 = findViewById(R.id.la2);
-//        lC3 = findViewById(R.id.la3);
-//        lC4 = findViewById(R.id.la4);
-//        lC5 = findViewById(R.id.la5);
-//        lC6 = findViewById(R.id.la6);
-//        lC7 = findViewById(R.id.la7);
-//        lC8 = findViewById(R.id.la8);
-
-
-
-//        for(int i = 0; i < main.getChildCount(); i++){
-//            LinearLayout colonne = (LinearLayout) main.getChildAt(i);
-//            String nom = getResources().getResourceName(colonne.getId());
-//            if(nom.contains("la")){
-//                colonne.setOnDragListener(ec);
-//                colonne.getChildAt(0).setOnTouchListener(ec);
-//            }
-//
-//        }
-
-
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
 
@@ -79,29 +57,22 @@ public class Jeu extends AppCompatActivity {
 
             int id = layout.getId();
             if (id != View.NO_ID) {
-                try {
-                    String nom = getResources().getResourceEntryName(id);
-                    if (nom != null && !nom.isEmpty()) {
-                        // Tous peuvent recevoir un drop
-                        if (!"main".equals(nom)) {
-                            layout.setOnDragListener(dragListener);
-                        }
+                String nom = getResources().getResourceEntryName(id);
+                if (nom != null && !nom.isEmpty()) {
 
-                        // 🔐 Seuls les layouts "laX" peuvent être déplacés (draggables)
-                        if (nom.startsWith("la")) {
-                            layout.setOnTouchListener(touchListener);
-                        } else {
-                            layout.setOnTouchListener(null); // protection explicite
-                        }
+                    if (!"main".equals(nom)) {
+                        layout.setOnDragListener(dragListener);
                     }
-                } catch (Resources.NotFoundException ignored)
-                {
-                    
+
+                    //Seuls les layouts "laX"(Carte a jouer) peuvent être déplacés (draggables)
+                    if (nom.startsWith("la")) {
+                        layout.setOnTouchListener(touchListener);
+                    } else {
+                        layout.setOnTouchListener(null);
+                    }
                 }
             }
         }
-
-        // Explorer récursivement les enfants
         if (view instanceof ViewGroup) {
             ViewGroup groupe = (ViewGroup) view;
             for (int i = 0; i < groupe.getChildCount(); i++) {
@@ -109,8 +80,6 @@ public class Jeu extends AppCompatActivity {
             }
         }
     }
-
-
 
     private class Ecouteur implements View.OnDragListener, View.OnTouchListener, View.OnClickListener {
         Drawable normal = getResources().getDrawable(R.drawable.bg_card, null);
@@ -133,13 +102,18 @@ public class Jeu extends AppCompatActivity {
 
                 case DragEvent.ACTION_DROP:
                     if (carte != null && parentOrigine != null) {
-                        // Identifier la zone cible
+                        //Identifier la zone cible(4 Carte du haut)
                         String nomDestination = getResources().getResourceEntryName(source.getId());
+                        String noCarteOrigine = "";
+                        if (carte instanceof LinearLayout){
+                            TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                            noCarteOrigine = c.getText().toString();
+                        }
 
-                        // 🔍 Vérifie si c'est une zone de drop valide
-                        boolean estDestinationValide = nomDestination.contains("lCarte"); // adapte cette logique
+                        //Vérifie si c'est une zone de drop valide(Si c'est l'une des cartes du haut)
+                        boolean estDestinationValide = nomDestination.contains("lCarte");
 
-                        // Toujours remettre la carte à sa place d’origine
+                        //Remettre la carte à sa place d’origine
                         ViewGroup parentActuel = (ViewGroup) carte.getParent();
                         if (parentActuel != null && parentActuel != parentOrigine) {
                             parentActuel.removeView(carte);
@@ -148,7 +122,39 @@ public class Jeu extends AppCompatActivity {
                             parentOrigine.addView(carte);
                         }
 
-                        // Appliquer la visibilité selon validité
+
+                        if (source instanceof LinearLayout){
+                            TextView v = (TextView)((LinearLayout) source).getChildAt(0);
+
+                            if(v.getText().toString().isEmpty()){
+                                v.setText("1");
+                            }
+                            if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1") ){
+                                v.setText(noCarteOrigine);
+                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                c.setText("");
+                            }
+                            else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2") ){
+                                v.setText(noCarteOrigine);
+                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                c.setText("");
+                            }
+                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") ){
+                                v.setText(noCarteOrigine);
+                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                c.setText("");
+                            }
+                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4") ){
+                                v.setText(noCarteOrigine);
+                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                c.setText("");
+                            }
+                            else{
+                                estDestinationValide = false;
+                            }
+
+                        }
+                        //visible ou invisible selon la contrainte boolean plus tôt
                         if (estDestinationValide) {
                             carte.setVisibility(View.INVISIBLE);
                         } else {
@@ -160,9 +166,9 @@ public class Jeu extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_ENDED:
                     source.setBackground(normal);
 
-                    // 💡 Si le drop n'a pas été "consommé" → cas : drop dans le vide
+                    //Si le drop n'est pas dans la bonne zone : drop dans le vide
                     if (!event.getResult() && carte != null && parentOrigine != null) {
-                        // Remettre à la position d’origine
+                        //Remettre à la position d’origine
                         ViewGroup parentActuel = (ViewGroup) carte.getParent();
                         if (parentActuel != null && parentActuel != parentOrigine) {
                             parentActuel.removeView(carte);
@@ -170,13 +176,11 @@ public class Jeu extends AppCompatActivity {
                         if (carte.getParent() != parentOrigine) {
                             parentOrigine.addView(carte);
                         }
-
-                        // Dans ce cas, la carte reste visible
+                        //Garder la carte reste visible, s'il n'a pas atterrit
                         carte.setVisibility(View.VISIBLE);
                     }
                     break;
             }
-
             return true;
         }
 
