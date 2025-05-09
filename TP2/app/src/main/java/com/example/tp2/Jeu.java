@@ -28,7 +28,7 @@ public class Jeu extends AppCompatActivity {
     LinearLayout main;
     Chronometer chrono;
     LinearLayout ligne1, ligne2;
-
+    Partie partie;
     List<Integer> listNombre;
     TextView nbCarte;
     @Override
@@ -41,105 +41,23 @@ public class Jeu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        partie = new Partie();
+        partie.genererListe();
 
-        listNombre = new ArrayList<>();
-        for (int i = 1; i < 98; i++) {
-            listNombre.add(i);
-        }
-        Collections.shuffle(listNombre);
         menuPrincipale = findViewById(R.id.btnRetourMenu);
         main = findViewById(R.id.main);
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
         nbCarte = findViewById(R.id.txtNbCarte);
-        nbCarte.setText(String.valueOf(listNombre.size()));
+        nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
 
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
-        insererNombreDansCarte();
-
-
-
-
+        partie.insererNombreDansCarte(ligne1,ligne2);
     }
-
-    private int appliquerPoint(){
-
-        return 0;
-    }
-
-
-    private void verifier2Carte(){
-
-        int count = 0;
-
-        for (int i = 0; i < ligne1.getChildCount(); i++) {
-            LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
-            for (int j = 0; j < v.getChildCount(); j++) {
-                View view = v.getChildAt(j);
-                if(view instanceof TextView){
-
-
-//                    Integer premier = listNombre.remove(0);
-//                    String s = String.valueOf(premier);
-//                    ((TextView) view).setText(s);
-                }
-            }
-        }
-        for (int i = 0; i < ligne2.getChildCount(); i++) {
-            LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
-            for (int j = 0; j < v.getChildCount(); j++) {
-                View view = v.getChildAt(j);
-                if(view instanceof TextView){
-
-
-//                    Integer premier = listNombre.remove(0);
-//                    String s = String.valueOf(premier);
-//                    ((TextView) view).setText(s);
-                }
-            }
-        }
-
-        if(count == 2){
-
-
-
-        }
-
-
-    }
-
-
-    private void insererNombreDansCarte(){
-        for (int i = 0; i < ligne1.getChildCount(); i++) {
-            LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
-            for (int j = 0; j < v.getChildCount(); j++) {
-                View view = v.getChildAt(j);
-                if(view instanceof TextView){
-                    Integer premier = listNombre.remove(0);
-                    String s = String.valueOf(premier);
-                    ((TextView) view).setText(s);
-                }
-            }
-        }
-        for (int i = 0; i < ligne2.getChildCount(); i++) {
-            LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
-            for (int j = 0; j < v.getChildCount(); j++) {
-                View view = v.getChildAt(j);
-                if(view instanceof TextView){
-                    Integer premier = listNombre.remove(0);
-                    String s = String.valueOf(premier);
-                    ((TextView) view).setText(s);
-                }
-            }
-        }
-    }
-
-
-
     private void appliquerListeners(View view, View.OnDragListener dragListener, View.OnTouchListener touchListener) {
         if (view instanceof LinearLayout) {
             LinearLayout layout = (LinearLayout) view;
@@ -224,21 +142,33 @@ public class Jeu extends AppCompatActivity {
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                int nb = 0;
+                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(nb));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                int nb = 0;
+                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(nb));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                int nb = 0;
+                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(nb));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
+                                int nb = 0;
+                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(nb));
                                 c.setText("");
                             }
 
@@ -253,6 +183,9 @@ public class Jeu extends AppCompatActivity {
                         } else {
                             carte.setVisibility(View.VISIBLE);
                         }
+
+
+
                     }
                     break;
 
