@@ -1,6 +1,7 @@
 package com.example.tp2;
 
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,17 +12,21 @@ import java.util.List;
 
 public class Partie {
 
+
+
     private int score;
     private List<Integer> listCarte;
     private List<Integer> listNombre;
-    private int temps;
+    private int tempsPrecedant;
+    private int bonus;
 
 
     public Partie() {
         listCarte = Arrays.asList(-1, -1, -1, -1, -1, -1, -1, -1);
         listNombre = new ArrayList<>();
         score = 0;
-        temps = 0;
+        tempsPrecedant = 0;
+        bonus = 100;
     }
 
     public void genererListe(){
@@ -39,10 +44,6 @@ public class Partie {
             }
         }
     }
-
-
-
-
     public int retournerNombreCarte(){
 
         int count = 0;
@@ -84,10 +85,17 @@ public class Partie {
             }
         }
     }
-    public int appliquerPoint(int point, int temps){
+    public int appliquerPoint(long temps){
 
+        int secondes = ((int)temps/1000 - tempsPrecedant);
 
-        return 0;
+        if(secondes < 45){
+            score += bonus + 100;
+        }
+        else{
+            score += 100;
+        }
+        return score;
     }
 
     public boolean partieTerminer(){
@@ -188,6 +196,9 @@ public class Partie {
 
 
         }
+    }
+    public int getScore() {
+        return score;
     }
 
 }

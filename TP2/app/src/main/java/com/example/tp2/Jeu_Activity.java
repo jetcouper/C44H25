@@ -3,6 +3,7 @@ package com.example.tp2;
 import android.content.ClipData;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,7 +45,9 @@ public class Jeu_Activity extends AppCompatActivity {
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
         nbCarte = findViewById(R.id.txtNbCarte);
-
+        chrono = findViewById(R.id.chronometerTemps);
+        chrono.setBase(SystemClock.elapsedRealtime());
+        chrono.start();
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
