@@ -1,7 +1,6 @@
 package com.example.tp2;
 
 import android.content.ClipData;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
@@ -19,14 +18,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Jeu extends AppCompatActivity {
     DatabaseHelper instance;
     Button menuPrincipale;
-    TextView txtNbCarte, txtScoreActuel,txtCarteHG,txtCarteHD,txtCarteBG,txtCarteBD,txtC1,txtC2,txtC3,txtC4,txtC5,txtC6,txtC7,txtC8;
-    LinearLayout main,lHG,lHD,lBG,lBD,lC1,lC2,lC3,lC4,lC5,lC6,lC7,lC8;
+    LinearLayout main;
     Chronometer chrono;
+    LinearLayout ligne1, ligne2;
 
-
+    List<Integer> listNombre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +41,15 @@ public class Jeu extends AppCompatActivity {
             return insets;
         });
 
-
+        listNombre = new ArrayList<>();
+        for (int i = 1; i < 98; i++) {
+            listNombre.add(i);
+        }
+        Collections.shuffle(listNombre);
         menuPrincipale = findViewById(R.id.btnRetourMenu);
         main = findViewById(R.id.main);
+        ligne1 = findViewById(R.id.Linear1);
+        ligne2 = findViewById(R.id.Linear2);
 
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
@@ -48,9 +57,41 @@ public class Jeu extends AppCompatActivity {
 
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
+        insererNombreDansCarte();
+
+
 
 
     }
+
+
+    private void insererNombreDansCarte(){
+        for (int i = 0; i < ligne1.getChildCount(); i++) {
+            LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+            for (int j = 0; j < v.getChildCount(); j++) {
+                View view = v.getChildAt(j);
+                if(view instanceof TextView){
+                    Integer premier = listNombre.remove(0);
+                    String s = String.valueOf(premier);
+                    ((TextView) view).setText(s);
+                }
+            }
+        }
+        for (int i = 0; i < ligne2.getChildCount(); i++) {
+            LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+            for (int j = 0; j < v.getChildCount(); j++) {
+                View view = v.getChildAt(j);
+                if(view instanceof TextView){
+                    Integer premier = listNombre.remove(0);
+                    String s = String.valueOf(premier);
+                    ((TextView) view).setText(s);
+                }
+            }
+        }
+    }
+
+
+
     private void appliquerListeners(View view, View.OnDragListener dragListener, View.OnTouchListener touchListener) {
         if (view instanceof LinearLayout) {
             LinearLayout layout = (LinearLayout) view;
@@ -58,7 +99,7 @@ public class Jeu extends AppCompatActivity {
             int id = layout.getId();
             if (id != View.NO_ID) {
                 String nom = getResources().getResourceEntryName(id);
-                if (nom != null && !nom.isEmpty()) {
+                if (nom != null && !nom.isEmpty() && !nom.contains("Linear")) {
 
                     if (!"main".equals(nom)) {
                         layout.setOnDragListener(dragListener);
@@ -122,12 +163,15 @@ public class Jeu extends AppCompatActivity {
                             parentOrigine.addView(carte);
                         }
 
-
                         if (source instanceof LinearLayout){
                             TextView v = (TextView)((LinearLayout) source).getChildAt(0);
 
-                            if(v.getText().toString().isEmpty()){
+                            //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
+                            if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte1")||nomDestination.equals("lCarte2")) ){
                                 v.setText("1");
+                            }
+                            if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte3")||nomDestination.equals("lCarte4")) ){
+                                v.setText("98");
                             }
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1") ){
                                 v.setText(noCarteOrigine);
@@ -149,6 +193,7 @@ public class Jeu extends AppCompatActivity {
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 c.setText("");
                             }
+
                             else{
                                 estDestinationValide = false;
                             }

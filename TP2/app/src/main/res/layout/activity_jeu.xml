@@ -297,6 +297,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/Linear1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="118px"
@@ -383,6 +384,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/Linear2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="118px"
