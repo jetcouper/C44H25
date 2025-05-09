@@ -130,7 +130,10 @@ public class Jeu_Activity extends AppCompatActivity {
 
                         if (source instanceof LinearLayout){
                             TextView v = (TextView)((LinearLayout) source).getChildAt(0);
-
+                            int differencielle = 0;
+                            if(!v.getText().toString().isEmpty()){
+                                differencielle = Integer.parseInt(v.getText().toString()) - Integer.parseInt(noCarteOrigine);
+                            }
                             //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte1")||nomDestination.equals("lCarte2")) ){
                                 v.setText("1");
@@ -138,32 +141,36 @@ public class Jeu_Activity extends AppCompatActivity {
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte3")||nomDestination.equals("lCarte4")) ){
                                 v.setText("98");
                             }
-                            if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1") ){
+                            if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+                                partie.appliquerPoint(chrono.getBase());
                                 c.setText("");
                             }
-                            else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2") ){
+                            else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+                                partie.appliquerPoint(chrono.getBase());
                                 c.setText("");
                             }
-                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") ){
+                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+                                partie.appliquerPoint(chrono.getBase());
                                 c.setText("");
                             }
-                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4") ){
+                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+                                partie.appliquerPoint(chrono.getBase());
                                 c.setText("");
                             }
                             else{
