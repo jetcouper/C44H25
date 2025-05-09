@@ -86,6 +86,7 @@ public class Partie {
     }
     public int appliquerPoint(int point, int temps){
 
+
         return 0;
     }
 
@@ -127,7 +128,7 @@ public class Partie {
                         String vnom = view.getResources().getResourceEntryName(view.getId());
                         String num = vnom.substring(3);
                         listPosition.add(Integer.parseInt(num));
-                        listCarteTemp.add(listCarte.remove(0));
+                        listCarteTemp.add(listNombre.remove(0));
                         count++;
                     }
                 }
@@ -152,7 +153,7 @@ public class Partie {
         if(count == 2){
             for (int i = 0; i < listCarte.size(); i++) {
                 if(listCarte.get(i) == -1 && listPosition.contains(i)){
-
+                    String nom = "";
                 }
 
             }

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             if(v == demarrer) {
-                Intent i = new Intent(MainActivity.this, Jeu.class);
+                Intent i = new Intent(MainActivity.this, Jeu_Activity.class);
                 startActivity(i);
             }
         }

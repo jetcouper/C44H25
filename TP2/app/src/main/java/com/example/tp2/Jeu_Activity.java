@@ -18,11 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class Jeu extends AppCompatActivity {
+public class Jeu_Activity extends AppCompatActivity {
     DatabaseHelper instance;
     Button menuPrincipale;
     LinearLayout main;

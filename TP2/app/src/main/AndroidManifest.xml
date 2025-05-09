@@ -13,10 +13,10 @@
         android:theme="@style/Theme.TP2"
         tools:targetApi="31">
         <activity
-            android:name=".Fin"
+            android:name=".Fin_Activity"
             android:exported="false" />
         <activity
-            android:name=".Jeu"
+            android:name=".Jeu_Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

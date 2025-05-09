@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Vector;
 
-public class Fin extends AppCompatActivity {
+public class Fin_Activity extends AppCompatActivity {
 
     ListView listPoint;
     Button quitter;
