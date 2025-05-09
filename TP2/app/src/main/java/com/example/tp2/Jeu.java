@@ -239,17 +239,11 @@ public class Jeu extends AppCompatActivity {
             }
             return false;
         }
-
-
         @Override
         public void onClick(View v) {
             finish();
         }
     }
-
-
-
-
     @Override
     protected void onStop() {
         super.onStop();

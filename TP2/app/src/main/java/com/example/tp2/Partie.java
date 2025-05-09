@@ -11,12 +11,13 @@ import java.util.List;
 public class Partie {
 
     int score;
-    int[] listCarte;
-    List<Integer> listNombre = new ArrayList<>();
+    List<Integer> listCarte;
+    List<Integer> listNombre;
 
 
     public Partie() {
-
+        listCarte = new ArrayList<>();
+        listNombre = new ArrayList<>();
     }
 
     public void genererListe(){
@@ -24,7 +25,6 @@ public class Partie {
             listNombre.add(i);
         }
         Collections.shuffle(listNombre);
-
     }
 
     public int retournerNombreCarte(){
@@ -35,16 +35,6 @@ public class Partie {
     public int insererNombre(){
         return listNombre.remove(0);
     }
-    public int appliquerPoint(int point, int temps){
-
-        return 0;
-    }
-
-    public boolean partieTerminer(){
-
-        return false;
-    }
-
     public void insererNombreDansCarte(LinearLayout ligne1, LinearLayout ligne2){
         for (int i = 0; i < ligne1.getChildCount(); i++) {
             LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
@@ -69,6 +59,17 @@ public class Partie {
             }
         }
     }
+    public int appliquerPoint(int point, int temps){
+
+        return 0;
+    }
+
+    public boolean partieTerminer(){
+
+        return false;
+    }
+
+
 
     public void verifier2Carte(LinearLayout ligne1, LinearLayout ligne2){
 
@@ -87,9 +88,7 @@ public class Partie {
                         }
                         count++;
                     }
-//                    Integer premier = listNombre.remove(0);
-//                    String s = String.valueOf(premier);
-//                    ((TextView) view).setText(s);
+
 
                 }
             }
