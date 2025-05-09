@@ -169,6 +169,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
                             }
+                            //Validation si la partie est Fini
 //                            else if (partie.partieTerminer()) {
 //
 //

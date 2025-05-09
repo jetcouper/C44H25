@@ -152,11 +152,20 @@ public class Partie {
 
         if(count == 2){
             for (int i = 0; i < listCarte.size(); i++) {
-                if(listCarte.get(i) == -1 && listPosition.contains(i)){
-                    String nom = "";
+                if(listCarte.get(i) == -1){
+                    listCarte.set(listPosition.remove(0) -1 ,listCarteTemp.remove(0));
                 }
 
             }
+//            for (int i = 0; i < ligne1.getChildCount(); i++) {
+//                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+//                v.setVisibility(View.VISIBLE);
+//            }
+//            for (int i = 0; i < ligne2.getChildCount(); i++) {
+//                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+//                v.setVisibility(View.VISIBLE);
+//            }
+
 
         }
     }
