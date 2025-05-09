@@ -5,19 +5,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Partie {
 
-    int score;
-    List<Integer> listCarte;
-    List<Integer> listNombre;
+    private int score;
+    private List<Integer> listCarte;
+    private List<Integer> listNombre;
+    private int temps;
 
 
     public Partie() {
-        listCarte = new ArrayList<>();
+        listCarte = Arrays.asList(-1, -1, -1, -1, -1, -1, -1, -1);
         listNombre = new ArrayList<>();
+        score = 0;
+        temps = 0;
     }
 
     public void genererListe(){
@@ -27,9 +31,28 @@ public class Partie {
         Collections.shuffle(listNombre);
     }
 
+    public void retirerCarte(int carte){
+        for (int i = 0; i < listCarte.size(); i++) {
+            if (listCarte.get(i) == carte) {
+                listCarte.set(i, -1);
+                break; // On arrête après la première occurrence
+            }
+        }
+    }
+
+
+
+
     public int retournerNombreCarte(){
 
-        return listNombre.size();
+        int count = 0;
+        for (int i = 0; i < listCarte.size(); i++) {
+            if(listCarte.get(i) != -1){
+                count++;
+            }
+        }
+
+        return listNombre.size()+ count;
     }
 
     public int insererNombre(){
@@ -44,6 +67,7 @@ public class Partie {
                     Integer premier = insererNombre();
                     String s = String.valueOf(premier);
                     ((TextView) view).setText(s);
+                    listCarte.set(i,premier);
                 }
             }
         }
@@ -55,6 +79,7 @@ public class Partie {
                     Integer premier = insererNombre();
                     String s = String.valueOf(premier);
                     ((TextView) view).setText(s);
+                    listCarte.set(i+4,premier);
                 }
             }
         }
@@ -69,27 +94,35 @@ public class Partie {
         return false;
     }
 
+    public int compter8Carte(){
+        int count = 0;
 
+        for (int i = 0; i < listCarte.size(); i++) {
+            if (listCarte.get(i) == -1) {
+                count++;
+            }
+        }
+
+        return count;
+    }
 
     public void verifier2Carte(LinearLayout ligne1, LinearLayout ligne2){
 
+
+        List<Integer> listPosition = new ArrayList<>();
         int count = 0;
-        TextView v1 = null;
-        TextView v2 = null;
+
+
         for (int i = 0; i < ligne1.getChildCount(); i++) {
             LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
             for (int j = 0; j < v.getChildCount(); j++) {
                 View view = v.getChildAt(j);
                 if(view instanceof TextView){
-
                     if(((TextView) view).getText().equals("")){
-                        if(v1 == null){
-
-                        }
+                        String vnom = view.getResources().getResourceEntryName(view.getId());
+                        String num = vnom.substring(3);
                         count++;
                     }
-
-
                 }
             }
         }
@@ -108,8 +141,6 @@ public class Partie {
         }
 
         if(count == 2){
-
-
 
         }
     }

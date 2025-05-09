@@ -29,7 +29,6 @@ public class Jeu extends AppCompatActivity {
     Chronometer chrono;
     LinearLayout ligne1, ligne2;
     Partie partie;
-    List<Integer> listNombre;
     TextView nbCarte;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class Jeu extends AppCompatActivity {
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
         nbCarte = findViewById(R.id.txtNbCarte);
-        nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
@@ -57,6 +56,7 @@ public class Jeu extends AppCompatActivity {
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
         partie.insererNombreDansCarte(ligne1,ligne2);
+        nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
     }
     private void appliquerListeners(View view, View.OnDragListener dragListener, View.OnTouchListener touchListener) {
         if (view instanceof LinearLayout) {
@@ -142,38 +142,44 @@ public class Jeu extends AppCompatActivity {
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                int nb = 0;
-                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
-                                nbCarte.setText(String.valueOf(nb));
+                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
+                                //int nb = 0;
+                                //nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                int nb = 0;
-                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
-                                nbCarte.setText(String.valueOf(nb));
+                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
+//                                int nb = 0;
+//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                int nb = 0;
-                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
-                                nbCarte.setText(String.valueOf(nb));
+                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
+//                                int nb = 0;
+//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4") ){
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                int nb = 0;
-                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
-                                nbCarte.setText(String.valueOf(nb));
+                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
+//                                int nb = 0;
+//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
+                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
-
                             else{
                                 estDestinationValide = false;
+                            }
+                            if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
+                                partie.verifier2Carte(ligne1,ligne2);
                             }
 
                         }
