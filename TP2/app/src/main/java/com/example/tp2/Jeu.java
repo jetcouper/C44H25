@@ -143,8 +143,6 @@ public class Jeu extends AppCompatActivity {
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-                                //int nb = 0;
-                                //nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
@@ -152,8 +150,6 @@ public class Jeu extends AppCompatActivity {
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-//                                int nb = 0;
-//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
@@ -161,8 +157,6 @@ public class Jeu extends AppCompatActivity {
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-//                                int nb = 0;
-//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
@@ -170,8 +164,6 @@ public class Jeu extends AppCompatActivity {
                                 v.setText(noCarteOrigine);
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-//                                int nb = 0;
-//                                nb = Integer.parseInt(nbCarte.getText().toString()) - 1;
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 c.setText("");
                             }
@@ -181,6 +173,10 @@ public class Jeu extends AppCompatActivity {
                             if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
                             }
+//                            else if (partie.partieTerminer()) {
+//
+//
+//                            }
 
                         }
                         //visible ou invisible selon la contrainte boolean plus tôt

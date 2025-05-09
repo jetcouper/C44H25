@@ -91,7 +91,11 @@ public class Partie {
 
     public boolean partieTerminer(){
 
-        return false;
+        boolean fini = false;
+        if(retournerNombreCarte() == 0){
+            fini = true;
+        }
+        return fini;
     }
 
     public int compter8Carte(){
@@ -110,6 +114,7 @@ public class Partie {
 
 
         List<Integer> listPosition = new ArrayList<>();
+        List<Integer> listCarteTemp = new ArrayList<>();
         int count = 0;
 
 
@@ -121,6 +126,8 @@ public class Partie {
                     if(((TextView) view).getText().equals("")){
                         String vnom = view.getResources().getResourceEntryName(view.getId());
                         String num = vnom.substring(3);
+                        listPosition.add(Integer.parseInt(num));
+                        listCarteTemp.add(listCarte.remove(0));
                         count++;
                     }
                 }
@@ -131,16 +138,24 @@ public class Partie {
             for (int j = 0; j < v.getChildCount(); j++) {
                 View view = v.getChildAt(j);
                 if(view instanceof TextView){
-
-
-//                    Integer premier = listNombre.remove(0);
-//                    String s = String.valueOf(premier);
-//                    ((TextView) view).setText(s);
+                    if(((TextView) view).getText().equals("")){
+                        String vnom = view.getResources().getResourceEntryName(view.getId());
+                        String num = vnom.substring(3);
+                        listPosition.add(Integer.parseInt(num));
+                        listCarteTemp.add(listCarte.remove(0));
+                        count++;
+                    }
                 }
             }
         }
 
         if(count == 2){
+            for (int i = 0; i < listCarte.size(); i++) {
+                if(listCarte.get(i) == -1 && listPosition.contains(i)){
+
+                }
+
+            }
 
         }
     }
