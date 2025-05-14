@@ -98,12 +98,36 @@ public class Partie {
         return score;
     }
 
-    public boolean partieTerminer(){
+    public boolean partieTerminer(LinearLayout ligne1, LinearLayout ligne2){
 
         boolean fini = false;
         if(retournerNombreCarte() == 0){
             fini = true;
+        } else if (retournerNombreCarte() != 0) {
+            for (int i = 0; i < ligne1.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    View view = v.getChildAt(j);
+                    if(view instanceof TextView){
+
+                    }
+                }
+            }
+            for (int i = 0; i < ligne2.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    View view = v.getChildAt(j);
+                    if(view instanceof TextView){
+
+                    }
+                }
+            }
         }
+
+
+
+
+
         return fini;
     }
 
