@@ -26,7 +26,7 @@ public class Jeu_Activity extends AppCompatActivity {
     Chronometer chrono;
     LinearLayout ligne1, ligne2;
     Partie partie;
-    TextView nbCarte;
+    TextView nbCarte, score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +45,7 @@ public class Jeu_Activity extends AppCompatActivity {
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
         nbCarte = findViewById(R.id.txtNbCarte);
+        score = findViewById(R.id.txtScoreActuel);
         chrono = findViewById(R.id.chronometerTemps);
         chrono.setBase(SystemClock.elapsedRealtime());
         chrono.start();
@@ -93,6 +94,7 @@ public class Jeu_Activity extends AppCompatActivity {
 
         View carte = null;
         ViewGroup parentOrigine = null;
+        Boolean fini;
 
         @Override
         public boolean onDrag(View source, DragEvent event) {
@@ -147,6 +149,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
+                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
@@ -155,6 +158,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
+                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
@@ -163,6 +167,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
+                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
@@ -171,29 +176,34 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
+                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else{
                                 estDestinationValide = false;
                             }
+                            //visible ou invisible selon la contrainte boolean plus tôt
+                            if (estDestinationValide) {
+                                carte.setVisibility(View.INVISIBLE);
+                            } else {
+                                carte.setVisibility(View.VISIBLE);
+                            }
+
+
                             if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
                             }
+                            fini = partie.partieTerminer();
                             //Validation si la partie est Fini
-//                            else if (partie.partieTerminer()) {
-//
-//
-//                            }
+                            if (fini) {
+
+                                Pointage point = new Pointage(partie.getScore());
+                                instance.ajouterPointage(point);
+
+
+                            }
 
                         }
-                        //visible ou invisible selon la contrainte boolean plus tôt
-                        if (estDestinationValide) {
-                            carte.setVisibility(View.INVISIBLE);
-                        } else {
-                            carte.setVisibility(View.VISIBLE);
-                        }
-
-
 
                     }
                     break;

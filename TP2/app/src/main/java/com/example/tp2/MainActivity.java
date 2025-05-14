@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView meilleurScore;
     DatabaseHelper instance;
-    Chronometer chrono;
 
 
     @Override
