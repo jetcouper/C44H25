@@ -27,7 +27,7 @@ public class Jeu_Activity extends AppCompatActivity {
     LinearLayout ligne1, ligne2;
     Partie partie;
     TextView nbCarte, score;
-    String carte1,carte2,carte3,carte4;
+    String carte1 = "0",carte2= "0",carte3= "98",carte4= "98";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +95,7 @@ public class Jeu_Activity extends AppCompatActivity {
 
         View carte = null;
         ViewGroup parentOrigine = null;
-        Boolean fini;
+        Boolean fini = false;
 
         @Override
         public boolean onDrag(View source, DragEvent event) {
@@ -139,7 +139,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte1")||nomDestination.equals("lCarte2")) ){
-                                v.setText("1");
+                                v.setText("0");
                             }
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte3")||nomDestination.equals("lCarte4")) ){
                                 v.setText("98");
@@ -151,7 +151,6 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
-                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
@@ -161,7 +160,6 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
-                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
@@ -171,7 +169,6 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
-                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
@@ -181,7 +178,6 @@ public class Jeu_Activity extends AppCompatActivity {
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(chrono.getBase());
-                                score.setText(partie.getScore());
                                 c.setText("");
                             }
                             else{
@@ -193,7 +189,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             } else {
                                 carte.setVisibility(View.VISIBLE);
                             }
-
+                            score.setText(String.valueOf(partie.getScore()));
 
                             if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);

@@ -118,23 +118,41 @@ public class Partie {
             for (int i = 0; i < listCarte.size(); i++) {
                 nombre = listCarte.get(i);
                 if(listCarte.get(i) != -1){
-                    if(nombre > c1){
+                    if(nombre < c1){
                         ca1 = true;
+                        break;
                     }
-                    else if (nombre > c2) {
+                }
+            }
+            for (int i = 0; i < listCarte.size(); i++) {
+                nombre = listCarte.get(i);
+                if(listCarte.get(i) != -1){
+                    if (nombre < c2) {
                         ca2 = true;
+                        break;
                     }
-                    else if (nombre < c3) {
+                }
+            }
+            for (int i = 0; i < listCarte.size(); i++) {
+                nombre = listCarte.get(i);
+                if(listCarte.get(i) != -1){
+                    if (nombre > c3) {
                         ca3 = true;
+                        break;
                     }
-                    else if ( nombre < c4) {
+                }
+            }
+            for (int i = 0; i < listCarte.size(); i++) {
+                nombre = listCarte.get(i);
+                if(listCarte.get(i) != -1){
+                    if ( nombre > c4) {
                         ca4 = true;
+                        break;
                     }
-
                 }
-                if(ca1 == true && ca2 == true && ca3 == true && ca4 == true){
-                    fini = true;
-                }
+            }
+            if(ca1 && ca2  && ca3  && ca4){
+                fini = true;
             }
         }
         return fini;
