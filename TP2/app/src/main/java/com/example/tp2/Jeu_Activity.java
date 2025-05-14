@@ -1,6 +1,7 @@
 package com.example.tp2;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -200,11 +201,10 @@ public class Jeu_Activity extends AppCompatActivity {
                             fini = partie.partieTerminer(carte1,carte2,carte3,carte4);
                             //Validation si la partie est Fini
                             if (fini) {
-
+                                Intent i = new Intent(Jeu_Activity.this, Fin_Activity.class);
                                 Pointage point = new Pointage(partie.getScore());
                                 instance.ajouterPointage(point);
-
-
+                                startActivity(i);
                             }
 
                         }
