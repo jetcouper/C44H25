@@ -98,36 +98,45 @@ public class Partie {
         return score;
     }
 
-    public boolean partieTerminer(LinearLayout ligne1, LinearLayout ligne2){
+    public boolean partieTerminer(String carte1,String carte2,String carte3,String carte4){
+
+        int c1 = Integer.parseInt(carte1);
+        int c2 = Integer.parseInt(carte2);
+        int c3 = Integer.parseInt(carte3);
+        int c4 = Integer.parseInt(carte4);
+        int nombre = 0;
+        boolean ca1 = false;
+        boolean ca2 = false;
+        boolean ca3 = false;
+        boolean ca4 = false;
 
         boolean fini = false;
         if(retournerNombreCarte() == 0){
             fini = true;
         } else if (retournerNombreCarte() != 0) {
-            for (int i = 0; i < ligne1.getChildCount(); i++) {
-                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
-                for (int j = 0; j < v.getChildCount(); j++) {
-                    View view = v.getChildAt(j);
-                    if(view instanceof TextView){
 
+            for (int i = 0; i < listCarte.size(); i++) {
+                nombre = listCarte.get(i);
+                if(listCarte.get(i) != -1){
+                    if(nombre > c1){
+                        ca1 = true;
                     }
+                    else if (nombre > c2) {
+                        ca2 = true;
+                    }
+                    else if (nombre < c3) {
+                        ca3 = true;
+                    }
+                    else if ( nombre < c4) {
+                        ca4 = true;
+                    }
+
                 }
-            }
-            for (int i = 0; i < ligne2.getChildCount(); i++) {
-                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
-                for (int j = 0; j < v.getChildCount(); j++) {
-                    View view = v.getChildAt(j);
-                    if(view instanceof TextView){
-
-                    }
+                if(ca1 == true && ca2 == true && ca3 == true && ca4 == true){
+                    fini = true;
                 }
             }
         }
-
-
-
-
-
         return fini;
     }
 

@@ -27,6 +27,7 @@ public class Jeu_Activity extends AppCompatActivity {
     LinearLayout ligne1, ligne2;
     Partie partie;
     TextView nbCarte, score;
+    String carte1,carte2,carte3,carte4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +146,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
+                                carte1 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
@@ -154,6 +156,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
+                                carte2 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
@@ -163,6 +166,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
                                 v.setText(noCarteOrigine);
+                                carte3 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
@@ -172,6 +176,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
+                                carte4 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
@@ -195,7 +200,8 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
 
 
-                            fini = partie.partieTerminer(ligne1,ligne2);
+
+                            fini = partie.partieTerminer(carte1,carte2,carte3,carte4);
                             //Validation si la partie est Fini
                             if (fini) {
 
