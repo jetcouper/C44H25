@@ -138,13 +138,14 @@ public class Jeu_Activity extends AppCompatActivity {
                             if(!v.getText().toString().isEmpty()){
                                 differencielle = Integer.parseInt(v.getText().toString()) - Integer.parseInt(noCarteOrigine);
                             }
-                            //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
+                            //Initialisation au début
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte1")||nomDestination.equals("lCarte2")) ){
                                 v.setText("0");
                             }
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte3")||nomDestination.equals("lCarte4")) ){
                                 v.setText("98");
                             }
+                            //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1")  || (differencielle == 10 || differencielle == -10)){
                                 v.setText(noCarteOrigine);
                                 carte1 = noCarteOrigine;
