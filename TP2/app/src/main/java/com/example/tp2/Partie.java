@@ -30,7 +30,7 @@ public class Partie {
     }
 
     public void genererListe(){
-        for (int i = 1; i < 98; i++) {
+        for (int i = 1; i < 10; i++) {
             listNombre.add(i);
         }
         Collections.shuffle(listNombre);

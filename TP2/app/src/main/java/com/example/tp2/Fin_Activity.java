@@ -41,6 +41,7 @@ public class Fin_Activity extends AppCompatActivity {
         Vector<String> v = null;
         try {
             v = instance.retourerPointages();
+            instance.fermerConnexion();
             if (v == null || v.isEmpty()) {
                 Toast.makeText(this, "Il n'y a pas d'item.", Toast.LENGTH_SHORT).show();
                 finish();
@@ -63,12 +64,12 @@ public class Fin_Activity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        instance.fermerConnexion();
-
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        instance.fermerConnexion();
+//
+//    }
 
     private class Ecouteur implements View.OnClickListener {
 

@@ -47,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             imeilleur = instance.retournerMeilleurPointage();
-            if(imeilleur == 0){
+            if(imeilleur != 0){
                 meilleurScore.setText(String.valueOf(imeilleur));
             }
         } catch (Exception e) {
             Toast.makeText(this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        instance.fermerConnexion();
     }
 
     private class Ecouteur implements View.OnClickListener {
@@ -65,9 +66,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        instance.fermerConnexion();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//    }
 }

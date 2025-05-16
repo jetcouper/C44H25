@@ -38,9 +38,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     public void ajouterPointage(Pointage ev){
+
         ContentValues cv = new ContentValues();
         cv.put("point", ev.getPoint());
-        cv.put("date", ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear());
+        cv.put("date", String.valueOf(ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear()));
         database.insert("pointage",null,cv);
     }
 
@@ -76,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Vector<String> retourerPointages() throws Exception {
         Vector<String> pointage = new Vector<>();
 
-        Cursor cursor = database.rawQuery("SELECT point FROM pointage ORDER BY point DESC", null);
+        Cursor cursor = database.rawQuery("SELECT point + ' ' + date FROM pointage ORDER BY point DESC", null);
         //Remplir le vecteur avec les inventions
 
         //Tant qu'il y a des résultats
