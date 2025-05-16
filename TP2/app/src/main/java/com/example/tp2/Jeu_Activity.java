@@ -208,6 +208,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 Pointage point = new Pointage(partie.getScore());
                                 instance.ajouterPointage(point);
                                 startActivity(i);
+                                finish();
                             }
 
                         }

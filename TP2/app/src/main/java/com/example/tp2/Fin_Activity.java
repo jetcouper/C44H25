@@ -1,5 +1,6 @@
 package com.example.tp2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -64,12 +65,10 @@ public class Fin_Activity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        instance.fermerConnexion();
-//
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     private class Ecouteur implements View.OnClickListener {
 
