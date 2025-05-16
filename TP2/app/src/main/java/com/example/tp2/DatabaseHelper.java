@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 
@@ -41,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put("point", ev.getPoint());
-        cv.put("date", String.valueOf(ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear()));
+        cv.put("date", String.valueOf(ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear() + ", " + Calendar.getInstance().getTime().getHours() + " heure," + Calendar.getInstance().getTime().getMinutes() + " minutes et " + Calendar.getInstance().getTime().getSeconds() + " secondes."));
         database.insert("pointage",null,cv);
     }
 
@@ -77,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Vector<String> retourerPointages() throws Exception {
         Vector<String> pointage = new Vector<>();
 
-        Cursor cursor = database.rawQuery("SELECT (point + ' ' + date) FROM pointage ORDER BY point DESC", null);
+        Cursor cursor = database.rawQuery("SELECT (point || ' ' || date) FROM pointage ORDER BY point DESC", null);
         //Remplir le vecteur avec les inventions
 
         //Tant qu'il y a des résultats
@@ -86,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String temp = cursor.getString(0);
             pointage.add(temp);
         }
-        if(pointage.size() < 3){
+        if(pointage.isEmpty()){
             throw new Exception("Moins de 1 enregistrement");
         }
 
