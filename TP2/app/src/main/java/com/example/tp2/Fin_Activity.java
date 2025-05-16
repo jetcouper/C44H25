@@ -68,6 +68,7 @@ public class Fin_Activity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        finish();
     }
 
     private class Ecouteur implements View.OnClickListener {
@@ -75,8 +76,8 @@ public class Fin_Activity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-
-            finish();
+            Intent i = new Intent(Fin_Activity.this, MainActivity.class);
+            startActivity(i);
 
         }
     }

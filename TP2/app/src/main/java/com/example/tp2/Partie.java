@@ -230,8 +230,8 @@ public class Partie {
                             if(((TextView) view).getText().equals("") && !listNombre.isEmpty()){
                                 String vnom = view.getResources().getResourceEntryName(view.getId());
                                 String num = vnom.substring(3);
-                                ((TextView) view).setText(String.valueOf(listCarte.get(Integer.parseInt(num))));
-                                listNombre.remove(0);
+                                listCarte.set(Integer.parseInt(num) -1,listNombre.remove(0));
+                                ((TextView) view).setText(String.valueOf(listCarte.get(Integer.parseInt(num)-1)));
                                 v.setVisibility(View.VISIBLE);
                                 break;
                             }
@@ -247,8 +247,10 @@ public class Partie {
                         View view = v.getChildAt(j);
                         if(view instanceof TextView){
                             if(((TextView) view).getText().equals("") && !listNombre.isEmpty()){
-                                ((TextView) view).setText(String.valueOf(listCarte.get(listCarteTemp.get(0))));
-                                listNombre.remove(0);
+                                String vnom = view.getResources().getResourceEntryName(view.getId());
+                                String num = vnom.substring(3);
+                                listCarte.set(Integer.parseInt(num) -1,listNombre.remove(0));
+                                ((TextView) view).setText(String.valueOf(listCarte.get(Integer.parseInt(num)-1)));
                                 v.setVisibility(View.VISIBLE);
                                 break;
                             }

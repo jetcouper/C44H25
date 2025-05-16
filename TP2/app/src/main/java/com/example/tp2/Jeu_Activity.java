@@ -268,6 +268,8 @@ public class Jeu_Activity extends AppCompatActivity {
         }
         @Override
         public void onClick(View v) {
+            Intent i = new Intent(Jeu_Activity.this, MainActivity.class);
+            startActivity(i);
             finish();
         }
     }
