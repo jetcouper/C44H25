@@ -195,7 +195,7 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             score.setText(String.valueOf(partie.getScore()));
 
-                            if(partie.compter8Carte() == 2 && partie.retournerNombreCarte() > 7){
+                            if(partie.compter8Carte() == 2 || partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
                             }
 
