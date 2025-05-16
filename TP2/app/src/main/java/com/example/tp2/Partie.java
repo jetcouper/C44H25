@@ -17,7 +17,7 @@ public class Partie {
     private int score;
     private List<Integer> listCarte;
     private List<Integer> listNombre;
-    private int tempsPrecedant;
+    private long tempsPrecedant;
     private int bonus;
 
 
@@ -86,15 +86,17 @@ public class Partie {
         }
     }
     public int appliquerPoint(long temps){
+        int secondes = 0;
 
-        int secondes = ((int)temps/1000 - tempsPrecedant);
+        secondes = ((int)temps/1000 - (int)tempsPrecedant/1000);
 
-        if(secondes < 45){
+        if(secondes <= 10){
             score += bonus + 100;
         }
         else{
             score += 100;
         }
+        tempsPrecedant = temps;
         return score;
     }
 
@@ -118,7 +120,7 @@ public class Partie {
             for (int i = 0; i < listCarte.size(); i++) {
                 nombre = listCarte.get(i);
                 if(listCarte.get(i) != -1){
-                    if(nombre < c1){
+                    if(nombre > c1){
                         ca1 = true;
                         break;
                     }
@@ -127,7 +129,7 @@ public class Partie {
             for (int i = 0; i < listCarte.size(); i++) {
                 nombre = listCarte.get(i);
                 if(listCarte.get(i) != -1){
-                    if (nombre < c2) {
+                    if (nombre > c2) {
                         ca2 = true;
                         break;
                     }
@@ -136,7 +138,7 @@ public class Partie {
             for (int i = 0; i < listCarte.size(); i++) {
                 nombre = listCarte.get(i);
                 if(listCarte.get(i) != -1){
-                    if (nombre > c3) {
+                    if (nombre < c3) {
                         ca3 = true;
                         break;
                     }
@@ -145,13 +147,13 @@ public class Partie {
             for (int i = 0; i < listCarte.size(); i++) {
                 nombre = listCarte.get(i);
                 if(listCarte.get(i) != -1){
-                    if ( nombre > c4) {
+                    if ( nombre < c4) {
                         ca4 = true;
                         break;
                     }
                 }
             }
-            if(ca1 && ca2  && ca3  && ca4){
+            if(!ca1 && !ca2  && !ca3  && !ca4){
                 fini = true;
             }
         }

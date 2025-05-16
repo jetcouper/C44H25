@@ -101,6 +101,8 @@ public class Jeu_Activity extends AppCompatActivity {
         @Override
         public boolean onDrag(View source, DragEvent event) {
 
+            long time = SystemClock.elapsedRealtime() - chrono.getBase();
+
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     source.setBackground(select);
@@ -152,7 +154,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(chrono.getBase());
+                                partie.appliquerPoint(time);
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
@@ -161,7 +163,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(chrono.getBase());
+                                partie.appliquerPoint(time);
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
@@ -170,7 +172,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(chrono.getBase());
+                                partie.appliquerPoint(time);
                                 c.setText("");
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
@@ -179,7 +181,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
                                 partie.retirerCarte(Integer.parseInt(noCarteOrigine));
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(chrono.getBase());
+                                partie.appliquerPoint(time);
                                 c.setText("");
                             }
                             else{
