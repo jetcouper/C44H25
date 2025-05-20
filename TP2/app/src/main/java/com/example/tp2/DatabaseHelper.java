@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put("point", ev.getPoint());
-        cv.put("date", ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear()
+        cv.put("date"," points, " + ev.getDate().getDayOfMonth() + "/" + ev.getDate().getMonth() + "/" + ev.getDate().getYear()
                 + ", " + Calendar.getInstance().getTime().getHours() + " heure," + Calendar.getInstance().getTime().getMinutes()
                 + " minutes et " + Calendar.getInstance().getTime().getSeconds() + " secondes.");
         database.insert("pointage",null,cv);
