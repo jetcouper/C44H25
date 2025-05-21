@@ -214,13 +214,6 @@ public class Jeu_Activity extends AppCompatActivity {
                                     statue = "Défaite";
                                 }
                                 pop.show();
-                                if(!pop.isShowing()){
-                                    Intent i = new Intent(Jeu_Activity.this, Fin_Activity.class);
-                                    Pointage point = new Pointage(partie.getScore());
-                                    instance.ajouterPointage(point);
-                                    startActivity(i);
-                                    finish();
-                                }
 
                             }
 
