@@ -29,6 +29,9 @@ public class Jeu_Activity extends AppCompatActivity {
     Partie partie;
     TextView nbCarte, score;
     String carte1 = "0",carte2= "0",carte3= "98",carte4= "98";
+    Popup pop;
+    String statue = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,7 @@ public class Jeu_Activity extends AppCompatActivity {
         });
         partie = new Partie();
         partie.genererListe();
-
+        pop = new Popup(Jeu_Activity.this);
         menuPrincipale = findViewById(R.id.btnRetourMenu);
         main = findViewById(R.id.main);
         ligne1 = findViewById(R.id.Linear1);
@@ -204,11 +207,21 @@ public class Jeu_Activity extends AppCompatActivity {
                             fini = partie.partieTerminer(carte1,carte2,carte3,carte4);
                             //Validation si la partie est Fini
                             if (fini) {
-                                Intent i = new Intent(Jeu_Activity.this, Fin_Activity.class);
-                                Pointage point = new Pointage(partie.getScore());
-                                instance.ajouterPointage(point);
-                                startActivity(i);
-                                finish();
+                                if(partie.retournerNombreCarte() == 0){
+                                    statue = "Réussi";
+                                }
+                                else{
+                                    statue = "Défaite";
+                                }
+                                pop.show();
+                                if(!pop.isShowing()){
+                                    Intent i = new Intent(Jeu_Activity.this, Fin_Activity.class);
+                                    Pointage point = new Pointage(partie.getScore());
+                                    instance.ajouterPointage(point);
+                                    startActivity(i);
+                                    finish();
+                                }
+
                             }
 
                         }
