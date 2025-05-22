@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/L1"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="500px"
         android:layout_weight="1"
         android:background="@drawable/background_contenant"
         android:gravity="bottom"

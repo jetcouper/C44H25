@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         Drawable normal = getResources().getDrawable(R.drawable.background_contenant, null);
         Drawable select = getResources().getDrawable(R.drawable.background_contenant_selectionne, null);
         View jeton = null;
+        LinearLayout colonneOrigine = null;
+        boolean aEteDepose = false;
         @Override
         public boolean onDrag(View source /*Colonne*/, DragEvent event) {
 
@@ -62,18 +64,34 @@ public class MainActivity extends AppCompatActivity {
                     //Récupérer le jeton resté sur la colonne de départ
                     jeton = (View)event.getLocalState();
                     //Aller chercher le conteneur d'origine du jeton
-                    LinearLayout parent =  (LinearLayout)jeton.getParent();
+                    colonneOrigine =  (LinearLayout)jeton.getParent();
                     //Retiner pour de bon le jeton invisible de sa colonne invisible
-                    parent.removeView(jeton);
+                    colonneOrigine.removeView(jeton);
                     //La nouvelle colonne
                     LinearLayout nouvelleColonne = (LinearLayout)source;
                     //Ajouter le jeton à la nouvelle colonne
                     nouvelleColonne.addView(jeton);
                     //Remettre le jeton visible
                     jeton.setVisibility(View.VISIBLE);
+
+                    aEteDepose = true;// On indique que le jeton a bien été déposé ailleurs
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     source.setBackground(normal);
+
+                    // Si le drag s'est terminé sans qu'il y ait eu de dépôt
+                    if (!aEteDepose && jeton != null && colonneOrigine != null) {
+                        if (jeton.getParent() != colonneOrigine) {
+                            if (jeton.getParent() != null) {
+                                ((LinearLayout) jeton.getParent()).removeView(jeton);
+                            }
+                            colonneOrigine.addView(jeton);
+                        }
+                        jeton.setVisibility(View.VISIBLE);
+                    }
+                    jeton = null;
+                    colonneOrigine = null;
+                    aEteDepose = false;
                     break;
             }
 
@@ -83,13 +101,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View source/*Jeton*/, MotionEvent event) {//Déplacer le jeton
 
+            jeton = source;
+            colonneOrigine = (LinearLayout) jeton.getParent();
+            aEteDepose = false;
+
+
+
             View.DragShadowBuilder builder = new View.DragShadowBuilder(source); //Créer une ombre du jeton
             source.startDragAndDrop(null/*Dans le tp on peut mettre le no. de la carte*/,builder,source, 0);
             source.setVisibility(View.INVISIBLE); //Cacher le jeton car on est en train de le déplacer
-
-
-
-
             return true;
         }
     }
