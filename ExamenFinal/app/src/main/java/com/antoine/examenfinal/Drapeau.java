@@ -2,31 +2,31 @@ package com.antoine.examenfinal;
 
 public class Drapeau {
 
-    private String couleurGauche;
-    private String couleurCentre;
-    private String couleurDroit;
-    private String nomPays;
+    private String couleurG;
+    private String couleurC;
+    private String couleurD;
+    private String pays;
 
     public Drapeau(String couleurGauche, String couleurCentre, String couleurDroit, String nomPays) {
-        this.couleurGauche = couleurGauche;
-        this.couleurCentre = couleurCentre;
-        this.couleurDroit = couleurDroit;
-        this.nomPays = nomPays;
+        this.couleurG = couleurGauche;
+        this.couleurC = couleurCentre;
+        this.couleurD = couleurDroit;
+        this.pays = nomPays;
     }
 
-    public String getCouleurGauche() {
-        return couleurGauche;
+    public String getCouleurG() {
+        return couleurG;
     }
 
-    public String getCouleurCentre() {
-        return couleurCentre;
+    public String getCouleurC() {
+        return couleurC;
     }
 
-    public String getCouleurDroit() {
-        return couleurDroit;
+    public String getCouleurD() {
+        return couleurD;
     }
 
-    public String getNomPays() {
-        return nomPays;
+    public String getPays() {
+        return pays;
     }
 }

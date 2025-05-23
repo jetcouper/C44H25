@@ -61,7 +61,7 @@
         android:gravity="center_horizontal|center_vertical">
 
         <TextView
-            android:id="@+id/bleuFonce"
+            android:id="@+id/bleu"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"
@@ -85,7 +85,7 @@
             android:background="#ED2939" />
 
         <TextView
-            android:id="@+id/bleu"
+            android:id="@+id/noir"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"
