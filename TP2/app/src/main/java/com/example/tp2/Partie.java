@@ -1,6 +1,7 @@
 package com.example.tp2;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,10 +16,16 @@ public class Partie {
 
 
     private int score;
+    private int scorePrecedant;
     private List<Integer> listCarte;
     private List<Integer> listNombre;
     private long tempsPrecedant;
     private int bonus;
+    private int coupPrecedant;
+    private int positionPrecedant;
+    private View cartePilePrecedant;
+    private String noCartePilePrecedant;
+    private boolean uneCarte;
 
 
     public Partie() {
@@ -27,6 +34,7 @@ public class Partie {
         score = 0;
         tempsPrecedant = 0;
         bonus = 100;
+        uneCarte = false;
     }
 
     public void genererListe(){
@@ -39,6 +47,8 @@ public class Partie {
     public void retirerCarte(int carte){
         for (int i = 0; i < listCarte.size(); i++) {
             if (listCarte.get(i) == carte) {
+                coupPrecedant = listCarte.get(i);
+                positionPrecedant = i;
                 listCarte.set(i, -1);
                 break; // On arrête après la première occurrence
             }
@@ -55,6 +65,120 @@ public class Partie {
 
         return listNombre.size()+ count;
     }
+    public int retournerNombre8Carte(){
+
+        int count = 0;
+        for (int i = 0; i < listCarte.size(); i++) {
+            if(listCarte.get(i) != -1){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void annulerDernierCoup(LinearLayout ligne1, LinearLayout ligne2, View vue){
+
+
+        if(positionPrecedant <=4){
+            for (int i = 0; i < ligne1.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne1.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    if(i == positionPrecedant){
+                        View view = v.getChildAt(j);
+                        if(view instanceof TextView){
+                            ((TextView) view).setText(String.valueOf(coupPrecedant));
+                            listCarte.set(positionPrecedant,coupPrecedant);
+                            listNombre.add(0,coupPrecedant);
+                            v.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                    }
+
+                }
+            }
+        } else {
+            for (int i = 0; i < ligne2.getChildCount(); i++) {
+                LinearLayout v = (LinearLayout)ligne2.getChildAt(i);
+                for (int j = 0; j < v.getChildCount(); j++) {
+                    if(i + 4 == positionPrecedant){
+                        View view = v.getChildAt(j);
+                        if(view instanceof TextView){
+                            ((TextView) view).setText(String.valueOf(coupPrecedant));
+                            listCarte.set(positionPrecedant,coupPrecedant);
+                            listNombre.add(0,coupPrecedant);
+                            v.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        LinearLayout li = (LinearLayout)getCartePilePrecedant();
+        for (int i = 0; i < li.getChildCount(); i++) {
+            View w = li.getChildAt(i);
+            if(w instanceof TextView){
+                String noCarte = "";
+                noCarte = noCartePilePrecedant;
+                View vueTrouvee = trouverVueAvecMemeNom(vue, cartePilePrecedant);
+
+
+
+                if (vueTrouvee != null) {
+                    // Tu peux maintenant travailler sur cette vue
+                    LinearLayout vi = (LinearLayout) vueTrouvee;
+                    for (int j = 0; j < vi.getChildCount(); j++) {
+                        View vt = vi.getChildAt(j);
+                        if(vt instanceof TextView){
+                            ((TextView) vt).setText(noCarte);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+
+
+
+        uneCarte = false;
+
+    }
+
+
+    private View trouverVueAvecMemeNom(View racine, View reference) {
+        if (reference == null) return null;
+
+        int refId = reference.getId();
+        if (refId == View.NO_ID) return null;
+
+        String nomReference = racine.getResources().getResourceEntryName(refId);
+        return chercherVueParNom(racine, nomReference);
+    }
+
+    private View chercherVueParNom(View racine, String nomRecherche) {
+        if (racine == null || nomRecherche == null) return null;
+
+        int id = racine.getId();
+        if (id != View.NO_ID) {
+            String nom = racine.getResources().getResourceEntryName(id);
+            if (nomRecherche.equals(nom)) {
+                return racine;
+            }
+        }
+
+        if (racine instanceof ViewGroup) {
+            ViewGroup groupe = (ViewGroup) racine;
+            for (int i = 0; i < groupe.getChildCount(); i++) {
+                View trouve = chercherVueParNom(groupe.getChildAt(i), nomRecherche);
+                if (trouve != null) return trouve;
+            }
+        }
+
+        return null;
+    }
+
+
 
     public int insererNombre(){
         return listNombre.remove(0);
@@ -88,6 +212,7 @@ public class Partie {
         }
     }
     public int appliquerPoint(long temps){
+        scorePrecedant = score;
         int secondes = 0;
 
         secondes = ((int)temps/1000 - (int)tempsPrecedant/1000);
@@ -192,6 +317,7 @@ public class Partie {
                             String num = vnom.substring(3);
                             listPosition.add(Integer.parseInt(num));
                             listCarteTemp.add(listNombre.remove(0));
+                            uneCarte = true;
                             count++;
                         }
                     }
@@ -207,6 +333,7 @@ public class Partie {
                             String num = vnom.substring(3);
                             listPosition.add(Integer.parseInt(num));
                             listCarteTemp.add(listNombre.remove(0));
+                            uneCarte = true;
                             count++;
                         }
                     }
@@ -299,7 +426,7 @@ public class Partie {
                 }
                 v.setVisibility(View.VISIBLE);
             }
-
+            uneCarte = false;
 
         }
     }
@@ -307,4 +434,27 @@ public class Partie {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScorePrecedant() {
+        return scorePrecedant;
+    }
+
+    public boolean isUneCarte() {
+        return uneCarte;
+    }
+
+    public void setCartePilePrecedant(View cartePilePrecedant) {
+        this.cartePilePrecedant = cartePilePrecedant;
+    }
+
+    public View getCartePilePrecedant() {
+        return cartePilePrecedant;
+    }
+
+    public void setNoCartePilePrecedant(String noCartePilePrecedant) {
+        this.noCartePilePrecedant = noCartePilePrecedant;
+    }
 }

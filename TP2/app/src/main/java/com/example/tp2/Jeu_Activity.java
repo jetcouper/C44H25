@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Jeu_Activity extends AppCompatActivity {
     DatabaseHelper instance;
-    Button menuPrincipale;
+    Button menuPrincipale, reverse;
     LinearLayout main;
     Chronometer chrono;
     LinearLayout ligne1, ligne2;
@@ -46,6 +46,7 @@ public class Jeu_Activity extends AppCompatActivity {
         partie.genererListe();
         pop = new Popup(Jeu_Activity.this);
         menuPrincipale = findViewById(R.id.btnRetourMenu);
+        reverse = findViewById(R.id.btnReverse);
         main = findViewById(R.id.main);
         ligne1 = findViewById(R.id.Linear1);
         ligne2 = findViewById(R.id.Linear2);
@@ -57,9 +58,10 @@ public class Jeu_Activity extends AppCompatActivity {
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
-
+        reverse.setEnabled(false);
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
+        reverse.setOnClickListener(ec);
         partie.insererNombreDansCarte(ligne1,ligne2);
         nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
     }
@@ -152,6 +154,8 @@ public class Jeu_Activity extends AppCompatActivity {
                             }
                             //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
                             if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1")  || (differencielle == 10 || differencielle == -10)){
+                                partie.setCartePilePrecedant(source);
+                                partie.setNoCartePilePrecedant(v.getText().toString());
                                 v.setText(noCarteOrigine);
                                 carte1 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
@@ -159,8 +163,11 @@ public class Jeu_Activity extends AppCompatActivity {
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(time);
                                 c.setText("");
+                                reverse.setEnabled(true);
                             }
                             else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
+                                partie.setCartePilePrecedant(source);
+                                partie.setNoCartePilePrecedant(v.getText().toString());
                                 v.setText(noCarteOrigine);
                                 carte2 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
@@ -168,8 +175,11 @@ public class Jeu_Activity extends AppCompatActivity {
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(time);
                                 c.setText("");
+                                reverse.setEnabled(true);
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
+                                partie.setCartePilePrecedant(source);
+                                partie.setNoCartePilePrecedant(v.getText().toString());
                                 v.setText(noCarteOrigine);
                                 carte3 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
@@ -177,8 +187,11 @@ public class Jeu_Activity extends AppCompatActivity {
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(time);
                                 c.setText("");
+                                reverse.setEnabled(true);
                             }
                             else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
+                                partie.setCartePilePrecedant(source);
+                                partie.setNoCartePilePrecedant(v.getText().toString());
                                 v.setText(noCarteOrigine);
                                 carte4 = noCarteOrigine;
                                 TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
@@ -186,6 +199,7 @@ public class Jeu_Activity extends AppCompatActivity {
                                 nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
                                 partie.appliquerPoint(time);
                                 c.setText("");
+                                reverse.setEnabled(true);
                             }
                             else{
                                 estDestinationValide = false;
@@ -200,6 +214,10 @@ public class Jeu_Activity extends AppCompatActivity {
 
                             if(partie.compter8Carte() == 2 || partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
+
+                            }
+                            if(partie.retournerNombre8Carte() == 8){
+                                reverse.setEnabled(false);
                             }
 
 
@@ -274,9 +292,20 @@ public class Jeu_Activity extends AppCompatActivity {
         }
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(Jeu_Activity.this, MainActivity.class);
-            startActivity(i);
-            finish();
+
+            if(v == menuPrincipale){
+                Intent i = new Intent(Jeu_Activity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            } else if (v == reverse) {
+                partie.annulerDernierCoup(ligne1,ligne2, findViewById(R.id.main));
+                score.setText(String.valueOf(partie.getScorePrecedant()));
+                partie.setScore(partie.getScorePrecedant());
+                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
+                reverse.setEnabled(false);
+            }
+
+
         }
     }
     @Override
