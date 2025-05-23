@@ -1,5 +1,6 @@
 package com.antoine.examenfinal;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -16,12 +17,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    SingletonDrapeaux instance;
     LinearLayout couleurG,couleurC,couleurD;
     LinearLayout couleursLayout;
     LinearLayout couleurDrapeau;
     TextView txtQuestion;
-    String couleurSelectionner;
+    String couleurSelectionnerG;
+    String couleurSelectionnerC;
+    String couleurSelectionnerD;
+    String pays = "";
     Button confirmer;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        instance = SingletonDrapeaux.getInstance(getApplicationContext());
+        instance.ouvrirConnexion();
         couleursLayout = findViewById(R.id.conteneurCouleurs);
         couleurDrapeau = findViewById(R.id.conteneurDrapeau);
-//        couleurC = findViewById(R.id.conteneurC);
-//        couleurD = findViewById(R.id.conteneurD);
-//        couleurG = findViewById(R.id.conteneurG);
+        couleurC = findViewById(R.id.conteneurC);
+        couleurD = findViewById(R.id.conteneurD);
+        couleurG = findViewById(R.id.conteneurG);
 //        bleu = findViewById(R.id.bleu);
 //        blanc = findViewById(R.id.blanc);
 //        rouge = findViewById(R.id.rouge);
@@ -55,11 +62,15 @@ public class MainActivity extends AppCompatActivity {
             TextView textCouleur = (TextView) couleursLayout.getChildAt(i);
             textCouleur.setOnTouchListener(ec);
         }
-        for (int i = 0; i < couleurDrapeau.getChildCount(); i++) {
-            LinearLayout couleur = (LinearLayout) couleurDrapeau.getChildAt(i);
-            couleur.setOnDragListener(ec);
-        }
-
+//        for (int i = 0; i < couleurDrapeau.getChildCount(); i++) {
+//            LinearLayout couleur = (LinearLayout) couleurDrapeau.getChildAt(i);
+//            couleur.setOnDragListener(ec);
+//        }
+        pays = instance.retournerHasard();
+        txtQuestion.setText(("Dessinez le drapeau : " + pays));
+        couleurC.setOnDragListener(ec);
+        couleurG.setOnDragListener(ec);
+        couleurD.setOnDragListener(ec);
 
     }
 
@@ -71,72 +82,61 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onDrag(View source, DragEvent event) {
 
-            switch (event.getAction()){
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    //source.setBackground(select);
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    //source.setBackground(normal);
-                    break;
-                case DragEvent.ACTION_DROP:
-                    //Récupérer le jeton resté sur la colonne de départ
-                    couleur = (TextView) event.getLocalState();
-                    couleurSelectionner = couleur.getBackground().toString();
-                    //Aller chercher le conteneur d'origine du jeton
-                    //colonneOrigine =  (LinearLayout)jeton.getParent();
-                    //Retiner pour de bon le jeton invisible de sa colonne invisible
-                    //colonneOrigine.removeView(jeton);
-                    //La nouvelle colonne
-                    LinearLayout nouvelleColonne = (LinearLayout)source;
-                    //Ajouter le jeton à la nouvelle colonne
+            if (event.getAction() == DragEvent.ACTION_DROP) {//Récupérer le jeton resté sur la colonne de départ
+                couleur = (TextView) event.getLocalState();
+                Drawable s = couleur.getBackground();
 
-                    //nouvelleColonne.setBackground(couleurSelectionner);
-                    //nouvelleColonne.addView(jeton);
-                    //Remettre le jeton visible
-                    //jeton.setVisibility(View.VISIBLE);
-
-                    aEteDepose = true;// On indique que le jeton a bien été déposé ailleurs
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    //source.setBackground(normal);
-
-                    // Si le drag s'est terminé sans qu'il y ait eu de dépôt
-//                    if (!aEteDepose && couleur != null && colonneOrigine != null) {
-//                        if (couleur.getParent() != colonneOrigine) {
-//                            if (couleur.getParent() != null) {
-//                                ((LinearLayout) couleur.getParent()).removeView(couleur);
-//                            }
-//                            colonneOrigine.addView(jeton);
-//                        }
-//                        jeton.setVisibility(View.VISIBLE);
-//                    }
-                    couleur = null;
-                    colonneOrigine = null;
-                    aEteDepose = false;
-                    break;
+                LinearLayout nouvelleColonne = (LinearLayout) source;
+                nouvelleColonne.setBackground(s);
             }
 
 
-            return false;
+            return true;
         }
         @Override
         public void onClick(View v) {
 
+            boolean estPays = false;
+            String scouleurG = "";
+            String scouleurC = "";
+            String scouleurD = "";
+            String i = "";
+
+            couleurSelectionnerC = String.valueOf(couleurC.getId());
+
+            //i = getResources().getResourceName(i);
+            //String ss= couleurC.getId();
+            i = (String.valueOf(couleurC.getBackground()));
+            scouleurC = String.valueOf(i);
+
+            estPays = instance.verifierPays(scouleurG,scouleurC,scouleurD,pays);
+
+            if(estPays){
+                txtQuestion.setText("Bravo!");
+            }
+            else {
+                txtQuestion.setText("dsl");
+            }
 
 
         }
 
         @Override
-        public boolean onTouch(View v /*Text*/, MotionEvent event) {
-            couleur = (TextView)v;
+        public boolean onTouch(View source /*Text*/, MotionEvent event) {
+            couleur = (TextView)source;
             colonneOrigine = (LinearLayout) couleur.getParent();
             aEteDepose = false;
 
-            View.DragShadowBuilder builder = new View.DragShadowBuilder(v);
-            v.startDragAndDrop(null,builder,v, 0);
+            View.DragShadowBuilder builder = new View.DragShadowBuilder(source);
+            source.startDragAndDrop(null,builder,source, 0);
             return true;
         }
 
 
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        instance.fermerConnexion();
     }
 }
