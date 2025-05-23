@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import java.util.Vector;
 public class MainActivity extends AppCompatActivity {
 
     Spinner spinnerEvaluation;
-    TextView vitesse, plaque,agent;
+    EditText vitesse, plaque,agent;
     Vector<String> evaluation;
     Button btnOk;
     String evaluationChoisi;
