@@ -2,6 +2,7 @@ package com.example.tp2;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,21 +16,32 @@ public class Partie {
 
 
 
+    //Mon score actuel
     private int score;
+    //Mon score précédant
     private int scorePrecedant;
+    //La liste des 8 carte présente physiquement
     private List<Integer> listCarte;
+    //La liste de mes cartes(nombre) non jouer
     private List<Integer> listNombre;
+    //Le temps précédant mon ajout de score.
     private long tempsPrecedant;
+    //Mes points bonus
     private int bonus;
+    //Le numéro de carte précédement jouer.
     private int coupPrecedant;
+    //La position de carte précédament jouer de ma liste
     private int positionPrecedant;
+    //Le layout précédant de ma carte(Pour la remettre à sa place.)
     private View cartePilePrecedant;
+    //Le numéro de carte précédement jouer(En string pour les données).
     private String noCartePilePrecedant;
+
     private boolean uneCarte;
 
 
     public Partie() {
-        listCarte = Arrays.asList(-1, -1, -1, -1, -1, -1, -1, -1);
+        listCarte = new ArrayList<>(Collections.nCopies(8, -1));
         listNombre = new ArrayList<>();
         score = 0;
         tempsPrecedant = 0;
@@ -38,16 +50,88 @@ public class Partie {
     }
 
     public void genererListe(){
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 97; i++) {
             listNombre.add(i);
         }
         Collections.shuffle(listNombre);
     }
 
+    public boolean essayerPlacerCarte(View pileView, String nomDestination, View carte, String noCarteOrigine, long temps, TextView nbCarte, TextView score, Button reverse){
+        if (!(pileView instanceof LinearLayout)) return false;
+
+        TextView pileString = (TextView) ((LinearLayout) pileView).getChildAt(0);
+        String textePile = pileString.getText().toString();
+
+
+        int valeurPile;
+        if (textePile.isEmpty()) {
+            valeurPile = -1;
+        } else {
+            valeurPile = Integer.parseInt(textePile);
+        }
+
+
+        int valeurCarte = Integer.parseInt(noCarteOrigine);
+
+
+        int differencielle;
+        if (valeurPile != -1) {
+            differencielle = valeurPile - valeurCarte;
+        } else {
+            differencielle = 0;
+        }
+
+        // Initialisation si la pile est vide
+        if (textePile.isEmpty()) {
+            if (nomDestination.equals("lCarte1") || nomDestination.equals("lCarte2")) {
+                valeurPile = 0;
+                pileString.setText("0");
+            } else if (nomDestination.equals("lCarte3") || nomDestination.equals("lCarte4")) {
+                valeurPile = 98;
+                pileString.setText("98");
+            }
+        }
+
+        // Vérification des conditions de placement des cartes
+        boolean placementValide = (
+                (nomDestination.equals("lCarte1") || nomDestination.equals("lCarte2")) && valeurPile < valeurCarte ||
+                        (nomDestination.equals("lCarte3") || nomDestination.equals("lCarte4")) && valeurPile > valeurCarte ||
+                        Math.abs(differencielle) == 10
+        );
+
+        if (!placementValide){
+            return false;
+        }
+
+
+        // Enregistrer l’état précédent pour l’annulation
+        setCartePilePrecedant(pileView);
+        setNoCartePilePrecedant(textePile);
+
+        // Mise à jour de Jeu_Activity et de l’état
+        pileString.setText(noCarteOrigine);
+        retirerCarte(valeurCarte);
+        nbCarte.setText(String.valueOf(retournerNombreCarte()));
+        appliquerPoint(temps);
+
+        // Éffacer la valeur de la carte choisi parmis les 8 pour y acceuillir un autre plus tard.
+        if (carte instanceof LinearLayout) {
+            TextView c = (TextView) ((LinearLayout) carte).getChildAt(0);
+            c.setText("");
+        }
+
+        // Autoriser le bouton annuler dernier coup
+        reverse.setEnabled(true);
+        score.setText(String.valueOf(getScore()));
+
+        return true;
+    }
+
     public void retirerCarte(int carte){
         for (int i = 0; i < listCarte.size(); i++) {
+            Integer current = listCarte.get(i);
             if (listCarte.get(i) == carte) {
-                coupPrecedant = listCarte.get(i);
+                coupPrecedant = current;
                 positionPrecedant = i;
                 listCarte.set(i, -1);
                 break; // On arrête après la première occurrence
@@ -136,11 +220,6 @@ public class Partie {
 
             }
         }
-
-
-
-
-
         uneCarte = false;
 
     }
@@ -218,10 +297,10 @@ public class Partie {
         secondes = ((int)temps/1000 - (int)tempsPrecedant/1000);
 
         if(secondes <= 10){
-            score += bonus + 100;
+            score += (int)(1000*(Math.exp(-0.1 * secondes))/(1+0.2*Math.sin(Math.PI/10)));
         }
         else{
-            score += 100;
+            score += 1000;
         }
         tempsPrecedant = temps;
         return score;

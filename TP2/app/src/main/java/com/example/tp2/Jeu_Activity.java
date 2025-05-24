@@ -42,9 +42,13 @@ public class Jeu_Activity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //Initialisation de la classe de la partie et de ses composantes.
         partie = new Partie();
+        //Va générer la liste de carte du jeux.
         partie.genererListe();
+        //Création d'une fenêtre PopUp pour afficher la fin de partie.
         pop = new Popup(Jeu_Activity.this);
+        //Initialisation des éléments principaux(Widget).
         menuPrincipale = findViewById(R.id.btnRetourMenu);
         reverse = findViewById(R.id.btnReverse);
         main = findViewById(R.id.main);
@@ -53,18 +57,29 @@ public class Jeu_Activity extends AppCompatActivity {
         nbCarte = findViewById(R.id.txtNbCarte);
         score = findViewById(R.id.txtScoreActuel);
         chrono = findViewById(R.id.chronometerTemps);
+        //Initialisation du chronomètre
         chrono.setBase(SystemClock.elapsedRealtime());
         chrono.start();
+        //Initialisation de la base de donnée
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
         Ecouteur ec = new Ecouteur();
+
+        //Désactivation du bouton qui sert à annuler le dernier coup.
         reverse.setEnabled(false);
+
+        //Méthode pour appliqué mes Listerner aux bonne place
         appliquerListeners(findViewById(R.id.main), ec, ec);
         menuPrincipale.setOnClickListener(ec);
         reverse.setOnClickListener(ec);
+
+        //Va insérer les nombre dans toutes les cartes de départ.
         partie.insererNombreDansCarte(ligne1,ligne2);
+        //Le nombre de carte disponible dans le jeux
         nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
     }
+
+    //Méthode pouvant appliquer les listener aux bonnex vue.
     private void appliquerListeners(View view, View.OnDragListener dragListener, View.OnTouchListener touchListener) {
         if (view instanceof LinearLayout) {
             LinearLayout layout = (LinearLayout) view;
@@ -96,16 +111,20 @@ public class Jeu_Activity extends AppCompatActivity {
     }
 
     private class Ecouteur implements View.OnDragListener, View.OnTouchListener, View.OnClickListener {
+        //Les resources Drawable qui change pour les quatres piles.
         Drawable normal = getResources().getDrawable(R.drawable.bg_card, null);
         Drawable select = getResources().getDrawable(R.drawable.bg_card_selectionne, null);
 
+        //La carte sélectionné dans la zone des 8 cartes.
         View carte = null;
+        //La position d'origine de la carte si elle n'est pas placé correctement.
         ViewGroup parentOrigine = null;
+        //Si la partie est fini.
         Boolean fini = false;
 
         @Override
         public boolean onDrag(View source, DragEvent event) {
-
+            //Pour obtenir la valeur du chrono.
             long time = SystemClock.elapsedRealtime() - chrono.getBase();
 
             switch (event.getAction()) {
@@ -141,95 +160,63 @@ public class Jeu_Activity extends AppCompatActivity {
 
                         if (source instanceof LinearLayout){
                             TextView v = (TextView)((LinearLayout) source).getChildAt(0);
+                            //Le différencielle représentant la différence de nombre entre ma carte(noCarteOrigine) choisie et le numéro de la pile(source) sélectionné dans l'une de mes quatre piles.
                             int differencielle = 0;
                             if(!v.getText().toString().isEmpty()){
                                 differencielle = Integer.parseInt(v.getText().toString()) - Integer.parseInt(noCarteOrigine);
                             }
-                            //Initialisation au début
+                            //Initialisation au début de la partie pour dire que les cartes valent 0 ou 98 au début de la partie.
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte1")||nomDestination.equals("lCarte2")) ){
                                 v.setText("0");
                             }
                             if(v.getText().toString().isEmpty() && (nomDestination.equals("lCarte3")||nomDestination.equals("lCarte4")) ){
                                 v.setText("98");
                             }
+                            boolean placementReussi = partie.essayerPlacerCarte(
+                                    source, nomDestination, carte, noCarteOrigine, time, nbCarte, score, reverse
+                            );
+
+
                             //Vérifier si les nombres des cartes d'origines sont supérieur ou inférieur à ce qui est demander
-                            if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte1")  || (differencielle == 10 || differencielle == -10)){
-                                partie.setCartePilePrecedant(source);
-                                partie.setNoCartePilePrecedant(v.getText().toString());
-                                v.setText(noCarteOrigine);
-                                carte1 = noCarteOrigine;
-                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(time);
-                                c.setText("");
-                                reverse.setEnabled(true);
-                            }
-                            else if(Integer.parseInt(v.getText().toString()) < Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte2")  || (differencielle == 10 || differencielle == -10)){
-                                partie.setCartePilePrecedant(source);
-                                partie.setNoCartePilePrecedant(v.getText().toString());
-                                v.setText(noCarteOrigine);
-                                carte2 = noCarteOrigine;
-                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(time);
-                                c.setText("");
-                                reverse.setEnabled(true);
-                            }
-                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte3") || (differencielle == 10 || differencielle == -10) ){
-                                partie.setCartePilePrecedant(source);
-                                partie.setNoCartePilePrecedant(v.getText().toString());
-                                v.setText(noCarteOrigine);
-                                carte3 = noCarteOrigine;
-                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(time);
-                                c.setText("");
-                                reverse.setEnabled(true);
-                            }
-                            else if(Integer.parseInt(v.getText().toString()) > Integer.parseInt(noCarteOrigine) && nomDestination.equals("lCarte4")  || (differencielle == 10 || differencielle == -10)){
-                                partie.setCartePilePrecedant(source);
-                                partie.setNoCartePilePrecedant(v.getText().toString());
-                                v.setText(noCarteOrigine);
-                                carte4 = noCarteOrigine;
-                                TextView c = (TextView)((LinearLayout) carte).getChildAt(0);
-                                partie.retirerCarte(Integer.parseInt(noCarteOrigine));
-                                nbCarte.setText(String.valueOf(partie.retournerNombreCarte()));
-                                partie.appliquerPoint(time);
-                                c.setText("");
-                                reverse.setEnabled(true);
-                            }
-                            else{
-                                estDestinationValide = false;
-                            }
-                            //visible ou invisible selon la contrainte boolean plus tôt
-                            if (estDestinationValide) {
+                            if (placementReussi) {
+                                if (nomDestination.equals("lCarte1"))
+                                    carte1 = noCarteOrigine;
+
+                                if (nomDestination.equals("lCarte2"))
+                                    carte2 = noCarteOrigine;
+
+                                if (nomDestination.equals("lCarte3"))
+                                    carte3 = noCarteOrigine;
+
+                                if (nomDestination.equals("lCarte4"))
+                                    carte4 = noCarteOrigine;
+
                                 carte.setVisibility(View.INVISIBLE);
                             } else {
                                 carte.setVisibility(View.VISIBLE);
                             }
                             score.setText(String.valueOf(partie.getScore()));
 
+                            //Vérifier s'il y a 2 carte manquante dans le paquet, si oui, en remettre 2.
                             if(partie.compter8Carte() == 2 || partie.retournerNombreCarte() > 7){
                                 partie.verifier2Carte(ligne1,ligne2);
 
                             }
-                            if(partie.retournerNombre8Carte() == 8){
+                            //Si le nombre de carte présent dans le bas du jeu est de 8, alors désactiver le bouton reverse qui sert à annuler le dernier coup.
+                            if(partie.retournerNombre8Carte() == 8 || partie.retournerNombreCarte() < 8){
                                 reverse.setEnabled(false);
                             }
 
 
-
+                            //Méthode pour savoir si la partie est terminé.
                             fini = partie.partieTerminer(carte1,carte2,carte3,carte4);
                             //Validation si la partie est Fini
                             if (fini) {
                                 if(partie.retournerNombreCarte() == 0){
-                                    statue = "Réussi";
+                                    statue = "Réussi \r\n Avec un score de :" + partie.getScore();
                                 }
                                 else{
-                                    statue = "Défaite";
+                                    statue = "Défaite \r\n Avec un score de :" + partie.getScore();
                                 }
                                 pop.show();
 
@@ -245,16 +232,20 @@ public class Jeu_Activity extends AppCompatActivity {
 
                     //Si le drop n'est pas dans la bonne zone : drop dans le vide
                     if (!event.getResult() && carte != null && parentOrigine != null) {
-                        //Remettre à la position d’origine
-                        ViewGroup parentActuel = (ViewGroup) carte.getParent();
-                        if (parentActuel != null && parentActuel != parentOrigine) {
-                            parentActuel.removeView(carte);
-                        }
-                        if (carte.getParent() != parentOrigine) {
-                            parentOrigine.addView(carte);
-                        }
-                        //Garder la carte reste visible, s'il n'a pas atterrit
-                        carte.setVisibility(View.VISIBLE);
+                        // Sécuriser via post pour éviter la modification durant la phase de layout/événement(Des érreurs se produisent avec java.util.ConcurrentModificationException, si je ne fait pas ça)
+                        carte.post(() -> {
+                            ViewGroup parentActuel = (ViewGroup) carte.getParent();
+
+                            if (parentActuel != null && parentActuel != parentOrigine) {
+                                parentActuel.removeView(carte);
+                            }
+
+                            if (carte.getParent() != parentOrigine) {
+                                parentOrigine.addView(carte);
+                            }
+
+                            carte.setVisibility(View.VISIBLE);
+                        });
                     }
                     break;
             }
@@ -265,9 +256,13 @@ public class Jeu_Activity extends AppCompatActivity {
         public boolean onTouch(View source, MotionEvent event) {
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                //Garder la carte en mémoire.
                 carte = source;
+                //Garder le lieux d'origine de la carte.
                 parentOrigine = (ViewGroup) source.getParent();
 
+                //Pour garder le numéro de la carte.
                 String numero = "";
                 ClipData clip = null;
 
@@ -293,11 +288,14 @@ public class Jeu_Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
+            //Si je veux retourner au menu principale.
             if(v == menuPrincipale){
                 Intent i = new Intent(Jeu_Activity.this, MainActivity.class);
                 startActivity(i);
                 finish();
-            } else if (v == reverse) {
+            }
+            //Si je veux annuler le dernier coup.
+            else if (v == reverse) {
                 partie.annulerDernierCoup(ligne1,ligne2, findViewById(R.id.main));
                 score.setText(String.valueOf(partie.getScorePrecedant()));
                 partie.setScore(partie.getScorePrecedant());
@@ -311,6 +309,7 @@ public class Jeu_Activity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //Fermeture de la base de donnée
         instance.fermerConnexion();
     }
 

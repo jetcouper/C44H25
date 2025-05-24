@@ -17,7 +17,6 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     Button demarrer;
-
     TextView meilleurScore;
     DatabaseHelper instance;
 
@@ -32,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        //Initialiser mes composantes(Widget)
         demarrer = findViewById(R.id.btnDemarer);
-
         meilleurScore = findViewById(R.id.txtMeilleurScore);
 
+        //Ouverture de la base de donnée
         instance = DatabaseHelper.getInstance(getApplicationContext());
         instance.ouvrirConnexion();
 
@@ -46,20 +45,24 @@ public class MainActivity extends AppCompatActivity {
         int imeilleur = 0;
 
         try {
+            //Méthode pour obtenir le meilleur résultat de ma base de donnée
             imeilleur = instance.retournerMeilleurPointage();
             if(imeilleur != 0){
+                //Afficher le meilleur pointage.
                 meilleurScore.setText(String.valueOf(imeilleur));
             }
         } catch (Exception e) {
+            //Affiche un message d'érreur s'il y a un problème.
             Toast.makeText(this, "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        //Fermeture de la base de donnée
         instance.fermerConnexion();
     }
 
     private class Ecouteur implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
+            //Démarrer la partie(Jeu_Activity)
             if(v == demarrer) {
                 Intent i = new Intent(MainActivity.this, Jeu_Activity.class);
                 startActivity(i);
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //Fermer la page.
         finish();
     }
 }
