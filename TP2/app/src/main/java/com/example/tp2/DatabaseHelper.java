@@ -15,8 +15,6 @@ import java.util.Vector;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance;
-
-
     private SQLiteDatabase database;
 
     public static DatabaseHelper getInstance(Context context) {
@@ -27,8 +25,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
 
     }
-
-
     private DatabaseHelper(@Nullable Context context) {
         super(context, "bd", null, 1);
     }
@@ -37,8 +33,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS pointage(_id INTEGER PRIMARY KEY AUTOINCREMENT,point INTEGER, date TEXT)");
 
-
     }
+
+    //Insersion de mon nouveau pointage dans ma base de donnée
     public void ajouterPointage(Pointage ev){
 
         ContentValues cv = new ContentValues();
@@ -64,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
+    //Va retourner mon meilleur pointage.
     public int retournerMeilleurPointage(){
         int meilleur = 0;
 
@@ -78,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return meilleur;
     }
 
+    //Va retourner tout mes pointages
     public Vector<String> retourerPointages() throws Exception {
         Vector<String> pointage = new Vector<>();
 

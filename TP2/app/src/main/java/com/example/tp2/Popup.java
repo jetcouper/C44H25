@@ -39,10 +39,14 @@ public class Popup extends Dialog {
         @Override
         public void onClick(View v) {
 
+            //Va ouvrir une nouvelle page pour la fin de la partie
             Intent i = new Intent(jeu, Fin_Activity.class);
+            //Va insérer un nouveau pointage dans la base de données
             Pointage point = new Pointage(jeu.partie.getScore());
             jeu.instance.ajouterPointage(point);
+            //Va démarrer une nouvelle activité
             jeu.startActivity(i);
+            //Va fermer l'activité actuelle.
             jeu.finish();
             dismiss();
         }

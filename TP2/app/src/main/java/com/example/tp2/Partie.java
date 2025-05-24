@@ -36,10 +36,11 @@ public class Partie {
     private View cartePilePrecedant;
     //Le numéro de carte précédement jouer(En string pour les données).
     private String noCartePilePrecedant;
-
+    //???
     private boolean uneCarte;
 
 
+    //Constructeur de la classe Partie
     public Partie() {
         listCarte = new ArrayList<>(Collections.nCopies(8, -1));
         listNombre = new ArrayList<>();
@@ -49,13 +50,14 @@ public class Partie {
         uneCarte = false;
     }
 
+    //Va générer une liste de nombre au début de chaque partie.
     public void genererListe(){
         for (int i = 1; i < 97; i++) {
             listNombre.add(i);
         }
         Collections.shuffle(listNombre);
     }
-
+    //Va confirmer l'emplacement si elle est valide et va placer la carte en conséquences
     public boolean essayerPlacerCarte(View pileView, String nomDestination, View carte, String noCarteOrigine, long temps, TextView nbCarte, TextView score, Button reverse){
         if (!(pileView instanceof LinearLayout)) return false;
 
@@ -126,7 +128,7 @@ public class Partie {
 
         return true;
     }
-
+    //Va retirer la carte avec la valeur passer en paramètre
     public void retirerCarte(int carte){
         for (int i = 0; i < listCarte.size(); i++) {
             Integer current = listCarte.get(i);
@@ -138,6 +140,7 @@ public class Partie {
             }
         }
     }
+    //Va retourner le nombre de carte total encore présent dans le jeux.
     public int retournerNombreCarte(){
 
         int count = 0;
@@ -149,6 +152,7 @@ public class Partie {
 
         return listNombre.size()+ count;
     }
+    //Va retourner le nombre de carte présente en bas.(Les 8 cartes)
     public int retournerNombre8Carte(){
 
         int count = 0;
@@ -160,6 +164,7 @@ public class Partie {
         return count;
     }
 
+    //Annuler le dernier coup de carte.
     public void annulerDernierCoup(LinearLayout ligne1, LinearLayout ligne2, View vue){
 
 
@@ -208,7 +213,7 @@ public class Partie {
 
 
                 if (vueTrouvee != null) {
-                    // Tu peux maintenant travailler sur cette vue
+                    // Si la vue est trouver on peut travailler dedans.
                     LinearLayout vi = (LinearLayout) vueTrouvee;
                     for (int j = 0; j < vi.getChildCount(); j++) {
                         View vt = vi.getChildAt(j);
@@ -224,7 +229,7 @@ public class Partie {
 
     }
 
-
+    //Va retourner la vue rechercher par le nom.
     private View trouverVueAvecMemeNom(View racine, View reference) {
         if (reference == null) return null;
 
@@ -235,6 +240,7 @@ public class Partie {
         return chercherVueParNom(racine, nomReference);
     }
 
+    //Va rechercher une vue par le nom pour identifier plus facilement la vue.
     private View chercherVueParNom(View racine, String nomRecherche) {
         if (racine == null || nomRecherche == null) return null;
 
@@ -258,10 +264,12 @@ public class Partie {
     }
 
 
-
+    //Va prendre des nombre de la liste et les insérer dans les carte(LinearLayout)
     public int insererNombre(){
         return listNombre.remove(0);
     }
+
+    //Initialisation des carte au début de la partie.
     public void insererNombreDansCarte(LinearLayout ligne1, LinearLayout ligne2){
 
 
@@ -290,15 +298,17 @@ public class Partie {
             }
         }
     }
+    //Application des points et des bonus.
     public int appliquerPoint(long temps){
         scorePrecedant = score;
         int secondes = 0;
 
         secondes = ((int)temps/1000 - (int)tempsPrecedant/1000);
-
+        //Si le bonus est appliqué
         if(secondes <= 10){
             score += (int)(1000*(Math.exp(-0.1 * secondes))/(1+0.2*Math.sin(Math.PI/10)));
         }
+        //Si le bonus n'est pas appliqué
         else{
             score += 1000;
         }
@@ -306,6 +316,7 @@ public class Partie {
         return score;
     }
 
+    //Va évaluer si la partie est fini.
     public boolean partieTerminer(String carte1,String carte2,String carte3,String carte4){
 
         int c1 = Integer.parseInt(carte1);
@@ -365,7 +376,7 @@ public class Partie {
         }
         return fini;
     }
-
+    //Va vérifier le nombre de carte présent dans le deck de dessous
     public int compter8Carte(){
         int count = 0;
 
@@ -377,7 +388,7 @@ public class Partie {
 
         return count;
     }
-
+    //Voir si parmis les layouts, il nous manque 2 carte. Si oui, en replacer 2 autres en bas parmis les 8.
     public void verifier2Carte(LinearLayout ligne1, LinearLayout ligne2){
 
 
