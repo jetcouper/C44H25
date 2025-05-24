@@ -1,10 +1,12 @@
 package com.example.tp2;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button demarrer;
     TextView meilleurScore;
     DatabaseHelper instance;
+    LinearLayout main;
 
 
     @Override
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        main = findViewById(R.id.main);
+        //Ajout d'un backGround dynamique
+        AnimationDrawable animationDrawable = (AnimationDrawable) main.getBackground();
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.start();
+
         //Initialiser mes composantes(Widget)
         demarrer = findViewById(R.id.btnDemarer);
         meilleurScore = findViewById(R.id.txtMeilleurScore);
