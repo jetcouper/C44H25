@@ -1,10 +1,12 @@
 package com.example.tp2;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ public class Fin_Activity extends AppCompatActivity {
     ListView listPoint;
     Button quitter;
     DatabaseHelper instance;
-
+    LinearLayout main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,13 @@ public class Fin_Activity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        main = findViewById(R.id.main);
+        AnimationDrawable animationDrawable = (AnimationDrawable) main.getBackground();
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.start();
+
+
         //Initialiser mes composantes(Widget)
         listPoint = findViewById(R.id.listView);
         quitter = findViewById(R.id.btnMenu);
